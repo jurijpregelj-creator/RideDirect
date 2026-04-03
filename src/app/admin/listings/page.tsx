@@ -94,7 +94,7 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
                 return (
                   <tr key={listing.id} className="hover:bg-gray-50/50">
                     <td className="px-4 py-3">
-                      <div className="font-medium text-[#0F1B3D] max-w-xs truncate">{listing.title}</div>
+                      <Link href={"/listings/" + listing.id} target="_blank" className="font-medium text-[#0F1B3D] hover:text-[#1B4FD8] max-w-xs truncate block transition-colors">{listing.title}</Link>
                       <div className="text-xs text-gray-400">{listing.category} · {listing.country}</div>
                     </td>
                     <td className="px-4 py-3">
