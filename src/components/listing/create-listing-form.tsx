@@ -103,7 +103,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           year,
           ce_docs_available: false,
           inspection_available: false,
-          status: "approved",
+          status: "pending",
         })
         .select()
         .single()
@@ -141,7 +141,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
         }
       }
 
-      router.push(`/listings/${listing.id}`)
+      router.push(`/dashboard/create/success?id=${listing.id}`)
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.")
       setLoading(false)
@@ -376,12 +376,12 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           {loading ? (
             <>
               <Loader2 size={18} className="animate-spin" />
-              Publishing listing...
+              Submitting listing...
             </>
           ) : (
             <>
               <CheckCircle2 size={18} />
-              Publish Listing
+              Submit for Review
             </>
           )}
         </Button>
@@ -397,7 +397,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
       </div>
 
       <p className="text-xs text-gray-400 text-center">
-        Your listing will be published immediately and visible to all buyers on RideDirect.eu.
+        Your listing will be reviewed by our team and published within 24 hours.
       </p>
     </form>
   )

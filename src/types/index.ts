@@ -1,5 +1,5 @@
 export type UserRole = "buyer" | "seller" | "admin"
-export type ListingStatus = "draft" | "pending" | "approved"
+export type ListingStatus = "draft" | "pending" | "approved" | "rejected" | "expired"
 export type ListingCondition = "new" | "like_new" | "good" | "fair" | "parts_only"
 
 export interface Profile {
@@ -27,6 +27,7 @@ export interface Listing {
   inspection_available: boolean
   original_language?: string
   status: ListingStatus
+  expires_at?: string | null
   created_at: string
   updated_at: string
   images?: ListingImage[]

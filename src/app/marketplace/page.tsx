@@ -27,6 +27,7 @@ async function getListings(params: MarketplacePageProps["searchParams"]): Promis
     .from("listings")
     .select("*, listing_images(id, listing_id, image_url, sort_order)")
     .eq("status", "approved")
+    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
     .order("created_at", { ascending: false })
 
   if (params.q) {
