@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(cmd /c \"node --version && npm --version\")",
+      "Bash(cmd /c \"node -v\")",
+      "Bash(cmd /c \"npm -v\")",
+      "Bash(cmd /c \"echo %PATH%\")",
+      "Bash(tr ';' '\\\\n')"
+    ]
+  }
+}
