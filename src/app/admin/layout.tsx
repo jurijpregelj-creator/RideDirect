@@ -1,26 +1,17 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
-import { createClient as createAdminClient } from "@supabase/supabase-js"
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  // Verify authentication via session
   const supabase = createClient()
+
+  // Verify authentication
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login?next=/admin")
 
-  // Use service role to bypass RLS when checking admin role
-  const adminClient = createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-  const { data: profile } = await adminClient
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single()
-
-  if (profile?.role !== "admin") redirect("/")
+  // Use is_admin() security definer function (bypasses RLS, no recursion)
+  const { data: isAdmin } = await supabase.rpc("is_admin")
+  if (!isAdmin) redirect("/")
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
