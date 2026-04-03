@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
 import { Loader2, Upload, X, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -306,13 +305,11 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
             {imagePreviews.map((src, i) => (
               <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={src}
                   alt={`Preview ${i + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="120px"
-                  unoptimized
+                  className="w-full h-full object-cover"
                 />
                 <button
                   type="button"
