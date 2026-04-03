@@ -1,13 +1,20 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  // Verify authentication via session
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login?next=/admin")
 
-  const { data: profile } = await supabase
+  // Use service role to bypass RLS when checking admin role
+  const adminClient = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+  const { data: profile } = await adminClient
     .from("profiles")
     .select("role")
     .eq("id", user.id)
@@ -17,29 +24,19 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
       <aside className="w-56 bg-[#0F1B3D] text-white flex flex-col shrink-0 fixed inset-y-0 left-0 z-40">
         <div className="p-5 border-b border-white/10">
           <div className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-1">Admin Panel</div>
           <div className="text-white font-bold text-lg">RideDirect.eu</div>
         </div>
         <nav className="flex-1 p-3 space-y-0.5">
-          <Link
-            href="/admin"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors"
-          >
+          <Link href="/admin" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
             <span className="text-base">📊</span> Dashboard
           </Link>
-          <Link
-            href="/admin/listings"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors"
-          >
+          <Link href="/admin/listings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
             <span className="text-base">📋</span> Listings
           </Link>
-          <Link
-            href="/admin/users"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors"
-          >
+          <Link href="/admin/users" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
             <span className="text-base">👥</span> Users
           </Link>
         </nav>
@@ -49,8 +46,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </Link>
         </div>
       </aside>
-
-      {/* Main */}
       <main className="flex-1 ml-56 min-h-screen">{children}</main>
     </div>
   )
