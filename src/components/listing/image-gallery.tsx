@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import Image from "next/image"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { ListingImage } from "@/types"
 
 interface ImageGalleryProps {
@@ -11,6 +12,11 @@ interface ImageGalleryProps {
 
 export function ImageGallery({ images, title }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
+
+  const prev = useCallback(() =>
+    setActiveIndex(i => (i - 1 + images.length) % images.length), [images.length])
+  const next = useCallback(() =>
+    setActiveIndex(i => (i + 1) % images.length), [images.length])
 
   if (!images.length) {
     return (
@@ -33,9 +39,27 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
           sizes="(max-width: 1024px) 100vw, 66vw"
         />
         {images.length > 1 && (
-          <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
-            {activeIndex + 1} / {images.length}
-          </div>
+          <>
+            {/* Arrows */}
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+              aria-label="Previous image"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+              aria-label="Next image"
+            >
+              <ChevronRight size={20} />
+            </button>
+            {/* Counter */}
+            <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
+              {activeIndex + 1} / {images.length}
+            </div>
+          </>
         )}
       </div>
 
