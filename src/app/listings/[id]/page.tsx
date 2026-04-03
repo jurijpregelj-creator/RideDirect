@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {
@@ -19,6 +18,7 @@ import { formatPrice } from "@/lib/utils"
 import type { Metadata } from "next"
 import { InquiryForm } from "@/components/listing/inquiry-form"
 import { createClient } from "@/lib/supabase/server"
+import { ImageGallery } from "@/components/listing/image-gallery"
 import type { Listing } from "@/types"
 
 interface ListingDetailPageProps {
@@ -95,23 +95,8 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Images + Description */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Main image */}
-            <div className="relative aspect-[16/9] rounded-xl overflow-hidden bg-gray-200">
-              {listing.images?.[0] ? (
-                <Image
-                  src={listing.images[0].image_url}
-                  alt={listing.title}
-                  fill
-                  className="object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full text-gray-300 text-8xl">
-                  🎡
-                </div>
-              )}
-            </div>
+            {/* Image gallery */}
+            <ImageGallery images={listing.images || []} title={listing.title} />
 
             {/* Listing info */}
             <div className="bg-white rounded-xl border border-gray-100 p-6">
