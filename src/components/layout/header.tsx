@@ -72,6 +72,9 @@ export function Header() {
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <>
+              <Link href="/dashboard" className="text-sm text-gray-500 hover:text-gray-800 transition-colors">
+                My Listings
+              </Link>
               <Link href="/dashboard/create">
                 <Button variant="brand" size="sm">
                   <Plus size={16} />
