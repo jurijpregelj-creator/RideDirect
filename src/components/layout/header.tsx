@@ -72,8 +72,12 @@ export function Header() {
         <div className="hidden md:flex items-center gap-3">
           {user ? (
             <>
-              <Link href="/dashboard" className="text-sm text-gray-500 hover:text-gray-800 transition-colors">
-                My Listings
+              <Link
+                href="/dashboard"
+                className="w-8 h-8 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1a45c0] transition-colors"
+                title="My Dashboard"
+              >
+                {user.email?.slice(0, 2).toUpperCase()}
               </Link>
               <Link href="/dashboard/create">
                 <Button variant="brand" size="sm">
