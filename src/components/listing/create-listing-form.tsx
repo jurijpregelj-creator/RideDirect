@@ -309,7 +309,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
                 <img
                   src={src}
                   alt={`Preview ${i + 1}`}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
                 <button
                   type="button"
