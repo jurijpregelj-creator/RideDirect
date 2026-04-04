@@ -30,7 +30,17 @@ export default function LoginPage() {
       setError(error.message)
       setLoading(false)
     } else {
-      router.push("/marketplace")
+      const { data: { user: loggedIn } } = await supabase.auth.getUser()
+      if (loggedIn) {
+        const { data: profile } = await supabase.from("profiles").select("role").eq("id", loggedIn.id).single()
+        if (profile?.role === "admin") {
+          router.push("/admin")
+        } else {
+          router.push("/marketplace")
+        }
+      } else {
+        router.push("/marketplace")
+      }
       router.refresh()
     }
   }
