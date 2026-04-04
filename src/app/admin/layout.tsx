@@ -31,8 +31,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <span className="text-base">👥</span> Users
           </Link>
         </nav>
-        <div className="p-4 border-t border-white/10">
-          <Link href="/" className="text-xs text-white/40 hover:text-white/70 transition-colors">
+        <div className="p-4 border-t border-white/10 space-y-2">
+          <Link href="/dashboard" className="block text-xs text-white/40 hover:text-white/70 transition-colors">
+            → My Dashboard
+          </Link>
+          <Link href="/" className="block text-xs text-white/40 hover:text-white/70 transition-colors">
             ← Back to site
           </Link>
         </div>
