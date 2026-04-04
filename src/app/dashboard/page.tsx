@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus } from "lucide-react"
+import { Plus, Eye } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
@@ -38,7 +38,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase
       .from("listings")
-      .select("id, title, status, price, currency, category, country, created_at")
+      .select("id, title, status, price, currency, category, country, created_at, views")
       .eq("seller_id", user.id)
       .order("created_at", { ascending: false }),
   ])
@@ -153,6 +153,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                   </div>
                   <span className={`shrink-0 inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[listing.status] || "bg-gray-100"}`}>
                     {STATUS_LABELS[listing.status] || listing.status}
+                  </span>
+                  <span className="shrink-0 flex items-center gap-1 text-xs text-gray-400">
+                    <Eye size={12} />
+                    {(listing as any).views ?? 0}
                   </span>
                 </Link>
               ))}

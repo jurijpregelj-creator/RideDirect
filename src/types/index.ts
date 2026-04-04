@@ -27,6 +27,7 @@ export interface Listing {
   inspection_available: boolean
   original_language?: string
   status: ListingStatus
+  views?: number
   expires_at?: string | null
   created_at: string
   updated_at: string

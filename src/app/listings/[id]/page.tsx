@@ -19,6 +19,7 @@ import type { Metadata } from "next"
 import { InquiryForm } from "@/components/listing/inquiry-form"
 import { createClient } from "@/lib/supabase/server"
 import { ImageGallery } from "@/components/listing/image-gallery"
+import { ViewCounter } from "@/components/listing/view-counter"
 import type { Listing } from "@/types"
 
 interface ListingDetailPageProps {
@@ -29,7 +30,7 @@ async function getListing(id: string): Promise<Listing | null> {
   const supabase = createClient()
   const { data, error } = await supabase
     .from("listings")
-    .select("*, listing_images(id, listing_id, image_url, sort_order)")
+    .select("*, listing_images(id, listing_id, image_url, sort_order), views")
     .eq("id", id)
     .single()
 
@@ -90,6 +91,10 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
             <ChevronLeft size={16} />
             Back to listings
           </Link>
+        </div>
+
+        <div className="flex items-center justify-between mb-2">
+          <ViewCounter listingId={listing.id} initialViews={listing.views ?? 0} />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
