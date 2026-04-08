@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { CheckCircle2, Loader2, MessageSquare } from "lucide-react"
-import { createClient } from "@/lib/supabase/client"
+import { submitInquiry } from "@/app/listings/[id]/actions"
 
 interface InquiryFormProps {
   listingId: string
@@ -25,23 +25,18 @@ export function InquiryForm({ listingId, sellerId, listingTitle }: InquiryFormPr
     setError(null)
 
     const form = e.currentTarget
-    const buyer_name = (form.elements.namedItem("buyer_name") as HTMLInputElement).value
-    const buyer_email = (form.elements.namedItem("buyer_email") as HTMLInputElement).value
-    const buyer_phone = (form.elements.namedItem("buyer_phone") as HTMLInputElement).value
-    const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value
-
-    const supabase = createClient()
-    const { error: insertError } = await supabase.from("inquiries").insert({
-      listing_id: listingId,
-      seller_id: sellerId,
-      buyer_name,
-      buyer_email,
-      buyer_phone: buyer_phone || null,
-      message,
+    const result = await submitInquiry({
+      listingId,
+      sellerId,
+      listingTitle,
+      buyerName: (form.elements.namedItem("buyer_name") as HTMLInputElement).value,
+      buyerEmail: (form.elements.namedItem("buyer_email") as HTMLInputElement).value,
+      buyerPhone: (form.elements.namedItem("buyer_phone") as HTMLInputElement).value || undefined,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
     })
 
-    if (insertError) {
-      setError("Failed to send inquiry. Please try again.")
+    if (!result.success) {
+      setError(result.error || "Failed to send inquiry. Please try again.")
       setLoading(false)
       return
     }
