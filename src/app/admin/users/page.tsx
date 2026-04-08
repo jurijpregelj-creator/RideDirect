@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import type { Metadata } from "next"
 
@@ -38,19 +39,27 @@ export default async function AdminUsersPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {users.map((user: any) => (
-                <tr key={user.id} className="hover:bg-gray-50/50">
+                <tr key={user.id} className="hover:bg-blue-50/40 cursor-pointer">
                   <td className="px-4 py-3">
-                    <div className="font-medium text-[#0F1B3D]">{user.full_name || "—"}</div>
-                    <div className="text-xs text-gray-400">{user.email}</div>
+                    <Link href={`/admin/users/${user.id}`} className="block">
+                      <div className="font-medium text-[#0F1B3D] hover:text-[#1B4FD8]">{user.full_name || "—"}</div>
+                      <div className="text-xs text-gray-400">{user.email}</div>
+                    </Link>
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{user.country || "—"}</td>
+                  <td className="px-4 py-3 text-gray-600">
+                    <Link href={`/admin/users/${user.id}`} className="block">{user.country || "—"}</Link>
+                  </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_COLORS[user.role] || "bg-gray-100"}`}>
-                      {user.role}
-                    </span>
+                    <Link href={`/admin/users/${user.id}`} className="block">
+                      <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${ROLE_COLORS[user.role] || "bg-gray-100"}`}>
+                        {user.role}
+                      </span>
+                    </Link>
                   </td>
                   <td className="px-4 py-3 text-gray-500">
-                    {new Date(user.created_at).toLocaleDateString("en-GB")}
+                    <Link href={`/admin/users/${user.id}`} className="block">
+                      {new Date(user.created_at).toLocaleDateString("en-GB")}
+                    </Link>
                   </td>
                 </tr>
               ))}
