@@ -25,7 +25,7 @@ export async function translateText(text: string, targetLang: string) {
     const result = await translator.translateText(
       text,
       null,
-      lang === "EN" ? "EN-US" : (lang as deepl.TargetLanguageCode)
+      lang === "EN" ? "en-US" : (lang.toLowerCase() as deepl.TargetLanguageCode)
     )
     return {
       success: true,
