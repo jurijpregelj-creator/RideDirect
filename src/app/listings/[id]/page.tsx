@@ -20,6 +20,7 @@ import { InquiryForm } from "@/components/listing/inquiry-form"
 import { createClient } from "@/lib/supabase/server"
 import { ImageGallery } from "@/components/listing/image-gallery"
 import { ViewCounter } from "@/components/listing/view-counter"
+import { ListingDescription } from "@/components/listing/listing-description"
 import type { Listing } from "@/types"
 
 interface ListingDetailPageProps {
@@ -128,10 +129,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
 
               <Separator className="my-4" />
 
-              <h2 className="font-semibold text-gray-700 mb-3">Description</h2>
-              <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-                {listing.description}
-              </p>
+              <ListingDescription description={listing.description} />
             </div>
 
             {/* Details grid */}
