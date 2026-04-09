@@ -1,10 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
-import createIntlMiddleware from "next-intl/middleware"
 import { updateSession } from "@/lib/supabase/middleware"
-import { routing } from "@/i18n/routing"
-
-const intlMiddleware = createIntlMiddleware(routing)
 
 export async function middleware(request: NextRequest) {
   // 1. Handle Supabase session
@@ -28,20 +24,14 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 3. Run intl middleware (locale detection + NEXT_LOCALE cookie)
-  const intlResponse = intlMiddleware(request)
-
-  // 4. Copy locale header so next-intl server components can read it
-  const locale = intlResponse.headers.get("x-next-intl-locale")
-  if (locale) {
-    supabaseResponse.headers.set("x-next-intl-locale", locale)
-  }
-
-  // 5. Copy locale cookie if set by intl middleware
-  for (const cookie of intlResponse.cookies.getAll()) {
-    supabaseResponse.cookies.set(cookie.name, cookie.value, {
-      path: cookie.path || "/",
-      maxAge: cookie.maxAge,
+  // 3. Auto-detect locale on first visit (if no NEXT_LOCALE cookie yet)
+  if (!request.cookies.get("NEXT_LOCALE")) {
+    const acceptLang = request.headers.get("accept-language") ?? ""
+    const detected = acceptLang.split(",")[0].split("-")[0].toLowerCase()
+    const valid = ["en", "de", "it"].includes(detected) ? detected : "en"
+    supabaseResponse.cookies.set("NEXT_LOCALE", valid, {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
       sameSite: "lax",
     })
   }
