@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { MarketplaceFilters } from "@/components/marketplace/filters"
 import { ListingCard } from "@/components/marketplace/listing-card"
@@ -62,36 +63,29 @@ async function getListings(params: MarketplacePageProps["searchParams"]): Promis
 }
 
 export default async function MarketplacePage({ searchParams }: MarketplacePageProps) {
-  const listings = await getListings(searchParams)
+  const [listings, t] = await Promise.all([
+    getListings(searchParams),
+    getTranslations("marketplace"),
+  ])
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Page header */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-[#0F1B3D] mb-1">
-            Browse Listings
-          </h1>
-          <p className="text-gray-500">
-            Amusement rides and attractions for sale across Europe
-          </p>
+          <h1 className="text-3xl font-bold text-[#0F1B3D] mb-1">{t("title")}</h1>
+          <p className="text-gray-500">{t("subtitle")}</p>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Filters */}
         <Suspense>
-          <div className="mb-6">
-            <MarketplaceFilters />
-          </div>
+          <div className="mb-6"><MarketplaceFilters /></div>
         </Suspense>
 
-        {/* Results count */}
         <p className="text-sm text-gray-500 mb-6">
-          {listings.length} listing{listings.length !== 1 ? "s" : ""} found
+          {listings.length} {listings.length !== 1 ? t("listingsFound_other", { count: listings.length }) : t("listingsFound_one", { count: listings.length })}
         </p>
 
-        {/* Listings grid */}
         {listings.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {listings.map((listing) => (
@@ -101,12 +95,8 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div className="text-5xl mb-4">🎡</div>
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">
-              No listings found
-            </h3>
-            <p className="text-gray-400 text-sm max-w-md">
-              Try adjusting your filters or search terms to find what you&apos;re looking for.
-            </p>
+            <h3 className="text-lg font-semibold text-gray-700 mb-2">{t("noListings")}</h3>
+            <p className="text-gray-400 text-sm max-w-md">{t("noListingsDesc")}</p>
           </div>
         )}
       </div>

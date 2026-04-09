@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Plus, Eye } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
@@ -29,6 +30,8 @@ interface PageProps {
 
 export default async function DashboardPage({ searchParams }: PageProps) {
   const supabase = createClient()
+  const tDash = await getTranslations("dashboard")
+  const tCommon = await getTranslations("common")
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login?next=/dashboard")
 
@@ -56,10 +59,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     .split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2)
 
   const stats = [
-    { label: "Total", value: allListings?.length ?? 0, color: "text-[#0F1B3D]", filter: "all" },
-    { label: "Active", value: counts["approved"] ?? 0, color: "text-green-600", filter: "approved" },
-    { label: "Pending", value: counts["pending"] ?? 0, color: "text-amber-600", filter: "pending" },
-    { label: "Rejected", value: counts["rejected"] ?? 0, color: "text-red-500", filter: "rejected" },
+    { label: tDash("total"), value: allListings?.length ?? 0, color: "text-[#0F1B3D]", filter: "all" },
+    { label: tDash("active"), value: counts["approved"] ?? 0, color: "text-green-600", filter: "approved" },
+    { label: tDash("pending"), value: counts["pending"] ?? 0, color: "text-amber-600", filter: "pending" },
+    { label: tDash("rejected"), value: counts["rejected"] ?? 0, color: "text-red-500", filter: "rejected" },
   ]
 
   return (
@@ -88,7 +91,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
           <Link href="/dashboard/create">
             <Button variant="brand" size="sm">
               <Plus size={15} />
-              Post a Ride
+              {tDash("postARide")}
             </Button>
           </Link>
         </div>
@@ -116,7 +119,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-50">
             <h2 className="font-semibold text-[#0F1B3D]">
-              {statusFilter === "all" ? "My Listings" : `${STATUS_LABELS[statusFilter] || statusFilter} Listings`}
+              {statusFilter === "all" ? tDash("myListings") : tCommon(`status.${statusFilter}` as any)}
             </h2>
           </div>
 
@@ -124,11 +127,11 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             <div className="py-16 text-center">
               <div className="text-4xl mb-3">🎡</div>
               <p className="text-gray-400 text-sm mb-4">
-                {statusFilter === "all" ? "You haven't posted any listings yet." : "No listings with this status."}
+                {statusFilter === "all" ? tDash("noListings") : tDash("noListingsStatus")}
               </p>
               {statusFilter === "all" && (
                 <Link href="/dashboard/create">
-                  <Button variant="brand" size="sm">Post your first ride</Button>
+                  <Button variant="brand" size="sm">{tDash("postFirst")}</Button>
                 </Link>
               )}
             </div>

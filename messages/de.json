@@ -1,0 +1,124 @@
+{
+  "nav": {
+    "browse": "Alle Inserate",
+    "sell": "Mit uns verkaufen",
+    "contact": "Kontakt",
+    "postARide": "Inserat aufgeben",
+    "signOut": "Abmelden",
+    "myDashboard": "Mein Dashboard",
+    "logIn": "Anmelden",
+    "signUpFree": "Kostenlos registrieren"
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melden Sie sich bei Ihrem Konto an",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "forgotPassword": "Passwort vergessen?",
+      "signIn": "Anmelden",
+      "signingIn": "Anmelden...",
+      "withGoogle": "Mit Google fortfahren",
+      "orEmail": "oder per E-Mail anmelden",
+      "noAccount": "Noch kein Konto?",
+      "signUpFree": "Kostenlos registrieren"
+    },
+    "signup": {
+      "title": "Konto erstellen",
+      "subtitle": "Europas Marktplatz für Fahrgeschäfte",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "passwordHint": "Min. 8 Zeichen",
+      "iWantTo": "Ich möchte",
+      "buyRides": "Fahrgeschäfte kaufen",
+      "sellRides": "Fahrgeschäfte verkaufen",
+      "country": "Land",
+      "selectCountry": "Land auswählen",
+      "preferredLanguage": "Bevorzugte Sprache",
+      "createAccount": "Kostenloses Konto erstellen",
+      "creating": "Konto wird erstellt...",
+      "withGoogle": "Mit Google fortfahren",
+      "orEmail": "oder per E-Mail registrieren",
+      "alreadyAccount": "Bereits ein Konto?",
+      "signIn": "Anmelden",
+      "terms": "Mit der Registrierung stimmen Sie unseren",
+      "termsLink": "Nutzungsbedingungen",
+      "and": "und",
+      "privacyLink": "Datenschutzrichtlinien",
+      "checkEmail": "E-Mail prüfen",
+      "checkEmailDesc": "Wir haben einen Bestätigungslink an Ihre E-Mail-Adresse gesendet. Klicken Sie auf den Link, um Ihr Konto zu aktivieren.",
+      "backToSignIn": "Zurück zur Anmeldung"
+    }
+  },
+  "listing": {
+    "backToListings": "Zurück zu Inseraten",
+    "description": "Beschreibung",
+    "details": "Inseratdetails",
+    "category": "Kategorie",
+    "country": "Land",
+    "condition": "Zustand",
+    "manufacturer": "Hersteller",
+    "year": "Baujahr",
+    "originalLanguage": "Originalsprache",
+    "ceDocsAvailable": "CE-Dokumentation verfügbar",
+    "inspectionAvailable": "Vorbesichtigung möglich",
+    "contactSeller": "Verkäufer kontaktieren",
+    "yourName": "Ihr Name",
+    "emailAddress": "E-Mail-Adresse",
+    "phone": "Telefon / WhatsApp",
+    "phoneOptional": "(optional)",
+    "message": "Nachricht",
+    "sendInquiry": "Anfrage senden",
+    "sending": "Wird gesendet...",
+    "inquirySent": "Anfrage gesendet!",
+    "inquirySentDesc": "Der Verkäufer wird sich in Kürze bei Ihnen melden.",
+    "privacyNote": "Ihre Daten werden nur mit dem Verkäufer dieses Inserats geteilt."
+  },
+  "marketplace": {
+    "title": "Alle Inserate",
+    "subtitle": "Fahrgeschäfte und Attraktionen zum Verkauf in ganz Europa",
+    "listingsFound_one": "{{count}} Inserat gefunden",
+    "listingsFound_other": "{{count}} Inserate gefunden",
+    "noListings": "Keine Inserate gefunden",
+    "noListingsDesc": "Versuchen Sie, Ihre Filter oder Suchbegriffe anzupassen."
+  },
+  "dashboard": {
+    "title": "Mein Dashboard",
+    "postARide": "Inserat aufgeben",
+    "total": "Gesamt",
+    "active": "Aktiv",
+    "pending": "Ausstehend",
+    "rejected": "Abgelehnt",
+    "myListings": "Meine Inserate",
+    "noListings": "Sie haben noch keine Inserate aufgegeben.",
+    "noListingsStatus": "Keine Inserate mit diesem Status.",
+    "postFirst": "Erstes Inserat aufgeben"
+  },
+  "translate": {
+    "button": "Übersetzen auf {language}",
+    "showOriginal": "Original anzeigen",
+    "translating": "Übersetze..."
+  },
+  "common": {
+    "status": {
+      "approved": "Aktiv",
+      "pending": "Ausstehend",
+      "rejected": "Abgelehnt",
+      "expired": "Abgelaufen",
+      "draft": "Entwurf"
+    },
+    "condition": {
+      "new": "Neu",
+      "like_new": "Wie neu",
+      "good": "Gut",
+      "fair": "Mäßig",
+      "parts_only": "Nur Ersatzteile"
+    },
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "it": "Italiano"
+    }
+  }
+}

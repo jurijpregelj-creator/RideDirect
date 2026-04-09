@@ -1,0 +1,124 @@
+{
+  "nav": {
+    "browse": "Browse Listings",
+    "sell": "Sell With Us",
+    "contact": "Contact",
+    "postARide": "Post a Ride",
+    "signOut": "Sign out",
+    "myDashboard": "My Dashboard",
+    "logIn": "Log in",
+    "signUpFree": "Sign up free"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to your account",
+      "email": "Email Address",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign In",
+      "signingIn": "Signing in...",
+      "withGoogle": "Continue with Google",
+      "orEmail": "or sign in with email",
+      "noAccount": "Don't have an account?",
+      "signUpFree": "Sign up free"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Join Europe's amusement ride marketplace",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "password": "Password",
+      "passwordHint": "Min. 8 characters",
+      "iWantTo": "I want to",
+      "buyRides": "Buy rides",
+      "sellRides": "Sell rides",
+      "country": "Country",
+      "selectCountry": "Select your country",
+      "preferredLanguage": "Preferred Language",
+      "createAccount": "Create Free Account",
+      "creating": "Creating account...",
+      "withGoogle": "Continue with Google",
+      "orEmail": "or sign up with email",
+      "alreadyAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "terms": "By signing up, you agree to our",
+      "termsLink": "Terms of Service",
+      "and": "and",
+      "privacyLink": "Privacy Policy",
+      "checkEmail": "Check your email",
+      "checkEmailDesc": "We've sent a confirmation link to your email address. Click the link to activate your account.",
+      "backToSignIn": "Back to Sign In"
+    }
+  },
+  "listing": {
+    "backToListings": "Back to listings",
+    "description": "Description",
+    "details": "Listing Details",
+    "category": "Category",
+    "country": "Country",
+    "condition": "Condition",
+    "manufacturer": "Manufacturer",
+    "year": "Year",
+    "originalLanguage": "Original Language",
+    "ceDocsAvailable": "CE Documentation Available",
+    "inspectionAvailable": "Pre-purchase inspection possible",
+    "contactSeller": "Contact the Seller",
+    "yourName": "Your Name",
+    "emailAddress": "Email Address",
+    "phone": "Phone / WhatsApp",
+    "phoneOptional": "(optional)",
+    "message": "Message",
+    "sendInquiry": "Send Inquiry",
+    "sending": "Sending...",
+    "inquirySent": "Inquiry Sent!",
+    "inquirySentDesc": "The seller will be in touch with you shortly.",
+    "privacyNote": "Your details will only be shared with the seller of this listing."
+  },
+  "marketplace": {
+    "title": "Browse Listings",
+    "subtitle": "Amusement rides and attractions for sale across Europe",
+    "listingsFound_one": "{{count}} listing found",
+    "listingsFound_other": "{{count}} listings found",
+    "noListings": "No listings found",
+    "noListingsDesc": "Try adjusting your filters or search terms to find what you're looking for."
+  },
+  "dashboard": {
+    "title": "My Dashboard",
+    "postARide": "Post a Ride",
+    "total": "Total",
+    "active": "Active",
+    "pending": "Pending",
+    "rejected": "Rejected",
+    "myListings": "My Listings",
+    "noListings": "You haven't posted any listings yet.",
+    "noListingsStatus": "No listings with this status.",
+    "postFirst": "Post your first ride"
+  },
+  "translate": {
+    "button": "Translate to {language}",
+    "showOriginal": "Show original",
+    "translating": "Translating..."
+  },
+  "common": {
+    "status": {
+      "approved": "Active",
+      "pending": "Pending review",
+      "rejected": "Rejected",
+      "expired": "Expired",
+      "draft": "Draft"
+    },
+    "condition": {
+      "new": "New",
+      "like_new": "Like New",
+      "good": "Good",
+      "fair": "Fair",
+      "parts_only": "Parts Only"
+    },
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "it": "Italiano"
+    }
+  }
+}

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { Loader2, CheckCircle2 } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -14,14 +15,23 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
+import { setLocale } from "@/app/actions/locale"
 import { EUROPEAN_COUNTRIES } from "@/data/mock"
 
+const LANGUAGES = [
+  { code: "en", label: "English 🇬🇧" },
+  { code: "de", label: "Deutsch 🇩🇪" },
+  { code: "it", label: "Italiano 🇮🇹" },
+]
+
 export default function SignupPage() {
+  const t = useTranslations("auth.signup")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [role, setRole] = useState<string>("buyer")
   const [country, setCountry] = useState<string>("")
+  const [language, setLanguage] = useState<string>("en")
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -38,11 +48,7 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        data: {
-          full_name: fullName,
-          role,
-          country,
-        },
+        data: { full_name: fullName, role, country, preferred_language: language },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
@@ -50,6 +56,7 @@ export default function SignupPage() {
     if (error) {
       setError(error.message)
     } else {
+      await setLocale(language)
       setSuccess(true)
     }
     setLoading(false)
@@ -70,12 +77,10 @@ export default function SignupPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="w-full max-w-md text-center">
           <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-[#0F1B3D] mb-3">Check your email</h1>
-          <p className="text-gray-500 mb-6">
-            We&apos;ve sent a confirmation link to your email address. Click the link to activate your account.
-          </p>
+          <h1 className="text-2xl font-bold text-[#0F1B3D] mb-3">{t("checkEmail")}</h1>
+          <p className="text-gray-500 mb-6">{t("checkEmailDesc")}</p>
           <Link href="/auth/login">
-            <Button variant="brand">Back to Sign In</Button>
+            <Button variant="brand">{t("backToSignIn")}</Button>
           </Link>
         </div>
       </div>
@@ -93,8 +98,8 @@ export default function SignupPage() {
             </div>
             <span className="font-bold text-[#0F1B3D] text-xl">RideDirect<span className="text-gray-400">.eu</span></span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0F1B3D] mt-6 mb-1">Create your account</h1>
-          <p className="text-gray-500 text-sm">Join Europe&apos;s amusement ride marketplace</p>
+          <h1 className="text-2xl font-bold text-[#0F1B3D] mt-6 mb-1">{t("title")}</h1>
+          <p className="text-gray-500 text-sm">{t("subtitle")}</p>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
@@ -111,7 +116,7 @@ export default function SignupPage() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            Continue with Google
+            {t("withGoogle")}
           </Button>
 
           <div className="relative mb-4">
@@ -119,7 +124,7 @@ export default function SignupPage() {
               <div className="w-full border-t border-gray-100" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-400">or sign up with email</span>
+              <span className="bg-white px-3 text-gray-400">{t("orEmail")}</span>
             </div>
           </div>
 
@@ -131,57 +136,33 @@ export default function SignupPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="full_name">Full Name *</Label>
+              <Label htmlFor="full_name">{t("fullName")} *</Label>
               <Input id="full_name" name="full_name" placeholder="John Smith" required className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="email">Email Address *</Label>
+              <Label htmlFor="email">{t("email")} *</Label>
               <Input id="email" name="email" type="email" placeholder="john@company.com" required className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="password">Password *</Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Min. 8 characters"
-                minLength={8}
-                required
-                className="mt-1.5"
-              />
+              <Label htmlFor="password">{t("password")} *</Label>
+              <Input id="password" name="password" type="password" placeholder={t("passwordHint")} minLength={8} required className="mt-1.5" />
             </div>
             <div>
-              <Label>I want to *</Label>
+              <Label>{t("iWantTo")} *</Label>
               <div className="grid grid-cols-2 gap-3 mt-1.5">
-                <button
-                  type="button"
-                  onClick={() => setRole("buyer")}
-                  className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${
-                    role === "buyer"
-                      ? "border-[#1B4FD8] bg-blue-50 text-[#1B4FD8]"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300"
-                  }`}
-                >
-                  🛒 Buy rides
+                <button type="button" onClick={() => setRole("buyer")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "buyer" ? "border-[#1B4FD8] bg-blue-50 text-[#1B4FD8]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
+                  🛒 {t("buyRides")}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setRole("seller")}
-                  className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${
-                    role === "seller"
-                      ? "border-[#1B4FD8] bg-blue-50 text-[#1B4FD8]"
-                      : "border-gray-200 text-gray-600 hover:border-gray-300"
-                  }`}
-                >
-                  🏷️ Sell rides
+                <button type="button" onClick={() => setRole("seller")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "seller" ? "border-[#1B4FD8] bg-blue-50 text-[#1B4FD8]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
+                  🏷️ {t("sellRides")}
                 </button>
               </div>
             </div>
             <div>
-              <Label>Country *</Label>
+              <Label>{t("country")} *</Label>
               <Select onValueChange={setCountry} required>
                 <SelectTrigger className="mt-1.5">
-                  <SelectValue placeholder="Select your country" />
+                  <SelectValue placeholder={t("selectCountry")} />
                 </SelectTrigger>
                 <SelectContent>
                   {EUROPEAN_COUNTRIES.map((c) => (
@@ -190,16 +171,22 @@ export default function SignupPage() {
                 </SelectContent>
               </Select>
             </div>
+            <div>
+              <Label>{t("preferredLanguage")} *</Label>
+              <Select onValueChange={setLanguage} defaultValue="en">
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {LANGUAGES.map((l) => (
+                    <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
             <Button type="submit" variant="brand" className="w-full" disabled={loading}>
-              {loading ? (
-                <>
-                  <Loader2 size={16} className="animate-spin" />
-                  Creating account...
-                </>
-              ) : (
-                "Create Free Account"
-              )}
+              {loading ? (<><Loader2 size={16} className="animate-spin" /> {t("creating")}</>) : t("createAccount")}
             </Button>
           </form>
 
@@ -212,9 +199,9 @@ export default function SignupPage() {
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Already have an account?{" "}
+          {t("alreadyAccount")}{" "}
           <Link href="/auth/login" className="text-[#1B4FD8] hover:underline font-medium">
-            Sign in
+            {t("signIn")}
           </Link>
         </p>
       </div>

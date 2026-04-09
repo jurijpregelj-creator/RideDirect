@@ -1,0 +1,124 @@
+{
+  "nav": {
+    "browse": "Tutti gli annunci",
+    "sell": "Vendi con noi",
+    "contact": "Contatti",
+    "postARide": "Pubblica annuncio",
+    "signOut": "Esci",
+    "myDashboard": "Il mio dashboard",
+    "logIn": "Accedi",
+    "signUpFree": "Registrati gratis"
+  },
+  "auth": {
+    "login": {
+      "title": "Bentornato",
+      "subtitle": "Accedi al tuo account",
+      "email": "Indirizzo email",
+      "password": "Password",
+      "forgotPassword": "Password dimenticata?",
+      "signIn": "Accedi",
+      "signingIn": "Accesso in corso...",
+      "withGoogle": "Continua con Google",
+      "orEmail": "o accedi con email",
+      "noAccount": "Non hai un account?",
+      "signUpFree": "Registrati gratis"
+    },
+    "signup": {
+      "title": "Crea il tuo account",
+      "subtitle": "Il marketplace europeo per le attrazioni",
+      "fullName": "Nome completo",
+      "email": "Indirizzo email",
+      "password": "Password",
+      "passwordHint": "Min. 8 caratteri",
+      "iWantTo": "Voglio",
+      "buyRides": "Comprare attrazioni",
+      "sellRides": "Vendere attrazioni",
+      "country": "Paese",
+      "selectCountry": "Seleziona il tuo paese",
+      "preferredLanguage": "Lingua preferita",
+      "createAccount": "Crea account gratuito",
+      "creating": "Creazione account...",
+      "withGoogle": "Continua con Google",
+      "orEmail": "o registrati con email",
+      "alreadyAccount": "Hai già un account?",
+      "signIn": "Accedi",
+      "terms": "Registrandoti, accetti i nostri",
+      "termsLink": "Termini di servizio",
+      "and": "e la",
+      "privacyLink": "Privacy Policy",
+      "checkEmail": "Controlla la tua email",
+      "checkEmailDesc": "Abbiamo inviato un link di conferma al tuo indirizzo email. Clicca il link per attivare il tuo account.",
+      "backToSignIn": "Torna all'accesso"
+    }
+  },
+  "listing": {
+    "backToListings": "Torna agli annunci",
+    "description": "Descrizione",
+    "details": "Dettagli annuncio",
+    "category": "Categoria",
+    "country": "Paese",
+    "condition": "Condizione",
+    "manufacturer": "Produttore",
+    "year": "Anno",
+    "originalLanguage": "Lingua originale",
+    "ceDocsAvailable": "Documentazione CE disponibile",
+    "inspectionAvailable": "Ispezione pre-acquisto possibile",
+    "contactSeller": "Contatta il venditore",
+    "yourName": "Il tuo nome",
+    "emailAddress": "Indirizzo email",
+    "phone": "Telefono / WhatsApp",
+    "phoneOptional": "(opzionale)",
+    "message": "Messaggio",
+    "sendInquiry": "Invia richiesta",
+    "sending": "Invio in corso...",
+    "inquirySent": "Richiesta inviata!",
+    "inquirySentDesc": "Il venditore ti contatterà a breve.",
+    "privacyNote": "I tuoi dati saranno condivisi solo con il venditore di questo annuncio."
+  },
+  "marketplace": {
+    "title": "Tutti gli annunci",
+    "subtitle": "Attrazioni e giostre in vendita in tutta Europa",
+    "listingsFound_one": "{{count}} annuncio trovato",
+    "listingsFound_other": "{{count}} annunci trovati",
+    "noListings": "Nessun annuncio trovato",
+    "noListingsDesc": "Prova a modificare i filtri o i termini di ricerca."
+  },
+  "dashboard": {
+    "title": "Il mio dashboard",
+    "postARide": "Pubblica annuncio",
+    "total": "Totale",
+    "active": "Attivi",
+    "pending": "In attesa",
+    "rejected": "Rifiutati",
+    "myListings": "I miei annunci",
+    "noListings": "Non hai ancora pubblicato annunci.",
+    "noListingsStatus": "Nessun annuncio con questo stato.",
+    "postFirst": "Pubblica il tuo primo annuncio"
+  },
+  "translate": {
+    "button": "Traduci in {language}",
+    "showOriginal": "Mostra originale",
+    "translating": "Traduzione in corso..."
+  },
+  "common": {
+    "status": {
+      "approved": "Attivo",
+      "pending": "In attesa",
+      "rejected": "Rifiutato",
+      "expired": "Scaduto",
+      "draft": "Bozza"
+    },
+    "condition": {
+      "new": "Nuovo",
+      "like_new": "Come nuovo",
+      "good": "Buono",
+      "fair": "Discreto",
+      "parts_only": "Solo ricambi"
+    },
+    "languages": {
+      "en": "English",
+      "de": "Deutsch",
+      "it": "Italiano"
+    }
+  }
+}

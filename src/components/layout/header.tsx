@@ -4,32 +4,30 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Menu, X, Plus } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import type { User } from "@supabase/supabase-js"
-
-const NAV_LINKS = [
-  { href: "/marketplace", label: "Browse Listings" },
-  { href: "/sell", label: "Sell With Us" },
-  { href: "/contact", label: "Contact" },
-]
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
+  const t = useTranslations("nav")
+
+  const NAV_LINKS = [
+    { href: "/marketplace", label: t("browse") },
+    { href: "/sell", label: t("sell") },
+    { href: "/contact", label: t("contact") },
+  ]
 
   useEffect(() => {
     const supabase = createClient()
-
-    // Get initial session
     supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
-
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
-
     return () => subscription.unsubscribe()
   }, [])
 
@@ -70,38 +68,39 @@ export function Header() {
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-3">
+          <LanguageSwitcher />
           {user ? (
             <>
               <Link
                 href="/dashboard"
                 className="w-8 h-8 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1a45c0] transition-colors"
-                title="My Dashboard"
+                title={t("myDashboard")}
               >
                 {user.email?.slice(0, 2).toUpperCase()}
               </Link>
               <Link href="/dashboard/create">
                 <Button variant="brand" size="sm">
                   <Plus size={16} />
-                  Post a Ride
+                  {t("postARide")}
                 </Button>
               </Link>
               <button
                 onClick={handleSignOut}
                 className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
               >
-                Sign out
+                {t("signOut")}
               </button>
             </>
           ) : (
             <>
               <Link href="/auth/login">
                 <Button variant="ghost" size="sm" className="text-gray-600">
-                  Log in
+                  {t("logIn")}
                 </Button>
               </Link>
               <Link href="/auth/signup">
                 <Button variant="brand" size="sm">
-                  Sign up free
+                  {t("signUpFree")}
                 </Button>
               </Link>
             </>
@@ -132,28 +131,29 @@ export function Header() {
             </Link>
           ))}
           <div className="pt-3 flex flex-col gap-2 border-t mt-3">
+            <LanguageSwitcher />
             {user ? (
               <>
                 <Link href="/dashboard/create" onClick={() => setMobileOpen(false)}>
                   <Button variant="brand" size="sm" className="w-full">
                     <Plus size={16} />
-                    Post a Ride
+                    {t("postARide")}
                   </Button>
                 </Link>
                 <Button variant="outline" size="sm" className="w-full" onClick={handleSignOut}>
-                  Sign out
+                  {t("signOut")}
                 </Button>
               </>
             ) : (
               <>
                 <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
                   <Button variant="outline" size="sm" className="w-full">
-                    Log in
+                    {t("logIn")}
                   </Button>
                 </Link>
                 <Link href="/auth/signup" onClick={() => setMobileOpen(false)}>
                   <Button variant="brand" size="sm" className="w-full">
-                    Sign up free
+                    {t("signUpFree")}
                   </Button>
                 </Link>
               </>
