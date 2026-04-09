@@ -109,7 +109,27 @@
   },
   "categories": {
     "title": "Cerca per categoria",
-    "subtitle": "Trova esattamente quello che cerchi in tutti i segmenti del settore delle attrazioni."
+    "subtitle": "Trova esattamente quello che cerchi in tutti i segmenti del settore delle attrazioni.",
+    "major-rides": "Grandi Attrazioni",
+    "major-rides-desc": "Montagne russe, ruote panoramiche, attrazioni emozionanti",
+    "family-rides": "Attrazioni per Famiglie",
+    "family-rides-desc": "Giostre, treni fantasma, attrazioni per famiglie",
+    "kiddie-rides": "Giostre per Bambini",
+    "kiddie-rides-desc": "Piccole giostre progettate per bambini piccoli",
+    "inflatables-soft-play": "Gonfiabili & Soft Play",
+    "inflatables-soft-play-desc": "Castelli gonfiabili, scivoli gonfiabili, attrezzature soft play",
+    "arcade-coin-machines": "Arcade & Giochi a Gettoni",
+    "arcade-coin-machines-desc": "Cabine arcade, giochi a premi, macchine a monete",
+    "go-karts-track-attractions": "Go-Kart & Piste",
+    "go-karts-track-attractions-desc": "Autoscontro, go-kart, piste elettriche",
+    "event-mobile-attractions": "Attrazioni Mobili & Eventi",
+    "event-mobile-attractions-desc": "Giostre trasportabili, trenini, attrazioni mobili per eventi",
+    "games-prize-booths": "Giochi & Bancarelle",
+    "games-prize-booths-desc": "Giochi da fiera, bancarelle, gallerie di tiro",
+    "indoor-parks-playgrounds": "Parchi Indoor & Playground",
+    "indoor-parks-playgrounds-desc": "Parchi trampolino, pareti da arrampicata, strutture indoor",
+    "equipment-parts": "Attrezzature & Ricambi",
+    "equipment-parts-desc": "Ricambi, motori, sistemi di controllo, attrezzature di manutenzione"
   },
   "howItWorks": {
     "title": "Come funziona RideDirect",

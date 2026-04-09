@@ -23,10 +23,10 @@ export async function Categories() {
             >
               <div className="text-3xl mb-3">{category.icon}</div>
               <h3 className="font-semibold text-[#0F1B3D] group-hover:text-white text-sm leading-tight mb-1.5 transition-colors">
-                {category.name}
+                {t(category.slug as any) || category.name}
               </h3>
               <p className="text-xs text-gray-400 group-hover:text-blue-200 leading-tight transition-colors line-clamp-2">
-                {category.description}
+                {t(`${category.slug}-desc` as any) || category.description}
               </p>
               <ArrowRight size={14} className="absolute top-4 right-4 text-gray-300 group-hover:text-white opacity-0 group-hover:opacity-100 transition-all" />
             </Link>

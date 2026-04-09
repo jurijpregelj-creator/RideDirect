@@ -109,7 +109,27 @@
   },
   "categories": {
     "title": "Nach Kategorie stöbern",
-    "subtitle": "Finden Sie genau das, was Sie suchen, in allen Segmenten der Vergnügungsbranche."
+    "subtitle": "Finden Sie genau das, was Sie suchen, in allen Segmenten der Vergnügungsbranche.",
+    "major-rides": "Große Fahrgeschäfte",
+    "major-rides-desc": "Achterbahnen, Riesenräder, Thrillanlagen & große Attraktionen",
+    "family-rides": "Familienfahrgeschäfte",
+    "family-rides-desc": "Karussells, Geisterbahnen, familienfreundliche Attraktionen",
+    "kiddie-rides": "Kinderfahrgeschäfte",
+    "kiddie-rides-desc": "Kleine Fahrgeschäfte für junge Kinder",
+    "inflatables-soft-play": "Hüpfburgen & Softplay",
+    "inflatables-soft-play-desc": "Hüpfburgen, aufblasbare Rutschen, Softplay-Ausstattung",
+    "arcade-coin-machines": "Arcade & Münzautomaten",
+    "arcade-coin-machines-desc": "Arcade-Automaten, Gewinnspiele, münzbetriebene Maschinen",
+    "go-karts-track-attractions": "Go-Karts & Bahnattraktionen",
+    "go-karts-track-attractions-desc": "Autoscooter, Go-Karts, Elektrobahnen",
+    "event-mobile-attractions": "Event & Mobile Attraktionen",
+    "event-mobile-attractions-desc": "Transportable Fahrgeschäfte, Straßenbahnen, mobile Attraktionen",
+    "games-prize-booths": "Spiele & Gewinnbuden",
+    "games-prize-booths-desc": "Jahrmarktspiele, Schießbuden, Gewinnbuden",
+    "indoor-parks-playgrounds": "Indoor Parks & Spielplätze",
+    "indoor-parks-playgrounds-desc": "Trampolinparks, Kletterwände, Indoor-Spielanlagen",
+    "equipment-parts": "Ausrüstung & Ersatzteile",
+    "equipment-parts-desc": "Ersatzteile, Motoren, Steuerungssysteme, Wartungsgeräte"
   },
   "howItWorks": {
     "title": "Wie RideDirect funktioniert",

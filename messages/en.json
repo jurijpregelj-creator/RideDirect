@@ -109,7 +109,27 @@
   },
   "categories": {
     "title": "Browse by Category",
-    "subtitle": "Find exactly what you're looking for across all segments of the amusement industry."
+    "subtitle": "Find exactly what you're looking for across all segments of the amusement industry.",
+    "major-rides": "Major Rides",
+    "major-rides-desc": "Roller coasters, ferris wheels, thrill rides & large attractions",
+    "family-rides": "Family Rides",
+    "family-rides-desc": "Carousels, ghost trains, family-friendly attractions",
+    "kiddie-rides": "Kiddie Rides",
+    "kiddie-rides-desc": "Small rides designed for young children",
+    "inflatables-soft-play": "Inflatables & Soft Play",
+    "inflatables-soft-play-desc": "Bouncy castles, inflatable slides, soft play equipment",
+    "arcade-coin-machines": "Arcade & Coin Machines",
+    "arcade-coin-machines-desc": "Arcade cabinets, redemption games, coin-operated machines",
+    "go-karts-track-attractions": "Go-Karts & Track Attractions",
+    "go-karts-track-attractions-desc": "Bumper cars, go-karts, dodgems, electric tracks",
+    "event-mobile-attractions": "Event & Mobile Attractions",
+    "event-mobile-attractions-desc": "Transportable rides, road trains, mobile attractions for events",
+    "games-prize-booths": "Games & Prize Booths",
+    "games-prize-booths-desc": "Fairground games, prize booths, shooting galleries",
+    "indoor-parks-playgrounds": "Indoor Parks & Playgrounds",
+    "indoor-parks-playgrounds-desc": "Trampoline parks, climbing walls, indoor play structures",
+    "equipment-parts": "Equipment & Parts",
+    "equipment-parts-desc": "Spare parts, motors, control systems, maintenance equipment"
   },
   "howItWorks": {
     "title": "How RideDirect Works",
