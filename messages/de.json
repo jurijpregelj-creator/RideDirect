@@ -95,6 +95,53 @@
     "noListingsStatus": "Keine Inserate mit diesem Status.",
     "postFirst": "Erstes Inserat aufgeben"
   },
+  "hero": {
+    "badge": "Europas führender Marktplatz für Fahrgeschäfte",
+    "title1": "Der europäische Marktplatz für",
+    "title2": "Fahrgeschäfte",
+    "title3": "& Attraktionen",
+    "subtitle": "Kaufen, verkaufen und entdecken Sie Fahrgeschäfte in ganz Europa. Verbinden Sie sich direkt mit verifizierten Verkäufern und Käufern in der Vergnügungsbranche.",
+    "viewListings": "Inserate anzeigen",
+    "sellWithUs": "Mit uns verkaufen",
+    "trust1": "Nur verifizierte B2B-Verkäufer",
+    "trust2": "29 europäische Länder",
+    "trust3": "Kostenlos inserieren & stöbern"
+  },
+  "categories": {
+    "title": "Nach Kategorie stöbern",
+    "subtitle": "Finden Sie genau das, was Sie suchen, in allen Segmenten der Vergnügungsbranche."
+  },
+  "howItWorks": {
+    "title": "Wie RideDirect funktioniert",
+    "subtitle": "Ein optimierter Prozess, der speziell für Fachleute der Vergnügungsbranche entwickelt wurde.",
+    "step": "Schritt",
+    "step1Title": "Stöbern & Entdecken",
+    "step1Desc": "Durchsuchen Sie tausende von Inseraten für Fahrgeschäfte in ganz Europa. Filtern Sie nach Kategorie, Land, Preis und Zustand.",
+    "step2Title": "Verkäufer kontaktieren",
+    "step2Desc": "Senden Sie eine direkte Anfrage an den Verkäufer. Erhalten Sie detaillierte Informationen, vereinbaren Sie Besichtigungen.",
+    "step3Title": "Deal abschließen",
+    "step3Desc": "Verhandeln Sie direkt mit verifizierten B2B-Verkäufern. Schließen Sie die Transaktion ab und arrangieren Sie die Logistik."
+  },
+  "footer": {
+    "description": "Europas spezialisierter B2B-Marktplatz für den Kauf und Verkauf von Fahrgeschäften und Attraktionen.",
+    "tagline": "Verbindet Verkäufer und Käufer in ganz Europa seit 2024.",
+    "marketplace": "Marktplatz",
+    "sellers": "Verkäufer",
+    "company": "Unternehmen",
+    "browseAll": "Alle Inserate durchsuchen",
+    "majorRides": "Große Fahrgeschäfte",
+    "familyRides": "Familienfahrgeschäfte",
+    "inflatables": "Hüpfburgen & Softplay",
+    "sellWithUs": "Mit uns verkaufen",
+    "createAccount": "Konto erstellen",
+    "sellerLogin": "Verkäufer-Login",
+    "contactUs": "Kontakt",
+    "about": "Über RideDirect",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "copyright": "Alle Rechte vorbehalten.",
+    "builtFor": "Für die europäische Vergnügungsbranche entwickelt."
+  },
   "translate": {
     "button": "Übersetzen auf {language}",
     "showOriginal": "Original anzeigen",

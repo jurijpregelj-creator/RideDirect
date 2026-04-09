@@ -95,6 +95,53 @@
     "noListingsStatus": "No listings with this status.",
     "postFirst": "Post your first ride"
   },
+  "hero": {
+    "badge": "Europe's #1 Amusement Ride Marketplace",
+    "title1": "The European Marketplace for",
+    "title2": "Amusement Rides",
+    "title3": "& Attractions",
+    "subtitle": "Buy, sell, and discover funfair equipment across Europe. Connect directly with verified sellers and buyers in the amusement industry.",
+    "viewListings": "View Listings",
+    "sellWithUs": "Sell With Us",
+    "trust1": "Verified B2B sellers only",
+    "trust2": "29 European countries",
+    "trust3": "Free to list & browse"
+  },
+  "categories": {
+    "title": "Browse by Category",
+    "subtitle": "Find exactly what you're looking for across all segments of the amusement industry."
+  },
+  "howItWorks": {
+    "title": "How RideDirect Works",
+    "subtitle": "A streamlined process designed specifically for professionals in the amusement industry.",
+    "step": "Step",
+    "step1Title": "Browse & Discover",
+    "step1Desc": "Search thousands of amusement ride listings across Europe. Filter by category, country, price, and condition to find your perfect match.",
+    "step2Title": "Contact the Seller",
+    "step2Desc": "Send a direct inquiry to the seller. Get detailed information, arrange inspections, and request additional documentation.",
+    "step3Title": "Close the Deal",
+    "step3Desc": "Negotiate directly with verified B2B sellers. Complete the transaction and arrange logistics — all within the RideDirect network."
+  },
+  "footer": {
+    "description": "Europe's dedicated B2B marketplace for buying and selling amusement rides and attractions.",
+    "tagline": "Connecting sellers and buyers across Europe since 2024.",
+    "marketplace": "Marketplace",
+    "sellers": "Sellers",
+    "company": "Company",
+    "browseAll": "Browse All Listings",
+    "majorRides": "Major Rides",
+    "familyRides": "Family Rides",
+    "inflatables": "Inflatables & Soft Play",
+    "sellWithUs": "Sell With Us",
+    "createAccount": "Create Account",
+    "sellerLogin": "Seller Login",
+    "contactUs": "Contact Us",
+    "about": "About RideDirect",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "All rights reserved.",
+    "builtFor": "Built for the European amusement industry."
+  },
   "translate": {
     "button": "Translate to {language}",
     "showOriginal": "Show original",

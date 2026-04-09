@@ -95,6 +95,53 @@
     "noListingsStatus": "Nessun annuncio con questo stato.",
     "postFirst": "Pubblica il tuo primo annuncio"
   },
+  "hero": {
+    "badge": "Il marketplace n°1 in Europa per le attrazioni",
+    "title1": "Il marketplace europeo per",
+    "title2": "Attrazioni e Giostre",
+    "title3": "",
+    "subtitle": "Compra, vendi e scopri attrezzature per parchi divertimento in tutta Europa. Connettiti direttamente con venditori e acquirenti verificati.",
+    "viewListings": "Vedi annunci",
+    "sellWithUs": "Vendi con noi",
+    "trust1": "Solo venditori B2B verificati",
+    "trust2": "29 paesi europei",
+    "trust3": "Gratuito per inserire e navigare"
+  },
+  "categories": {
+    "title": "Cerca per categoria",
+    "subtitle": "Trova esattamente quello che cerchi in tutti i segmenti del settore delle attrazioni."
+  },
+  "howItWorks": {
+    "title": "Come funziona RideDirect",
+    "subtitle": "Un processo ottimizzato progettato specificamente per i professionisti del settore.",
+    "step": "Passo",
+    "step1Title": "Cerca e Scopri",
+    "step1Desc": "Cerca migliaia di annunci di attrazioni in tutta Europa. Filtra per categoria, paese, prezzo e condizione.",
+    "step2Title": "Contatta il Venditore",
+    "step2Desc": "Invia una richiesta diretta al venditore. Ottieni informazioni dettagliate, organizza ispezioni e richiedi documentazione.",
+    "step3Title": "Chiudi l'Affare",
+    "step3Desc": "Negozia direttamente con venditori B2B verificati. Completa la transazione e organizza la logistica."
+  },
+  "footer": {
+    "description": "Il marketplace B2B europeo dedicato alla compravendita di attrazioni e giostre.",
+    "tagline": "Connette venditori e acquirenti in tutta Europa dal 2024.",
+    "marketplace": "Marketplace",
+    "sellers": "Venditori",
+    "company": "Azienda",
+    "browseAll": "Tutti gli annunci",
+    "majorRides": "Grandi attrazioni",
+    "familyRides": "Attrazioni per famiglie",
+    "inflatables": "Gonfiabili & Soft Play",
+    "sellWithUs": "Vendi con noi",
+    "createAccount": "Crea account",
+    "sellerLogin": "Accesso venditori",
+    "contactUs": "Contattaci",
+    "about": "Chi siamo",
+    "privacy": "Privacy Policy",
+    "terms": "Termini di servizio",
+    "copyright": "Tutti i diritti riservati.",
+    "builtFor": "Costruito per il settore europeo delle attrazioni."
+  },
   "translate": {
     "button": "Traduci in {language}",
     "showOriginal": "Mostra originale",
