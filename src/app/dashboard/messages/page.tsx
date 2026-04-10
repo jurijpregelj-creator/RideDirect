@@ -12,23 +12,32 @@ export default async function MessagesPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login?next=/dashboard/messages")
 
-  // Get all inquiries where user is buyer or seller
   const [{ data: asSeller }, { data: asBuyer }] = await Promise.all([
     supabase
       .from("inquiries")
-      .select("*, listings(title, id)")
-      .eq("seller_id", user.id)
-      .order("created_at", { ascending: false }),
+      .select("*, listings(title, id), replies(message, created_at, sender_id)")
+      .eq("seller_id", user.id),
     supabase
       .from("inquiries")
-      .select("*, listings(title, id)")
-      .eq("buyer_id", user.id)
-      .order("created_at", { ascending: false }),
+      .select("*, listings(title, id), replies(message, created_at, sender_id)")
+      .eq("buyer_id", user.id),
   ])
 
-  // Merge and sort by date
+  // Merge, deduplicate, attach last message info
+  const seen = new Set<string>()
   const all = [...(asBuyer || []), ...(asSeller || [])]
-    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .filter((i) => { if (seen.has(i.id)) return false; seen.add(i.id); return true })
+    .map((inquiry) => {
+      const replies = (inquiry.replies || []).sort(
+        (a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      )
+      const lastReply = replies[0]
+      const lastMessage = lastReply?.message || inquiry.message
+      const lastDate = lastReply?.created_at || inquiry.created_at
+      const lastSenderId = lastReply?.sender_id || inquiry.buyer_id
+      return { ...inquiry, lastMessage, lastDate, lastSenderId }
+    })
+    .sort((a, b) => new Date(b.lastDate).getTime() - new Date(a.lastDate).getTime())
 
   const unreadCount = all.filter(i => !i.is_read && i.seller_id === user.id).length
 
@@ -62,7 +71,8 @@ export default async function MessagesPage() {
               const isSeller = inquiry.seller_id === user.id
               const isUnread = !inquiry.is_read && isSeller
               const listing = inquiry.listings
-              const otherName = isSeller ? inquiry.buyer_name : "Seller"
+              const otherName = isSeller ? inquiry.buyer_name : (listing?.title || "Seller")
+              const isMe = inquiry.lastSenderId === user.id
 
               return (
                 <Link
@@ -79,14 +89,15 @@ export default async function MessagesPage() {
                         {otherName}
                       </span>
                       <span className="text-xs text-gray-400 shrink-0">
-                        {new Date(inquiry.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
+                        {new Date(inquiry.lastDate).toLocaleDateString("en-GB", { day: "numeric", month: "short" })}
                       </span>
                     </div>
                     <div className="text-xs text-gray-400 truncate mt-0.5">
                       {listing?.title || "—"}
                     </div>
                     <div className="text-xs text-gray-500 truncate mt-0.5">
-                      {inquiry.message}
+                      {isMe && <span className="text-gray-400">You: </span>}
+                      {inquiry.lastMessage}
                     </div>
                   </div>
                   {isUnread && (
