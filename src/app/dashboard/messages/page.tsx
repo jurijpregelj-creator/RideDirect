@@ -13,7 +13,7 @@ export default async function MessagesPage() {
   if (!user) redirect("/auth/login?next=/dashboard/messages")
 
   // Get all inquiries where user is buyer or seller
-  const [{ data: asseller }, { data: asbuyer }] = await Promise.all([
+  const [{ data: asSeller }, { data: asBuyer }] = await Promise.all([
     supabase
       .from("inquiries")
       .select("*, listings(title, id)")
@@ -27,7 +27,7 @@ export default async function MessagesPage() {
   ])
 
   // Merge and sort by date
-  const all = [...(asbuyer || []), ...(aseller || [])]
+  const all = [...(asBuyer || []), ...(asSeller || [])]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
   const unreadCount = all.filter(i => !i.is_read && i.seller_id === user.id).length
