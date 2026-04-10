@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye, Inbox, Send } from "lucide-react"
+import { Plus, Eye, MessageSquare } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -47,7 +47,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     supabase
       .from("inquiries")
       .select("id", { count: "exact", head: true })
-      .eq("seller_id", user.id)
+      .or(`seller_id.eq.${user.id},buyer_id.eq.${user.id}`)
       .eq("is_read", false),
   ])
 
@@ -94,16 +94,10 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Link href="/dashboard/sent">
+            <Link href="/dashboard/messages" className="relative">
               <Button variant="outline" size="sm">
-                <Send size={15} />
-                Sent
-              </Button>
-            </Link>
-            <Link href="/dashboard/inbox" className="relative">
-              <Button variant="outline" size="sm">
-                <Inbox size={15} />
-                Inbox
+                <MessageSquare size={15} />
+                Messages
                 {(unreadCount ?? 0) > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                     {unreadCount}
