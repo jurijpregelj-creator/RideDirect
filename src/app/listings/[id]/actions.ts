@@ -28,6 +28,8 @@ export async function submitInquiry(formData: {
     buyer_email: formData.buyerEmail,
     buyer_phone: formData.buyerPhone || null,
     message: formData.message,
+    is_read: false,
+    unread_for_buyer: false,
   })
 
   if (dbError) {

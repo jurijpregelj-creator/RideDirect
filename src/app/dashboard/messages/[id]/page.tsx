@@ -3,7 +3,6 @@ import Link from "next/link"
 import { ArrowLeft, ExternalLink } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { ReplyBox } from "@/components/inbox/reply-box"
-import { markConversationRead } from "@/app/dashboard/messages/actions"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Conversation — RideDirect" }
@@ -36,11 +35,11 @@ export default async function ConversationPage({ params }: { params: { id: strin
   const isSeller = inquiry.seller_id === user.id
   const otherName = isSeller ? inquiry.buyer_name : inquiry.listings?.title
 
-  // Mark as read for current user
+  // Mark as read directly via supabase (not server action)
   if (isSeller && !inquiry.is_read) {
-    await markConversationRead(params.id, true)
+    await supabase.from("inquiries").update({ is_read: true }).eq("id", params.id)
   } else if (!isSeller && inquiry.unread_for_buyer) {
-    await markConversationRead(params.id, false)
+    await supabase.from("inquiries").update({ unread_for_buyer: false }).eq("id", params.id)
   }
 
   // Build thread: first message + replies
