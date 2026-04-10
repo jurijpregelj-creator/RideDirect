@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Menu, X, Plus } from "lucide-react"
+import { Menu, X, Plus, Bell } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
@@ -13,6 +13,7 @@ import type { User } from "@supabase/supabase-js"
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [unread, setUnread] = useState(0)
   const router = useRouter()
   const t = useTranslations("nav")
 
@@ -24,12 +25,43 @@ export function Header() {
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+      if (user) fetchUnread(user.id, supabase)
+    })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
+      if (session?.user) fetchUnread(session.user.id, supabase)
+      else setUnread(0)
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  async function fetchUnread(userId: string, supabase: any) {
+    // Unread = inquiries where user is seller and is_read=false
+    const { count } = await supabase
+      .from("inquiries")
+      .select("id", { count: "exact", head: true })
+      .eq("seller_id", userId)
+      .eq("is_read", false)
+    setUnread(count ?? 0)
+
+    // Subscribe to realtime changes
+    supabase
+      .channel("unread-inquiries")
+      .on("postgres_changes", {
+        event: "*",
+        schema: "public",
+        table: "inquiries",
+        filter: `seller_id=eq.${userId}`,
+      }, () => fetchUnread(userId, supabase))
+      .on("postgres_changes", {
+        event: "INSERT",
+        schema: "public",
+        table: "replies",
+      }, () => fetchUnread(userId, supabase))
+      .subscribe()
+  }
 
   async function handleSignOut() {
     const supabase = createClient()
@@ -71,6 +103,15 @@ export function Header() {
           <LanguageSwitcher />
           {user ? (
             <>
+              {/* Notification bell */}
+              <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500 hover:text-[#1B4FD8] transition-colors">
+                <Bell size={20} />
+                {unread > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                )}
+              </Link>
               <Link
                 href="/dashboard"
                 className="w-8 h-8 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1a45c0] transition-colors"
@@ -108,13 +149,25 @@ export function Header() {
         </div>
 
         {/* Mobile menu toggle */}
-        <button
-          className="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          {user && (
+            <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500">
+              <Bell size={20} />
+              {unread > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
+            </Link>
+          )}
+          <button
+            className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Nav */}
