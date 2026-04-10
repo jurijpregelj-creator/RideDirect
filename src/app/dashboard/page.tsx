@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
+import { AvatarUpload } from "@/components/profile/avatar-upload"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "My Dashboard" }
@@ -76,9 +77,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
         {/* Profile card */}
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6 flex items-center gap-5">
-          <div className="w-16 h-16 rounded-full bg-[#1B4FD8] text-white font-bold text-xl flex items-center justify-center shrink-0">
-            {initials}
-          </div>
+          <AvatarUpload userId={user.id} currentUrl={profile?.avatar_url} initials={initials} />
           <div className="flex-1 min-w-0">
             <div className="font-bold text-[#0F1B3D] text-xl">{profile?.full_name || "—"}</div>
             <div className="text-gray-400 text-sm">{user.email}</div>

@@ -8,8 +8,21 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error && data.user) {
+      // Save avatar_url from OAuth provider if available
+      const avatarUrl =
+        data.user.user_metadata?.avatar_url ||
+        data.user.user_metadata?.picture ||
+        null
+
+      if (avatarUrl) {
+        await supabase
+          .from("profiles")
+          .update({ avatar_url: avatarUrl })
+          .eq("id", data.user.id)
+      }
+
       return NextResponse.redirect(`${origin}${next}`)
     }
   }

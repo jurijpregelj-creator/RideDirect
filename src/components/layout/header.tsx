@@ -14,6 +14,7 @@ export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [unread, setUnread] = useState(0)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const router = useRouter()
   const t = useTranslations("nav")
 
@@ -27,7 +28,11 @@ export function Header() {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
-      if (user) fetchUnread(user.id, supabase)
+      if (user) {
+        fetchUnread(user.id, supabase)
+        supabase.from("profiles").select("avatar_url").eq("id", user.id).single()
+          .then(({ data }) => setAvatarUrl(data?.avatar_url || null))
+      }
     })
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
@@ -120,10 +125,14 @@ export function Header() {
               </Link>
               <Link
                 href="/dashboard"
-                className="w-8 h-8 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1a45c0] transition-colors"
+                className="w-8 h-8 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1a45c0] transition-colors overflow-hidden"
                 title={t("myDashboard")}
               >
-                {user.email?.slice(0, 2).toUpperCase()}
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  user.email?.slice(0, 2).toUpperCase()
+                )}
               </Link>
               <Link href="/dashboard/create">
                 <Button variant="brand" size="sm">
