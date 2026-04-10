@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye } from "lucide-react"
+import { Plus, Eye, Inbox } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -37,13 +37,18 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const statusFilter = searchParams.status || "all"
 
-  const [{ data: profile }, { data: allListings }] = await Promise.all([
+  const [{ data: profile }, { data: allListings }, { count: unreadCount }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase
       .from("listings")
       .select("id, title, status, price, currency, category, country, created_at, views")
       .eq("seller_id", user.id)
       .order("created_at", { ascending: false }),
+    supabase
+      .from("inquiries")
+      .select("id", { count: "exact", head: true })
+      .eq("seller_id", user.id)
+      .eq("is_read", false),
   ])
 
   const counts = (allListings || []).reduce((acc: Record<string, number>, l) => {
@@ -88,12 +93,25 @@ export default async function DashboardPage({ searchParams }: PageProps) {
               </span>
             </div>
           </div>
-          <Link href="/dashboard/create">
-            <Button variant="brand" size="sm">
-              <Plus size={15} />
-              {tDash("postARide")}
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/dashboard/inbox" className="relative">
+              <Button variant="outline" size="sm">
+                <Inbox size={15} />
+                Inbox
+                {(unreadCount ?? 0) > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </Button>
+            </Link>
+            <Link href="/dashboard/create">
+              <Button variant="brand" size="sm">
+                <Plus size={15} />
+                {tDash("postARide")}
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Stats — clickable filters */}

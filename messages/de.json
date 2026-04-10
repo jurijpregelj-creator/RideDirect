@@ -162,6 +162,13 @@
     "copyright": "Alle Rechte vorbehalten.",
     "builtFor": "Für die europäische Vergnügungsbranche entwickelt."
   },
+  "inbox": {
+    "title": "Posteingang",
+    "unread": "{count} ungelesen",
+    "empty": "Noch keine Anfragen. Wenn Käufer Sie kontaktieren, erscheinen die Nachrichten hier.",
+    "markRead": "Als gelesen markieren",
+    "reply": "Antworten"
+  },
   "translate": {
     "button": "Übersetzen auf {language}",
     "showOriginal": "Original anzeigen",

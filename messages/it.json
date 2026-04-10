@@ -162,6 +162,13 @@
     "copyright": "Tutti i diritti riservati.",
     "builtFor": "Costruito per il settore europeo delle attrazioni."
   },
+  "inbox": {
+    "title": "Posta in arrivo",
+    "unread": "{count} non letti",
+    "empty": "Nessuna richiesta ancora. Quando gli acquirenti ti contattano, i messaggi appariranno qui.",
+    "markRead": "Segna come letto",
+    "reply": "Rispondi"
+  },
   "translate": {
     "button": "Traduci in {language}",
     "showOriginal": "Mostra originale",

@@ -162,6 +162,13 @@
     "copyright": "All rights reserved.",
     "builtFor": "Built for the European amusement industry."
   },
+  "inbox": {
+    "title": "Inbox",
+    "unread": "{count} unread",
+    "empty": "No inquiries yet. When buyers contact you, messages will appear here.",
+    "markRead": "Mark as read",
+    "reply": "Reply"
+  },
   "translate": {
     "button": "Translate to {language}",
     "showOriginal": "Show original",
