@@ -80,6 +80,14 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
       : []),
   ]
 
+  const supabase2 = createClient()
+  const { data: { user: currentUser } } = await supabase2.auth.getUser()
+  let currentProfile = null
+  if (currentUser) {
+    const { data } = await supabase2.from("profiles").select("full_name, email").eq("id", currentUser.id).single()
+    currentProfile = data
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -178,7 +186,12 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
             </div>
 
             {/* Inquiry form */}
-            <InquiryForm listingId={listing.id} sellerId={listing.seller_id} listingTitle={listing.title} />
+            <InquiryForm
+              listingId={listing.id}
+              sellerId={listing.seller_id}
+              listingTitle={listing.title}
+              loggedInUser={currentProfile ? { name: currentProfile.full_name, email: currentProfile.email || currentUser?.email || "" } : null}
+            />
           </div>
         </div>
       </div>
