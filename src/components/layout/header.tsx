@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Menu, X, Plus, Bell } from "lucide-react"
+import { Menu, X, Plus, MessageCircle } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/client"
@@ -111,7 +111,7 @@ export function Header() {
             <>
               {/* Notification bell */}
               <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500 hover:text-[#1B4FD8] transition-colors">
-                <Bell size={20} />
+                <MessageCircle size={20} />
                 {unread > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                     {unread > 9 ? "9+" : unread}
@@ -158,7 +158,7 @@ export function Header() {
         <div className="md:hidden flex items-center gap-2">
           {user && (
             <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500">
-              <Bell size={20} />
+              <MessageCircle size={20} />
               {unread > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
                   {unread > 9 ? "9+" : unread}
