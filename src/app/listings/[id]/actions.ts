@@ -16,10 +16,14 @@ export async function submitInquiry(formData: {
 }) {
   const supabase = createClient()
 
+  // Get logged in user if any
+  const { data: { user } } = await supabase.auth.getUser()
+
   // Save inquiry to DB
   const { error: dbError } = await supabase.from("inquiries").insert({
     listing_id: formData.listingId,
     seller_id: formData.sellerId,
+    buyer_id: user?.id || null,
     buyer_name: formData.buyerName,
     buyer_email: formData.buyerEmail,
     buyer_phone: formData.buyerPhone || null,

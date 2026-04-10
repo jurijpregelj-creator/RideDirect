@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye, Inbox } from "lucide-react"
+import { Plus, Eye, Inbox, Send } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -94,6 +94,12 @@ export default async function DashboardPage({ searchParams }: PageProps) {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <Link href="/dashboard/sent">
+              <Button variant="outline" size="sm">
+                <Send size={15} />
+                Sent
+              </Button>
+            </Link>
             <Link href="/dashboard/inbox" className="relative">
               <Button variant="outline" size="sm">
                 <Inbox size={15} />
