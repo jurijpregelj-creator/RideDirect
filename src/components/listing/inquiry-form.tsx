@@ -108,7 +108,8 @@ export function InquiryForm({ listingId, sellerId, listingTitle, loggedInUser }:
           <Textarea
             id="message"
             name="message"
-            placeholder={`Hi, I'm interested in your listing "${listingTitle.slice(0, 40)}..."`}
+            placeholder={!loggedInUser ? `Hi, I'm interested in your listing "${listingTitle.slice(0, 40)}..."` : undefined}
+            defaultValue={loggedInUser ? `Hi, I'm interested in your listing "${listingTitle.slice(0, 40)}..."` : undefined}
             required
             rows={4}
             className={loggedInUser ? "" : "mt-1.5"}
