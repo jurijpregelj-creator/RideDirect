@@ -14,7 +14,6 @@ export async function sendReply(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !message.trim()) return { success: false }
 
-  // Save reply
   const { error } = await supabase.from("replies").insert({
     inquiry_id: inquiryId,
     sender_id: user.id,
@@ -22,7 +21,6 @@ export async function sendReply(formData: FormData) {
   })
   if (error) return { success: false }
 
-  // Get inquiry + participants
   const { data: inquiry } = await supabase
     .from("inquiries")
     .select("*, listings(title, id)")
@@ -38,26 +36,30 @@ export async function sendReply(formData: FormData) {
 
   const listingTitle = inquiry.listings?.title || "a listing"
   const senderName = senderProfile?.full_name || "Someone"
-
-  // Notify the OTHER participant
   const isSeller = user.id === inquiry.seller_id
-  let recipientEmail: string | null = null
 
+  // Set unread flags: sender's flag = false, recipient's flag = true
   if (isSeller) {
-    // Seller replied → notify buyer
-    const { data: buyer } = await supabase
-      .from("profiles")
-      .select("email")
-      .eq("id", inquiry.buyer_id)
-      .single()
+    // Seller sent → buyer has unread, seller is read
+    await supabase.from("inquiries").update({
+      is_read: true,
+      unread_for_buyer: true,
+    }).eq("id", inquiryId)
+  } else {
+    // Buyer sent → seller has unread, buyer is read
+    await supabase.from("inquiries").update({
+      is_read: false,
+      unread_for_buyer: false,
+    }).eq("id", inquiryId)
+  }
+
+  // Send email to other participant
+  let recipientEmail: string | null = null
+  if (isSeller) {
+    const { data: buyer } = await supabase.from("profiles").select("email").eq("id", inquiry.buyer_id).single()
     recipientEmail = buyer?.email || inquiry.buyer_email
   } else {
-    // Buyer replied → notify seller
-    const { data: seller } = await supabase
-      .from("profiles")
-      .select("email")
-      .eq("id", inquiry.seller_id)
-      .single()
+    const { data: seller } = await supabase.from("profiles").select("email").eq("id", inquiry.seller_id).single()
     recipientEmail = seller?.email || null
   }
 
@@ -82,10 +84,18 @@ export async function sendReply(formData: FormData) {
     })
   }
 
-  // Mark as read for sender, unread for recipient
-  await supabase.from("inquiries").update({ is_read: isSeller }).eq("id", inquiryId)
-
   revalidatePath(`/dashboard/messages/${inquiryId}`)
   revalidatePath("/dashboard/messages")
   return { success: true }
+}
+
+export async function markConversationRead(inquiryId: string, isSeller: boolean) {
+  const supabase = createClient()
+  if (isSeller) {
+    await supabase.from("inquiries").update({ is_read: true }).eq("id", inquiryId)
+  } else {
+    await supabase.from("inquiries").update({ unread_for_buyer: false }).eq("id", inquiryId)
+  }
+  revalidatePath(`/dashboard/messages/${inquiryId}`)
+  revalidatePath("/dashboard/messages")
 }

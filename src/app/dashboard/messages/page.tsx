@@ -23,7 +23,6 @@ export default async function MessagesPage() {
       .eq("buyer_id", user.id),
   ])
 
-  // Merge, deduplicate, attach last message info
   const seen = new Set<string>()
   const all = [...(asBuyer || []), ...(asSeller || [])]
     .filter((i) => { if (seen.has(i.id)) return false; seen.add(i.id); return true })
@@ -35,11 +34,13 @@ export default async function MessagesPage() {
       const lastMessage = lastReply?.message || inquiry.message
       const lastDate = lastReply?.created_at || inquiry.created_at
       const lastSenderId = lastReply?.sender_id || inquiry.buyer_id
-      return { ...inquiry, lastMessage, lastDate, lastSenderId }
+      const isSeller = inquiry.seller_id === user.id
+      const isUnread = isSeller ? !inquiry.is_read : inquiry.unread_for_buyer
+      return { ...inquiry, lastMessage, lastDate, lastSenderId, isSeller, isUnread }
     })
     .sort((a, b) => new Date(b.lastDate).getTime() - new Date(a.lastDate).getTime())
 
-  const unreadCount = all.filter(i => !i.is_read && i.seller_id === user.id).length
+  const unreadCount = all.filter(i => i.isUnread).length
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -68,24 +69,22 @@ export default async function MessagesPage() {
         ) : (
           <div className="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-50 overflow-hidden">
             {all.map((inquiry) => {
-              const isSeller = inquiry.seller_id === user.id
-              const isUnread = !inquiry.is_read && isSeller
               const listing = inquiry.listings
-              const otherName = isSeller ? inquiry.buyer_name : (listing?.title || "Seller")
+              const otherName = inquiry.isSeller ? inquiry.buyer_name : (listing?.title || "Seller")
               const isMe = inquiry.lastSenderId === user.id
 
               return (
                 <Link
                   key={inquiry.id}
                   href={`/dashboard/messages/${inquiry.id}`}
-                  className={`flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors ${isUnread ? "bg-blue-50/40" : ""}`}
+                  className={`flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors ${inquiry.isUnread ? "bg-blue-50/50" : ""}`}
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-semibold text-sm ${isUnread ? "bg-[#1B4FD8] text-white" : "bg-gray-100 text-gray-500"}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-semibold text-sm ${inquiry.isUnread ? "bg-[#1B4FD8] text-white" : "bg-gray-100 text-gray-500"}`}>
                     {otherName.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <span className={`font-semibold text-sm ${isUnread ? "text-[#0F1B3D]" : "text-gray-700"}`}>
+                      <span className={`text-sm ${inquiry.isUnread ? "font-bold text-[#0F1B3D]" : "font-medium text-gray-700"}`}>
                         {otherName}
                       </span>
                       <span className="text-xs text-gray-400 shrink-0">
@@ -95,13 +94,13 @@ export default async function MessagesPage() {
                     <div className="text-xs text-gray-400 truncate mt-0.5">
                       {listing?.title || "—"}
                     </div>
-                    <div className="text-xs text-gray-500 truncate mt-0.5">
-                      {isMe && <span className="text-gray-400">You: </span>}
+                    <div className={`text-xs truncate mt-0.5 ${inquiry.isUnread ? "text-gray-800 font-medium" : "text-gray-400"}`}>
+                      {isMe && <span className="text-gray-400 font-normal">You: </span>}
                       {inquiry.lastMessage}
                     </div>
                   </div>
-                  {isUnread && (
-                    <div className="w-2 h-2 rounded-full bg-[#1B4FD8] shrink-0" />
+                  {inquiry.isUnread && (
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#1B4FD8] shrink-0" />
                   )}
                   <ChevronRight size={16} className="text-gray-300 shrink-0" />
                 </Link>

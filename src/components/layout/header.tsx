@@ -38,13 +38,19 @@ export function Header() {
   }, [])
 
   async function fetchUnread(userId: string, supabase: any) {
-    // Unread = inquiries where user is seller and is_read=false
-    const { count } = await supabase
+    // Unread as seller
+    const { count: sellerUnread } = await supabase
       .from("inquiries")
       .select("id", { count: "exact", head: true })
       .eq("seller_id", userId)
       .eq("is_read", false)
-    setUnread(count ?? 0)
+    // Unread as buyer
+    const { count: buyerUnread } = await supabase
+      .from("inquiries")
+      .select("id", { count: "exact", head: true })
+      .eq("buyer_id", userId)
+      .eq("unread_for_buyer", true)
+    setUnread((sellerUnread ?? 0) + (buyerUnread ?? 0))
 
     // Subscribe to realtime changes
     supabase
