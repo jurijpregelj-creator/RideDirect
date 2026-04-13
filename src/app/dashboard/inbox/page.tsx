@@ -33,7 +33,7 @@ export default async function InboxPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-[#0F1B3D]">{t("title")}</h1>
+            <h1 className="text-2xl font-bold text-[#0D2A5E]">{t("title")}</h1>
             {unread > 0 && (
               <p className="text-sm text-gray-400">{t("unread", { count: unread })}</p>
             )}

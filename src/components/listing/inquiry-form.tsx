@@ -63,17 +63,17 @@ export function InquiryForm({ listingId, sellerId, listingTitle, loggedInUser }:
   return (
     <div className="bg-white rounded-xl border border-gray-100 p-6">
       <div className="flex items-center gap-2 mb-5">
-        <MessageSquare size={18} className="text-[#1B4FD8]" />
+        <MessageSquare size={18} className="text-[#1E88E5]" />
         <h3 className="font-semibold text-gray-800">{t("contactSeller")}</h3>
       </div>
 
       {loggedInUser && (
         <div className="flex items-center gap-2 mb-4 bg-blue-50 rounded-lg px-3 py-2">
-          <div className="w-7 h-7 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center shrink-0">
+          <div className="w-7 h-7 rounded-full bg-[#1E88E5] text-white text-xs font-bold flex items-center justify-center shrink-0">
             {loggedInUser.name?.charAt(0).toUpperCase() || "?"}
           </div>
           <div>
-            <div className="text-sm font-medium text-[#0F1B3D]">{loggedInUser.name}</div>
+            <div className="text-sm font-medium text-[#0D2A5E]">{loggedInUser.name}</div>
             <div className="text-xs text-gray-400">{loggedInUser.email}</div>
           </div>
         </div>

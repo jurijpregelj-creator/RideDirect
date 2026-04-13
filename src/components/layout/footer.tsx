@@ -26,12 +26,12 @@ export async function Footer() {
   }
 
   return (
-    <footer className="bg-[#0F1B3D] text-white">
+    <footer className="bg-[#0D2A5E] text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1B4FD8] text-white font-bold text-sm">AR</div>
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1E88E5] text-white font-bold text-sm">AR</div>
               <div className="flex flex-col leading-none">
                 <span className="font-bold text-white text-base tracking-tight">RideDirect</span>
                 <span className="text-[10px] text-blue-300 tracking-widest uppercase">.eu</span>

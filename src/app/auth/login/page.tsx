@@ -67,12 +67,12 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-[#1B4FD8] text-white font-bold flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#1E88E5] text-white font-bold flex items-center justify-center">
               AR
             </div>
-            <span className="font-bold text-[#0F1B3D] text-xl">RideDirect<span className="text-gray-400">.eu</span></span>
+            <span className="font-bold text-[#0D2A5E] text-xl">RideDirect<span className="text-gray-400">.eu</span></span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0F1B3D] mt-6 mb-1">Welcome back</h1>
+          <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">Welcome back</h1>
           <p className="text-gray-500 text-sm">Sign in to your account</p>
         </div>
 
@@ -147,7 +147,7 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <Label htmlFor="password">Password</Label>
-                <Link href="/auth/forgot-password" className="text-xs text-[#1B4FD8] hover:underline">
+                <Link href="/auth/forgot-password" className="text-xs text-[#1E88E5] hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -174,7 +174,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Don&apos;t have an account?{" "}
-          <Link href="/auth/signup" className="text-[#1B4FD8] hover:underline font-medium">
+          <Link href="/auth/signup" className="text-[#1E88E5] hover:underline font-medium">
             Sign up free
           </Link>
         </p>

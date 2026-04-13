@@ -96,14 +96,14 @@ export function MessageToaster() {
           key={toast.id}
           className="bg-white border border-gray-100 rounded-xl shadow-lg p-4 flex items-start gap-3 pointer-events-auto"
         >
-          <div className="w-9 h-9 rounded-full bg-[#1B4FD8] text-white flex items-center justify-center shrink-0">
+          <div className="w-9 h-9 rounded-full bg-[#1E88E5] text-white flex items-center justify-center shrink-0">
             <MessageSquare size={16} />
           </div>
           <button
             className="flex-1 text-left min-w-0"
             onClick={() => { removeToast(toast.id); router.push(toast.href) }}
           >
-            <div className="font-semibold text-sm text-[#0F1B3D]">{toast.title}</div>
+            <div className="font-semibold text-sm text-[#0D2A5E]">{toast.title}</div>
             <div className="text-xs text-gray-500 truncate mt-0.5">{toast.body}</div>
           </button>
           <button onClick={() => removeToast(toast.id)} className="text-gray-300 hover:text-gray-500 transition-colors shrink-0">

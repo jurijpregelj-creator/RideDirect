@@ -20,7 +20,7 @@ export default async function AdminUsersPage() {
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#0F1B3D]">Users</h1>
+        <h1 className="text-2xl font-bold text-[#0D2A5E]">Users</h1>
         <p className="text-sm text-gray-400 mt-1">{users?.length ?? 0} registered users</p>
       </div>
 
@@ -42,7 +42,7 @@ export default async function AdminUsersPage() {
                 <tr key={user.id} className="hover:bg-blue-50/40 cursor-pointer">
                   <td className="px-4 py-3">
                     <Link href={`/admin/users/${user.id}`} className="block">
-                      <div className="font-medium text-[#0F1B3D] hover:text-[#1B4FD8]">{user.full_name || "—"}</div>
+                      <div className="font-medium text-[#0D2A5E] hover:text-[#1E88E5]">{user.full_name || "—"}</div>
                       <div className="text-xs text-gray-400">{user.email}</div>
                     </Link>
                   </td>

@@ -14,7 +14,7 @@ export function FeaturedListings() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#0F1B3D] mb-2">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#0D2A5E] mb-2">
               Featured Listings
             </h2>
             <p className="text-gray-500">
@@ -66,7 +66,7 @@ export function FeaturedListings() {
                 <div className="flex items-center gap-2 mb-2">
                   <Badge variant="blue" className="text-xs">{listing.category}</Badge>
                 </div>
-                <h3 className="font-semibold text-[#0F1B3D] text-sm leading-tight mb-3 group-hover:text-[#1B4FD8] transition-colors line-clamp-2">
+                <h3 className="font-semibold text-[#0D2A5E] text-sm leading-tight mb-3 group-hover:text-[#1E88E5] transition-colors line-clamp-2">
                   {listing.title}
                 </h3>
                 <div className="flex items-center gap-2 text-xs text-gray-400 mb-3">
@@ -82,7 +82,7 @@ export function FeaturedListings() {
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-lg font-bold text-[#1B4FD8]">
+                    <div className="text-lg font-bold text-[#1E88E5]">
                       {formatPrice(listing.price, listing.currency)}
                     </div>
                     <div className="text-xs text-gray-400">

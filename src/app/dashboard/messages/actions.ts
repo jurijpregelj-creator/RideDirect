@@ -71,14 +71,14 @@ export async function sendReply(formData: FormData) {
       subject: `New message from ${senderName}: ${listingTitle}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0F1B3D;">New message from ${senderName}</h2>
+          <h2 style="color: #0D2A5E;">New message from ${senderName}</h2>
           <p style="color: #666;">Regarding: <strong>${listingTitle}</strong></p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
           <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
             <p style="margin: 0; color: #374151; white-space: pre-line;">${message}</p>
           </div>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-          <a href="https://ridedirect.eu/dashboard/messages/${inquiryId}" style="display:inline-block;background:#1B4FD8;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View conversation</a>
+          <a href="https://ridedirect.eu/dashboard/messages/${inquiryId}" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View conversation</a>
         </div>
       `,
     })

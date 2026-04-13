@@ -52,7 +52,7 @@ export default function ContactPage() {
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-12 text-center">
-          <h1 className="text-3xl lg:text-4xl font-bold text-[#0F1B3D] mb-3">
+          <h1 className="text-3xl lg:text-4xl font-bold text-[#0D2A5E] mb-3">
             Contact Us
           </h1>
           <p className="text-gray-500 text-lg max-w-xl mx-auto">
@@ -66,7 +66,7 @@ export default function ContactPage() {
           {/* Contact info */}
           <div className="space-y-6">
             <div>
-              <h2 className="font-semibold text-[#0F1B3D] text-lg mb-1">Get in Touch</h2>
+              <h2 className="font-semibold text-[#0D2A5E] text-lg mb-1">Get in Touch</h2>
               <p className="text-sm text-gray-500">
                 Whether you&apos;re buying, selling, or just exploring — our team is ready to help.
               </p>
@@ -75,17 +75,17 @@ export default function ContactPage() {
             {CONTACT_INFO.map((item) => (
               <div key={item.label} className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-                  <item.icon size={18} className="text-[#1B4FD8]" />
+                  <item.icon size={18} className="text-[#1E88E5]" />
                 </div>
                 <div>
                   <div className="text-xs text-gray-400 mb-0.5">{item.label}</div>
-                  <div className="font-medium text-[#0F1B3D] text-sm">{item.value}</div>
+                  <div className="font-medium text-[#0D2A5E] text-sm">{item.value}</div>
                   <div className="text-xs text-gray-400">{item.description}</div>
                 </div>
               </div>
             ))}
 
-            <div className="bg-[#0F1B3D] rounded-xl p-5 text-white">
+            <div className="bg-[#0D2A5E] rounded-xl p-5 text-white">
               <h3 className="font-semibold mb-2 text-sm">For urgent matters</h3>
               <p className="text-blue-200 text-xs leading-relaxed">
                 If you have a time-sensitive inquiry about an active listing or a verified seller issue, please mark your subject as &quot;URGENT&quot; and we&apos;ll prioritise your message.
@@ -98,14 +98,14 @@ export default function ContactPage() {
             {submitted ? (
               <div className="bg-white rounded-xl border border-gray-100 p-10 text-center">
                 <CheckCircle2 size={48} className="text-green-500 mx-auto mb-4" />
-                <h3 className="text-xl font-bold text-[#0F1B3D] mb-2">Message Sent!</h3>
+                <h3 className="text-xl font-bold text-[#0D2A5E] mb-2">Message Sent!</h3>
                 <p className="text-gray-500">
                   Thank you for reaching out. We&apos;ll get back to you within 1 business day.
                 </p>
               </div>
             ) : (
               <div className="bg-white rounded-xl border border-gray-100 p-6">
-                <h2 className="font-semibold text-[#0F1B3D] text-lg mb-6">Send a Message</h2>
+                <h2 className="font-semibold text-[#0D2A5E] text-lg mb-6">Send a Message</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>

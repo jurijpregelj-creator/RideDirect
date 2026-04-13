@@ -72,7 +72,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
               onClick={() => setActiveIndex(i)}
               className={`relative shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
                 i === activeIndex
-                  ? "border-[#1B4FD8] opacity-100"
+                  ? "border-[#1E88E5] opacity-100"
                   : "border-transparent opacity-60 hover:opacity-90"
               }`}
             >

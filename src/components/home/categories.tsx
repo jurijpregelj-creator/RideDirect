@@ -10,7 +10,7 @@ export async function Categories() {
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#0F1B3D] mb-4">{t("title")}</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#0D2A5E] mb-4">{t("title")}</h2>
           <p className="text-gray-500 text-lg max-w-xl mx-auto">{t("subtitle")}</p>
         </div>
 
@@ -19,10 +19,10 @@ export async function Categories() {
             <Link
               key={category.slug}
               href={`/marketplace?category=${category.slug}`}
-              className="group relative bg-gray-50 hover:bg-[#1B4FD8] rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 border border-gray-100 hover:border-[#1B4FD8]"
+              className="group relative bg-gray-50 hover:bg-[#1E88E5] rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 border border-gray-100 hover:border-[#1E88E5]"
             >
               <div className="text-3xl mb-3">{category.icon}</div>
-              <h3 className="font-semibold text-[#0F1B3D] group-hover:text-white text-sm leading-tight mb-1.5 transition-colors">
+              <h3 className="font-semibold text-[#0D2A5E] group-hover:text-white text-sm leading-tight mb-1.5 transition-colors">
                 {t(category.slug as any) || category.name}
               </h3>
               <p className="text-xs text-gray-400 group-hover:text-blue-200 leading-tight transition-colors line-clamp-2">

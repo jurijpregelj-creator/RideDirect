@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Poppins } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
 import "./globals.css"
@@ -7,7 +7,12 @@ import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { MessageToaster } from "@/components/notifications/message-toaster"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-poppins",
+})
 
 export const metadata: Metadata = {
   title: {
@@ -17,16 +22,9 @@ export const metadata: Metadata = {
   description:
     "Europe's dedicated B2B marketplace for buying and selling amusement rides, funfair equipment, and attractions. Connect with verified sellers across 29 European countries.",
   keywords: [
-    "amusement rides",
-    "funfair equipment",
-    "buy amusement rides",
-    "sell amusement rides",
-    "Europe",
-    "B2B marketplace",
-    "roller coasters",
-    "carousel",
-    "bumper cars",
-    "inflatables",
+    "amusement rides", "funfair equipment", "buy amusement rides",
+    "sell amusement rides", "Europe", "B2B marketplace",
+    "roller coasters", "carousel", "bumper cars", "inflatables",
   ],
   openGraph: {
     type: "website",
@@ -34,20 +32,15 @@ export const metadata: Metadata = {
     url: "https://ridedirect.eu",
     siteName: "RideDirect.eu",
     title: "RideDirect.eu — European Amusement Ride Marketplace",
-    description:
-      "Buy, sell, and discover funfair equipment across Europe.",
+    description: "Buy, sell, and discover funfair equipment across Europe.",
   },
 }
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages()
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <NextIntlClientProvider messages={messages}>
           <div className="flex min-h-screen flex-col">
             <Header />

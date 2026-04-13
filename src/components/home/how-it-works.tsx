@@ -5,8 +5,8 @@ export async function HowItWorks() {
   const t = await getTranslations("howItWorks")
 
   const STEPS = [
-    { icon: Search, step: "01", titleKey: "step1Title", descKey: "step1Desc", color: "bg-blue-50 text-[#1B4FD8]" },
-    { icon: MessageSquare, step: "02", titleKey: "step2Title", descKey: "step2Desc", color: "bg-orange-50 text-[#F97316]" },
+    { icon: Search, step: "01", titleKey: "step1Title", descKey: "step1Desc", color: "bg-blue-50 text-[#1E88E5]" },
+    { icon: MessageSquare, step: "02", titleKey: "step2Title", descKey: "step2Desc", color: "bg-orange-50 text-[#FF6D00]" },
     { icon: Handshake, step: "03", titleKey: "step3Title", descKey: "step3Desc", color: "bg-green-50 text-green-600" },
   ]
 
@@ -14,7 +14,7 @@ export async function HowItWorks() {
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-14">
-          <h2 className="text-3xl lg:text-4xl font-bold text-[#0F1B3D] mb-4">{t("title")}</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-[#0D2A5E] mb-4">{t("title")}</h2>
           <p className="text-gray-500 text-lg max-w-xl mx-auto">{t("subtitle")}</p>
         </div>
 
@@ -31,7 +31,7 @@ export async function HowItWorks() {
                 <div className="text-xs font-bold text-gray-300 tracking-widest uppercase mb-2">
                   {t("step")} {item.step}
                 </div>
-                <h3 className="text-lg font-bold text-[#0F1B3D] mb-3">{t(item.titleKey as any)}</h3>
+                <h3 className="text-lg font-bold text-[#0D2A5E] mb-3">{t(item.titleKey as any)}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{t(item.descKey as any)}</p>
               </div>
             </div>

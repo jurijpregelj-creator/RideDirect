@@ -28,7 +28,7 @@ export default async function SentPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-[#0F1B3D]">Sent Inquiries</h1>
+            <h1 className="text-2xl font-bold text-[#0D2A5E]">Sent Inquiries</h1>
             {(inquiries?.length ?? 0) > 0 && (
               <p className="text-sm text-gray-400">{inquiries?.length} sent</p>
             )}
@@ -39,7 +39,7 @@ export default async function SentPage() {
           <div className="bg-white rounded-2xl border border-gray-100 py-20 text-center">
             <Send size={40} className="text-gray-200 mx-auto mb-4" />
             <p className="text-gray-400">You haven't sent any inquiries yet.</p>
-            <Link href="/marketplace" className="inline-block mt-4 text-sm text-[#1B4FD8] hover:underline">
+            <Link href="/marketplace" className="inline-block mt-4 text-sm text-[#1E88E5] hover:underline">
               Browse listings
             </Link>
           </div>

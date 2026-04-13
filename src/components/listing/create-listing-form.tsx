@@ -157,7 +157,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Basic info */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-semibold text-[#0F1B3D] text-lg">Basic Information</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">Basic Information</h2>
 
         <div>
           <Label htmlFor="title">Listing Title *</Label>
@@ -218,7 +218,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Pricing */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-semibold text-[#0F1B3D] text-lg">Pricing</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">Pricing</h2>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -252,7 +252,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Ride details */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-semibold text-[#0F1B3D] text-lg">Ride Details</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">Ride Details</h2>
 
         <div>
           <Label>Condition *</Label>
@@ -295,7 +295,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Images */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
-        <h2 className="font-semibold text-[#0F1B3D] text-lg">Photos</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">Photos</h2>
         <p className="text-sm text-gray-500">
           Upload up to 8 photos. High-quality images significantly increase buyer interest.
         </p>
@@ -329,7 +329,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1B4FD8] flex flex-col items-center justify-center text-gray-400 hover:text-[#1B4FD8] transition-colors"
+                className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors"
               >
                 <Upload size={18} />
                 <span className="text-xs mt-1">Add</span>
@@ -343,7 +343,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full h-32 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1B4FD8] flex flex-col items-center justify-center text-gray-400 hover:text-[#1B4FD8] transition-colors gap-2"
+            className="w-full h-32 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2"
           >
             <Upload size={24} />
             <span className="text-sm font-medium">Click to upload photos</span>

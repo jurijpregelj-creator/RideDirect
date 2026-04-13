@@ -39,7 +39,7 @@ export function LanguageSwitcher() {
           disabled={isPending}
           className={`text-xs px-1.5 py-0.5 rounded transition-colors ${
             current === l.code
-              ? "bg-blue-100 text-[#1B4FD8] font-bold"
+              ? "bg-blue-100 text-[#1E88E5] font-bold"
               : "text-gray-400 hover:text-gray-700"
           }`}
           title={l.label}

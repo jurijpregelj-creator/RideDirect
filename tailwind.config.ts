@@ -13,11 +13,13 @@ const config = {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
+      screens: { "2xl": "1400px" },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "Inter", "sans-serif"],
+        heading: ["var(--font-poppins)", "Poppins", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -53,9 +55,9 @@ const config = {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
-          blue: "#1B4FD8",
-          orange: "#F97316",
-          dark: "#0F1B3D",
+          blue: "#1E88E5",
+          orange: "#FF6D00",
+          dark: "#0D2A5E",
         },
       },
       borderRadius: {

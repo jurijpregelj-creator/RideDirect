@@ -50,7 +50,7 @@ export async function replyToInquiry(formData: FormData) {
       subject: `Re: ${listingTitle}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0F1B3D;">Reply from ${senderName}</h2>
+          <h2 style="color: #0D2A5E;">Reply from ${senderName}</h2>
           <p style="color: #666;">Regarding: <strong>${listingTitle}</strong></p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
           <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">

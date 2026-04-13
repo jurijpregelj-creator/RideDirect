@@ -35,7 +35,7 @@ export default async function AdminDashboardPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#0F1B3D]">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-[#0D2A5E]">Dashboard</h1>
         <p className="text-sm text-gray-400 mt-1">Overview of RideDirect.eu activity</p>
       </div>
 

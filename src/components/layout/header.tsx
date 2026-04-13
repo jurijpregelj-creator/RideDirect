@@ -87,11 +87,11 @@ export function Header() {
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1B4FD8] text-white font-bold text-sm">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1E88E5] text-white font-bold text-sm">
             AR
           </div>
           <div className="hidden sm:flex flex-col leading-none">
-            <span className="font-bold text-[#0F1B3D] text-base tracking-tight">RideDirect</span>
+            <span className="font-bold text-[#0D2A5E] text-base tracking-tight">RideDirect</span>
             <span className="text-[10px] text-gray-400 tracking-widest uppercase">.eu</span>
           </div>
         </Link>
@@ -102,7 +102,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1B4FD8] rounded-md hover:bg-blue-50 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1E88E5] rounded-md hover:bg-blue-50 transition-colors"
             >
               {link.label}
             </Link>
@@ -115,7 +115,7 @@ export function Header() {
           {user ? (
             <>
               {/* Notification bell */}
-              <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500 hover:text-[#1B4FD8] transition-colors">
+              <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500 hover:text-[#1E88E5] transition-colors">
                 <MessageCircle size={20} />
                 {unread > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -125,7 +125,7 @@ export function Header() {
               </Link>
               <Link
                 href="/dashboard"
-                className="w-8 h-8 rounded-full bg-[#1B4FD8] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1a45c0] transition-colors overflow-hidden"
+                className="w-8 h-8 rounded-full bg-[#1E88E5] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1565C0] transition-colors overflow-hidden"
                 title={t("myDashboard")}
               >
                 {avatarUrl ? (
@@ -192,7 +192,7 @@ export function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-[#1B4FD8] hover:bg-blue-50 rounded-md"
+              className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-[#1E88E5] hover:bg-blue-50 rounded-md"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}

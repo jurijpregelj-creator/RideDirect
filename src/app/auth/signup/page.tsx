@@ -83,7 +83,7 @@ export default function SignupPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="w-full max-w-md text-center">
           <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-[#0F1B3D] mb-3">{t("checkEmail")}</h1>
+          <h1 className="text-2xl font-bold text-[#0D2A5E] mb-3">{t("checkEmail")}</h1>
           <p className="text-gray-500 mb-6">{t("checkEmailDesc")}</p>
           <Link href="/auth/login">
             <Button variant="brand">{t("backToSignIn")}</Button>
@@ -99,12 +99,12 @@ export default function SignupPage() {
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-[#1B4FD8] text-white font-bold flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-[#1E88E5] text-white font-bold flex items-center justify-center">
               AR
             </div>
-            <span className="font-bold text-[#0F1B3D] text-xl">RideDirect<span className="text-gray-400">.eu</span></span>
+            <span className="font-bold text-[#0D2A5E] text-xl">RideDirect<span className="text-gray-400">.eu</span></span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0F1B3D] mt-6 mb-1">{t("title")}</h1>
+          <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">{t("title")}</h1>
           <p className="text-gray-500 text-sm">{t("subtitle")}</p>
         </div>
 
@@ -168,10 +168,10 @@ export default function SignupPage() {
             <div>
               <Label>{t("iWantTo")} *</Label>
               <div className="grid grid-cols-2 gap-3 mt-1.5">
-                <button type="button" onClick={() => setRole("buyer")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "buyer" ? "border-[#1B4FD8] bg-blue-50 text-[#1B4FD8]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
+                <button type="button" onClick={() => setRole("buyer")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "buyer" ? "border-[#1E88E5] bg-blue-50 text-[#1E88E5]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
                   🛒 {t("buyRides")}
                 </button>
-                <button type="button" onClick={() => setRole("seller")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "seller" ? "border-[#1B4FD8] bg-blue-50 text-[#1B4FD8]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
+                <button type="button" onClick={() => setRole("seller")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "seller" ? "border-[#1E88E5] bg-blue-50 text-[#1E88E5]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
                   🏷️ {t("sellRides")}
                 </button>
               </div>
@@ -218,7 +218,7 @@ export default function SignupPage() {
 
         <p className="text-center text-sm text-gray-500 mt-6">
           {t("alreadyAccount")}{" "}
-          <Link href="/auth/login" className="text-[#1B4FD8] hover:underline font-medium">
+          <Link href="/auth/login" className="text-[#1E88E5] hover:underline font-medium">
             {t("signIn")}
           </Link>
         </p>

@@ -65,7 +65,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     .split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2)
 
   const stats = [
-    { label: tDash("total"), value: allListings?.length ?? 0, color: "text-[#0F1B3D]", filter: "all" },
+    { label: tDash("total"), value: allListings?.length ?? 0, color: "text-[#0D2A5E]", filter: "all" },
     { label: tDash("active"), value: counts["approved"] ?? 0, color: "text-green-600", filter: "approved" },
     { label: tDash("pending"), value: counts["pending"] ?? 0, color: "text-amber-600", filter: "pending" },
     { label: tDash("rejected"), value: counts["rejected"] ?? 0, color: "text-red-500", filter: "rejected" },
@@ -79,7 +79,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6 flex items-center gap-5">
           <AvatarUpload userId={user.id} currentUrl={profile?.avatar_url} initials={initials} />
           <div className="flex-1 min-w-0">
-            <div className="font-bold text-[#0F1B3D] text-xl">{profile?.full_name || "—"}</div>
+            <div className="font-bold text-[#0D2A5E] text-xl">{profile?.full_name || "—"}</div>
             <div className="text-gray-400 text-sm">{user.email}</div>
             <div className="flex items-center gap-2 mt-1.5 flex-wrap">
               {profile?.country && (
@@ -122,7 +122,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                 key={s.label}
                 href={s.filter === "all" ? "/dashboard" : `/dashboard?status=${s.filter}`}
                 className={`bg-white rounded-xl border p-4 text-center transition-all hover:shadow-sm ${
-                  isActive ? "border-[#1B4FD8] ring-1 ring-[#1B4FD8]" : "border-gray-100"
+                  isActive ? "border-[#1E88E5] ring-1 ring-[#1E88E5]" : "border-gray-100"
                 }`}
               >
                 <div className={`text-3xl font-bold ${s.color}`}>{s.value}</div>
@@ -135,7 +135,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
         {/* Listings */}
         <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-50">
-            <h2 className="font-semibold text-[#0F1B3D]">
+            <h2 className="font-semibold text-[#0D2A5E]">
               {statusFilter === "all" ? tDash("myListings") : tCommon(`status.${statusFilter}` as any)}
             </h2>
           </div>
@@ -161,7 +161,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                   className="px-6 py-4 flex items-center gap-4 hover:bg-gray-50/50 transition-colors"
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-[#0F1B3D] hover:text-[#1B4FD8] truncate transition-colors">
+                    <div className="font-medium text-[#0D2A5E] hover:text-[#1E88E5] truncate transition-colors">
                       {listing.title}
                     </div>
                     <div className="text-xs text-gray-400 mt-0.5">

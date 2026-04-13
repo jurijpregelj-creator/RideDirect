@@ -50,7 +50,7 @@ export function AvatarUpload({ userId, currentUrl, initials }: AvatarUploadProps
 
   return (
     <div className="relative group cursor-pointer" onClick={() => inputRef.current?.click()}>
-      <div className="w-16 h-16 rounded-full overflow-hidden bg-[#1B4FD8] text-white font-bold text-xl flex items-center justify-center shrink-0">
+      <div className="w-16 h-16 rounded-full overflow-hidden bg-[#1E88E5] text-white font-bold text-xl flex items-center justify-center shrink-0">
         {preview ? (
           <img src={preview} alt="Avatar" className="w-full h-full object-cover" />
         ) : (

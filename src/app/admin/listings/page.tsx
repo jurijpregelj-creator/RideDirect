@@ -51,7 +51,7 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
   return (
     <div className="p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#0F1B3D]">Listings</h1>
+        <h1 className="text-2xl font-bold text-[#0D2A5E]">Listings</h1>
         <p className="text-sm text-gray-400 mt-1">{listings?.length ?? 0} listings found</p>
       </div>
 
@@ -63,7 +63,7 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
             href={`/admin/listings${tab !== "all" ? `?status=${tab}` : ""}`}
             className={`px-4 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${
               statusFilter === tab
-                ? "bg-white text-[#0F1B3D] shadow-sm"
+                ? "bg-white text-[#0D2A5E] shadow-sm"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -94,7 +94,7 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
                 return (
                   <tr key={listing.id} className="hover:bg-gray-50/50">
                     <td className="px-4 py-3">
-                      <Link href={"/listings/" + listing.id} target="_blank" className="font-medium text-[#0F1B3D] hover:text-[#1B4FD8] max-w-xs truncate block transition-colors">{listing.title}</Link>
+                      <Link href={"/listings/" + listing.id} target="_blank" className="font-medium text-[#0D2A5E] hover:text-[#1E88E5] max-w-xs truncate block transition-colors">{listing.title}</Link>
                       <div className="text-xs text-gray-400">{listing.category} · {listing.country}</div>
                     </td>
                     <td className="px-4 py-3">

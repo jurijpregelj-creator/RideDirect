@@ -87,15 +87,15 @@ export default function SellWithUsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#0F1B3D] to-[#1B4FD8] text-white py-20">
+      <section className="bg-gradient-to-br from-[#0D2A5E] to-[#1E88E5] text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm text-blue-100 mb-6">
-            <Star size={14} className="fill-[#F97316] text-[#F97316]" />
+            <Star size={14} className="fill-[#FF6D00] text-[#FF6D00]" />
             Join 100+ active sellers across Europe
           </div>
           <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight">
             Sell Your Amusement Rides<br />
-            <span className="text-[#F97316]">Across Europe</span>
+            <span className="text-[#FF6D00]">Across Europe</span>
           </h1>
           <p className="text-lg text-blue-100 max-w-2xl mx-auto mb-8">
             RideDirect.eu connects you with serious, verified buyers across 29 European countries. List your rides for free and reach the entire European amusement industry.
@@ -120,7 +120,7 @@ export default function SellWithUsPage() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#0F1B3D] mb-4">
+            <h2 className="text-3xl font-bold text-[#0D2A5E] mb-4">
               Why Sell on RideDirect?
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto">
@@ -133,10 +133,10 @@ export default function SellWithUsPage() {
                 key={benefit.title}
                 className="bg-gray-50 rounded-xl p-6 hover:bg-blue-50 transition-colors group"
               >
-                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:bg-[#1B4FD8] transition-colors">
-                  <benefit.icon size={22} className="text-[#1B4FD8] group-hover:text-white transition-colors" />
+                <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:bg-[#1E88E5] transition-colors">
+                  <benefit.icon size={22} className="text-[#1E88E5] group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="font-semibold text-[#0F1B3D] mb-2">{benefit.title}</h3>
+                <h3 className="font-semibold text-[#0D2A5E] mb-2">{benefit.title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
@@ -148,17 +148,17 @@ export default function SellWithUsPage() {
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#0F1B3D] mb-4">
+            <h2 className="text-3xl font-bold text-[#0D2A5E] mb-4">
               How to List Your Ride
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             {HOW_TO_SELL.map((item) => (
               <div key={item.step} className="text-center">
-                <div className="w-12 h-12 rounded-full bg-[#1B4FD8] text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#1E88E5] text-white font-bold text-lg flex items-center justify-center mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="font-semibold text-[#0F1B3D] mb-2">{item.title}</h3>
+                <h3 className="font-semibold text-[#0D2A5E] mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-500">{item.description}</p>
               </div>
             ))}
@@ -171,7 +171,7 @@ export default function SellWithUsPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-[#0F1B3D] mb-4">
+              <h2 className="text-3xl font-bold text-[#0D2A5E] mb-4">
                 What You Can List
               </h2>
               <p className="text-gray-500">
@@ -184,7 +184,7 @@ export default function SellWithUsPage() {
                   key={cat}
                   className="flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-3 text-sm font-medium text-gray-700"
                 >
-                  <CheckCircle2 size={16} className="text-[#1B4FD8] shrink-0" />
+                  <CheckCircle2 size={16} className="text-[#1E88E5] shrink-0" />
                   {cat}
                 </div>
               ))}
@@ -194,7 +194,7 @@ export default function SellWithUsPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-[#0F1B3D]">
+      <section className="py-20 bg-[#0D2A5E]">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             Ready to Sell Your Rides?

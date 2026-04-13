@@ -67,11 +67,11 @@ export default async function ConversationPage({ params }: { params: { id: strin
             <ArrowLeft size={20} />
           </Link>
           <div className="flex-1 min-w-0">
-            <div className="font-bold text-[#0F1B3D] truncate">{otherName}</div>
+            <div className="font-bold text-[#0D2A5E] truncate">{otherName}</div>
             {inquiry.listings && (
               <Link
                 href={`/listings/${inquiry.listings.id}`}
-                className="text-xs text-gray-400 hover:text-[#1B4FD8] flex items-center gap-1 transition-colors"
+                className="text-xs text-gray-400 hover:text-[#1E88E5] flex items-center gap-1 transition-colors"
               >
                 {inquiry.listings.title}
                 <ExternalLink size={11} />
@@ -90,7 +90,7 @@ export default async function ConversationPage({ params }: { params: { id: strin
                 )}
                 <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-line ${
                   msg.isMe
-                    ? "bg-[#1B4FD8] text-white rounded-br-sm"
+                    ? "bg-[#1E88E5] text-white rounded-br-sm"
                     : "bg-white border border-gray-100 text-gray-700 rounded-bl-sm"
                 }`}>
                   {msg.message}

@@ -38,18 +38,18 @@ export default async function AdminUserDetailPage({ params }: { params: { id: st
   return (
     <div className="p-8 max-w-4xl">
       {/* Back */}
-      <Link href="/admin/users" className="flex items-center gap-1 text-sm text-gray-400 hover:text-[#1B4FD8] mb-6 transition-colors">
+      <Link href="/admin/users" className="flex items-center gap-1 text-sm text-gray-400 hover:text-[#1E88E5] mb-6 transition-colors">
         <ChevronLeft size={16} /> Back to Users
       </Link>
 
       {/* Profile card */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 mb-6 flex items-start gap-5">
-        <div className="w-16 h-16 rounded-full bg-[#1B4FD8] text-white font-bold text-xl flex items-center justify-center shrink-0">
+        <div className="w-16 h-16 rounded-full bg-[#1E88E5] text-white font-bold text-xl flex items-center justify-center shrink-0">
           {initials}
         </div>
         <div className="flex-1">
           <div className="flex items-center gap-3 flex-wrap">
-            <h1 className="text-xl font-bold text-[#0F1B3D]">{user.full_name || "No name"}</h1>
+            <h1 className="text-xl font-bold text-[#0D2A5E]">{user.full_name || "No name"}</h1>
             <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${ROLE_COLORS[user.role] || "bg-gray-100"}`}>
               {user.role}
             </span>
@@ -89,7 +89,7 @@ export default async function AdminUserDetailPage({ params }: { params: { id: st
               {listings.map((listing: any) => (
                 <tr key={listing.id} className="hover:bg-gray-50/50">
                   <td className="px-4 py-3">
-                    <Link href={`/listings/${listing.id}`} target="_blank" className="font-medium text-[#1B4FD8] hover:underline">
+                    <Link href={`/listings/${listing.id}`} target="_blank" className="font-medium text-[#1E88E5] hover:underline">
                       {listing.title}
                     </Link>
                   </td>

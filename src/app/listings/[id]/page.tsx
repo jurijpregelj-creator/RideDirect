@@ -95,7 +95,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
         <div className="flex items-center gap-2 mb-6">
           <Link
             href="/marketplace"
-            className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#1B4FD8] transition-colors"
+            className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#1E88E5] transition-colors"
           >
             <ChevronLeft size={16} />
             Back to listings
@@ -131,7 +131,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
                 )}
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-bold text-[#0F1B3D] mb-4 leading-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#0D2A5E] mb-4 leading-tight">
                 {listing.title}
               </h1>
 
@@ -147,7 +147,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
                 {details.map(({ label, value, icon: Icon }) => (
                   <div key={label} className="flex items-start gap-3">
                     <div className="w-8 h-8 rounded-md bg-blue-50 flex items-center justify-center shrink-0">
-                      <Icon size={15} className="text-[#1B4FD8]" />
+                      <Icon size={15} className="text-[#1E88E5]" />
                     </div>
                     <div>
                       <div className="text-xs text-gray-400 mb-0.5">{label}</div>
@@ -163,7 +163,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
           <div className="space-y-5">
             {/* Price card */}
             <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-              <div className="text-3xl font-bold text-[#1B4FD8] mb-1">
+              <div className="text-3xl font-bold text-[#1E88E5] mb-1">
                 {formatPrice(listing.price, listing.currency)}
               </div>
               <div className="text-sm text-gray-400 mb-4">

@@ -53,7 +53,7 @@ export function ListingCard({ listing }: ListingCardProps) {
           <Badge variant="outline" className="text-xs text-gray-500">{listing.category}</Badge>
         </div>
 
-        <h3 className="font-semibold text-[#0F1B3D] leading-snug mb-3 group-hover:text-[#1B4FD8] transition-colors line-clamp-2 flex-1">
+        <h3 className="font-semibold text-[#0D2A5E] leading-snug mb-3 group-hover:text-[#1E88E5] transition-colors line-clamp-2 flex-1">
           {listing.title}
         </h3>
 
@@ -75,7 +75,7 @@ export function ListingCard({ listing }: ListingCardProps) {
 
         <div className="flex items-end justify-between pt-3 border-t border-gray-50">
           <div>
-            <div className="text-xl font-bold text-[#1B4FD8]">
+            <div className="text-xl font-bold text-[#1E88E5]">
               {formatPrice(listing.price, listing.currency)}
             </div>
             <div className="text-xs text-gray-400 mt-0.5">

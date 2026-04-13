@@ -72,7 +72,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-[#0F1B3D] mb-1">{t("title")}</h1>
+          <h1 className="text-3xl font-bold text-[#0D2A5E] mb-1">{t("title")}</h1>
           <p className="text-gray-500">{t("subtitle")}</p>
         </div>
       </div>

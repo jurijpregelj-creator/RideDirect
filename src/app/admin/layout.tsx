@@ -15,7 +15,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      <aside className="w-56 bg-[#0F1B3D] text-white flex flex-col shrink-0 fixed inset-y-0 left-0 z-40">
+      <aside className="w-56 bg-[#0D2A5E] text-white flex flex-col shrink-0 fixed inset-y-0 left-0 z-40">
         <div className="p-5 border-b border-white/10">
           <div className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-1">Admin Panel</div>
           <div className="text-white font-bold text-lg">RideDirect.eu</div>

@@ -30,7 +30,7 @@ export function SentInquiryCard({ inquiry }: { inquiry: any }) {
           </div>
           <div>
             {listing ? (
-              <Link href={`/listings/${listing.id}`} className="font-semibold text-[#0F1B3D] hover:text-[#1B4FD8] transition-colors flex items-center gap-1">
+              <Link href={`/listings/${listing.id}`} className="font-semibold text-[#0D2A5E] hover:text-[#1E88E5] transition-colors flex items-center gap-1">
                 {listing.title}
                 <ExternalLink size={12} className="text-gray-400" />
               </Link>
@@ -58,7 +58,7 @@ export function SentInquiryCard({ inquiry }: { inquiry: any }) {
         ) : (
           <button
             onClick={() => setShowReply(!showReply)}
-            className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#1B4FD8] text-white px-3 py-1.5 rounded-lg hover:bg-[#1B4FD8]/90 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#1E88E5] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E88E5]/90 transition-colors"
           >
             <Send size={12} />
             Follow up
@@ -74,7 +74,7 @@ export function SentInquiryCard({ inquiry }: { inquiry: any }) {
             required
             rows={3}
             placeholder="Send a follow-up message to the seller..."
-            className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1B4FD8]/20 focus:border-[#1B4FD8] resize-none"
+            className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1E88E5]/20 focus:border-[#1E88E5] resize-none"
           />
           <div className="flex items-center justify-end gap-2">
             <button
@@ -87,7 +87,7 @@ export function SentInquiryCard({ inquiry }: { inquiry: any }) {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#1B4FD8] text-white px-3 py-1.5 rounded-lg hover:bg-[#1B4FD8]/90 transition-colors disabled:opacity-60"
+              className="inline-flex items-center gap-1.5 text-xs font-medium bg-[#1E88E5] text-white px-3 py-1.5 rounded-lg hover:bg-[#1E88E5]/90 transition-colors disabled:opacity-60"
             >
               {loading ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
               {loading ? "Sending..." : "Send"}

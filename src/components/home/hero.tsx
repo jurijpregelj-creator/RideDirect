@@ -7,10 +7,10 @@ export async function Hero() {
   const t = await getTranslations("hero")
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#0F1B3D] via-[#1a2d5a] to-[#1B4FD8]">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[#0D2A5E] via-[#1a2d5a] to-[#1E88E5]">
       <div className="absolute inset-0 opacity-10">
         <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#F97316]/30 blur-3xl" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#FF6D00]/30 blur-3xl" />
       </div>
 
       <div className="relative container mx-auto px-4 py-24 lg:py-32">
@@ -22,7 +22,7 @@ export async function Hero() {
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-6">
             {t("title1")}{" "}
-            <span className="text-[#F97316]">{t("title2")}</span>{" "}
+            <span className="text-[#FF6D00]">{t("title2")}</span>{" "}
             {t("title3")}
           </h1>
 
@@ -46,17 +46,17 @@ export async function Hero() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-14 pt-10 border-t border-white/10">
             <div className="flex items-center gap-2 text-blue-200 text-sm">
-              <ShieldCheck size={16} className="text-[#F97316]" />
+              <ShieldCheck size={16} className="text-[#FF6D00]" />
               <span>{t("trust1")}</span>
             </div>
             <div className="hidden sm:block w-px h-4 bg-white/20" />
             <div className="flex items-center gap-2 text-blue-200 text-sm">
-              <Globe2 size={16} className="text-[#F97316]" />
+              <Globe2 size={16} className="text-[#FF6D00]" />
               <span>{t("trust2")}</span>
             </div>
             <div className="hidden sm:block w-px h-4 bg-white/20" />
             <div className="flex items-center gap-2 text-blue-200 text-sm">
-              <TrendingUp size={16} className="text-[#F97316]" />
+              <TrendingUp size={16} className="text-[#FF6D00]" />
               <span>{t("trust3")}</span>
             </div>
           </div>

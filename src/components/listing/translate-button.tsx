@@ -61,7 +61,7 @@ export function TranslateButton({ originalText, onTranslated }: TranslateButtonP
   return (
     <div className="flex items-center gap-2 flex-wrap">
       {!translated ? (
-        <button onClick={handleTranslate} disabled={loading} className="flex items-center gap-1.5 text-xs text-[#1B4FD8] hover:underline disabled:opacity-50">
+        <button onClick={handleTranslate} disabled={loading} className="flex items-center gap-1.5 text-xs text-[#1E88E5] hover:underline disabled:opacity-50">
           {loading
             ? <><Loader2 size={13} className="animate-spin" /> {t("translating")}</>
             : <><Languages size={13} /> {t("button", { language: langName })}</>

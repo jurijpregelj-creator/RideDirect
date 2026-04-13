@@ -42,7 +42,7 @@ export function ReplyBox({ inquiryId }: { inquiryId: string }) {
       <button
         type="submit"
         disabled={loading || !message.trim()}
-        className="w-9 h-9 rounded-xl bg-[#1B4FD8] text-white flex items-center justify-center hover:bg-[#1B4FD8]/90 transition-colors disabled:opacity-40 shrink-0"
+        className="w-9 h-9 rounded-xl bg-[#1E88E5] text-white flex items-center justify-center hover:bg-[#1E88E5]/90 transition-colors disabled:opacity-40 shrink-0"
       >
         {loading ? <Loader2 size={15} className="animate-spin" /> : <Send size={15} />}
       </button>
