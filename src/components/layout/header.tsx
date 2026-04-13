@@ -85,10 +85,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
-      <div className="container mx-auto px-4 flex h-20 items-center justify-between">
+      <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center group">
-          <img src="/logo.svg" alt="RideDirect.eu" className="h-[72px] w-auto" />
+          <img src="/logo.svg" alt="RideDirect.eu" className="h-16 w-auto" />
         </Link>
 
         {/* Desktop Nav */}
