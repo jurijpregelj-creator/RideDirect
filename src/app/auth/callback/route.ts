@@ -16,11 +16,13 @@ export async function GET(request: Request) {
         null
 
       // Always sync email + avatar_url to profiles
+      const termsAcceptedAt = data.user.user_metadata?.terms_accepted_at || null
       await supabase
         .from("profiles")
         .update({
           email: data.user.email,
           ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
+          ...(termsAcceptedAt ? { terms_accepted_at: termsAcceptedAt } : {}),
         })
         .eq("id", data.user.id)
 

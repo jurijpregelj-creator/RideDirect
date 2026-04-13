@@ -32,6 +32,7 @@ export default function SignupPage() {
   const [role, setRole] = useState<string>("buyer")
   const [country, setCountry] = useState<string>("")
   const [language, setLanguage] = useState<string>("en")
+  const [termsAccepted, setTermsAccepted] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -43,12 +44,18 @@ export default function SignupPage() {
     const password = (form.elements.namedItem("password") as HTMLInputElement).value
     const fullName = (form.elements.namedItem("full_name") as HTMLInputElement).value
 
+    if (!termsAccepted) {
+      setError("You must accept the Terms of Service and Privacy Policy to continue.")
+      setLoading(false)
+      return
+    }
+
     const supabase = createClient()
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName, role, country, preferred_language: language },
+        data: { full_name: fullName, role, country, preferred_language: language, terms_accepted_at: new Date().toISOString() },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
@@ -203,17 +210,27 @@ export default function SignupPage() {
               </Select>
             </div>
 
-            <Button type="submit" variant="brand" className="w-full" disabled={loading}>
+            {/* Clickwrap */}
+            <div className="flex items-start gap-3 pt-1">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-[#1E88E5] cursor-pointer shrink-0"
+              />
+              <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
+                I have read and agree to the{" "}
+                <Link href="/legal/terms" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">Terms of Service</Link>{" "}
+                and{" "}
+                <Link href="/legal/privacy" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">Privacy Policy</Link>.
+              </label>
+            </div>
+
+            <Button type="submit" variant="brand" className="w-full" disabled={loading || !termsAccepted}>
               {loading ? (<><Loader2 size={16} className="animate-spin" /> {t("creating")}</>) : t("createAccount")}
             </Button>
           </form>
-
-          <p className="text-xs text-gray-400 text-center mt-4">
-            By signing up, you agree to our{" "}
-            <Link href="/terms" className="underline hover:text-gray-600">Terms of Service</Link>{" "}
-            and{" "}
-            <Link href="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link>.
-          </p>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
