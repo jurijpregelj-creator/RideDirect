@@ -7,6 +7,7 @@ import "./globals.css"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
 import { MessageToaster } from "@/components/notifications/message-toaster"
+import { CookieBanner } from "@/components/layout/cookie-banner"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const poppins = Poppins({
@@ -48,6 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <main className="flex-1">{children}</main>
             <Footer />
             <MessageToaster />
+            <CookieBanner />
           </div>
         </NextIntlClientProvider>
         <Analytics />
