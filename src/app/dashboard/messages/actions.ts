@@ -22,10 +22,15 @@ export async function sendReply(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user || !message.trim()) return { success: false }
 
+  const attachmentUrl = formData.get("attachment_url") as string | null
+  const attachmentType = formData.get("attachment_type") as string | null
+
   const { error } = await supabase.from("replies").insert({
     inquiry_id: inquiryId,
     sender_id: user.id,
-    message: message.trim(),
+    message: message.trim() || " ",
+    ...(attachmentUrl ? { attachment_url: attachmentUrl } : {}),
+    ...(attachmentType ? { attachment_type: attachmentType } : {}),
   })
   if (error) return { success: false }
 

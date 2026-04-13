@@ -56,6 +56,8 @@ export default async function ConversationPage({ params }: { params: { id: strin
       message: r.message,
       created_at: r.created_at,
       isMe: r.sender_id === user.id,
+      attachmentUrl: r.attachment_url || null,
+      attachmentType: r.attachment_type || null,
     })),
   ]
 
@@ -90,7 +92,7 @@ export default async function ConversationPage({ params }: { params: { id: strin
                 {!msg.isMe && (
                   <span className="text-xs text-gray-400 px-1">{msg.sender_name}</span>
                 )}
-                <TranslatableMessage message={msg.message} isMe={msg.isMe} />
+                <TranslatableMessage message={msg.message} isMe={msg.isMe} attachmentUrl={msg.attachmentUrl} attachmentType={msg.attachmentType} />
                 <span className="text-[10px] text-gray-300 px-1">
                   {new Date(msg.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
                   {" · "}

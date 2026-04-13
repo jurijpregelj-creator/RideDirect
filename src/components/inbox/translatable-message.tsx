@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Languages, Loader2, RotateCcw } from "lucide-react"
+import { Languages, Loader2, RotateCcw, FileText } from "lucide-react"
 import { translateText } from "@/app/actions/translate"
 
 const LANGUAGE_NAMES: Record<string, string> = {
@@ -17,9 +17,11 @@ const LANGUAGE_NAMES: Record<string, string> = {
 interface Props {
   message: string
   isMe: boolean
+  attachmentUrl?: string | null
+  attachmentType?: string | null
 }
 
-export function TranslatableMessage({ message, isMe }: Props) {
+export function TranslatableMessage({ message, isMe, attachmentUrl, attachmentType }: Props) {
   const [translated, setTranslated] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [targetLang, setTargetLang] = useState("EN")
@@ -39,14 +41,37 @@ export function TranslatableMessage({ message, isMe }: Props) {
   const displayText = translated ?? message
   const langName = LANGUAGE_NAMES[targetLang] || targetLang
 
+  const hasText = displayText.trim()
+
   return (
     <div className="flex flex-col gap-1">
-      <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-line ${
+      <div className={`rounded-2xl text-sm overflow-hidden ${
         isMe
           ? "bg-[#1E88E5] text-white rounded-br-sm"
           : "bg-white border border-gray-100 text-gray-700 rounded-bl-sm"
       }`}>
-        {displayText}
+        {/* Image attachment */}
+        {attachmentUrl && attachmentType === "image" && (
+          <a href={attachmentUrl} target="_blank" rel="noopener noreferrer">
+            <img src={attachmentUrl} alt="attachment" className="max-w-[260px] w-full block rounded-t-2xl" />
+          </a>
+        )}
+        {/* PDF attachment */}
+        {attachmentUrl && attachmentType === "pdf" && (
+          <a
+            href={attachmentUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex items-center gap-2 px-4 py-3 text-xs font-medium underline ${isMe ? "text-blue-100" : "text-red-500"}`}
+          >
+            <FileText size={14} />
+            Open PDF
+          </a>
+        )}
+        {/* Text */}
+        {hasText && (
+          <div className="px-4 py-3 whitespace-pre-line">{displayText}</div>
+        )}
       </div>
 
       {/* Translate button */}
