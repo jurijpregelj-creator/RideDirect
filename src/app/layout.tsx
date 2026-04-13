@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Inter, Poppins } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
+import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
@@ -49,6 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <MessageToaster />
           </div>
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   )
