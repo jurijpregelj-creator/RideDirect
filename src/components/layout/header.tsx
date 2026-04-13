@@ -88,7 +88,7 @@ export function Header() {
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center group">
-          <img src="/logo-original.svg" alt="RideDirect.eu" className="h-14 w-auto" />
+          <img src="/logo.svg" alt="RideDirect.eu" className="h-16 w-auto" />
         </Link>
 
         {/* Desktop Nav */}
