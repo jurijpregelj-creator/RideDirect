@@ -20,8 +20,8 @@ export async function Footer() {
     [t("company")]: [
       { href: "/contact", label: t("contactUs") },
       { href: "/about", label: t("about") },
-      { href: "/privacy", label: t("privacy") },
-      { href: "/terms", label: t("terms") },
+      { href: "/legal/privacy", label: t("privacy") },
+      { href: "/legal/terms", label: t("terms") },
     ],
   }
 
