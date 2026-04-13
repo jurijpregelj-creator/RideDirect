@@ -86,14 +86,10 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1E88E5] text-white font-bold text-sm">
-            AR
-          </div>
-          <div className="hidden sm:flex flex-col leading-none">
-            <span className="font-bold text-[#0D2A5E] text-base tracking-tight">RideDirect</span>
-            <span className="text-[10px] text-gray-400 tracking-widest uppercase">.eu</span>
-          </div>
+        <Link href="/" className="flex items-center gap-1 group">
+          <span className="font-heading font-bold text-xl italic text-[#1E88E5] tracking-tight">Ride</span>
+          <span className="font-heading font-bold text-xl italic text-[#FF6D00] tracking-tight">Direct</span>
+          <span className="font-heading font-bold text-xs italic text-[#FF6D00] self-end mb-0.5">.eu</span>
         </Link>
 
         {/* Desktop Nav */}
