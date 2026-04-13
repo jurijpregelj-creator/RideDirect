@@ -86,10 +86,31 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-1 group">
-          <span className="font-heading font-bold text-xl italic text-[#1E88E5] tracking-tight">Ride</span>
-          <span className="font-heading font-bold text-xl italic text-[#FF6D00] tracking-tight">Direct</span>
-          <span className="font-heading font-bold text-xs italic text-[#FF6D00] self-end mb-0.5">.eu</span>
+        <Link href="/" className="flex items-center gap-2 group">
+          {/* Ferris wheel icon */}
+          <svg width="28" height="33" viewBox="0 0 28 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="13" r="11" stroke="#1E88E5" strokeWidth="1.5"/>
+            <line x1="14" y1="2" x2="14" y2="24" stroke="#1E88E5" strokeWidth="1"/>
+            <line x1="3" y1="13" x2="25" y2="13" stroke="#1E88E5" strokeWidth="1"/>
+            <line x1="6.2" y1="5.2" x2="21.8" y2="20.8" stroke="#1E88E5" strokeWidth="1"/>
+            <line x1="21.8" y1="5.2" x2="6.2" y2="20.8" stroke="#1E88E5" strokeWidth="1"/>
+            <circle cx="14" cy="13" r="2" fill="#1E88E5"/>
+            <circle cx="14" cy="2" r="1.5" fill="#1E88E5"/>
+            <circle cx="21.8" cy="5.2" r="1.5" fill="#1E88E5"/>
+            <circle cx="25" cy="13" r="1.5" fill="#1E88E5"/>
+            <circle cx="21.8" cy="20.8" r="1.5" fill="#1E88E5"/>
+            <circle cx="14" cy="24" r="1.5" fill="#1E88E5"/>
+            <circle cx="6.2" cy="20.8" r="1.5" fill="#1E88E5"/>
+            <circle cx="3" cy="13" r="1.5" fill="#1E88E5"/>
+            <circle cx="6.2" cy="5.2" r="1.5" fill="#1E88E5"/>
+            <line x1="7" y1="32" x2="14" y2="22" stroke="#1E88E5" strokeWidth="1.5"/>
+            <line x1="21" y1="32" x2="14" y2="22" stroke="#1E88E5" strokeWidth="1.5"/>
+          </svg>
+          <div className="flex items-baseline gap-0">
+            <span className="font-heading font-bold text-xl italic text-[#1E88E5] tracking-tight">Ride</span>
+            <span className="font-heading font-bold text-xl italic text-[#FF6D00] tracking-tight">Direct</span>
+            <span className="font-heading font-bold text-[11px] italic text-[#FF6D00] mb-0.5">.eu</span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
