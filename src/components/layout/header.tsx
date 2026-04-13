@@ -27,52 +27,53 @@ export function Header() {
 
   useEffect(() => {
     const supabase = createClient()
+    let userId: string | null = null
+    let interval: ReturnType<typeof setInterval> | null = null
+
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       if (user) {
+        userId = user.id
         fetchUnread(user.id, supabase)
         supabase.from("profiles").select("avatar_url").eq("id", user.id).single()
           .then(({ data }) => setAvatarUrl(data?.avatar_url || null))
+        // Poll every 15s — more reliable than realtime websockets
+        interval = setInterval(() => {
+          if (userId) fetchUnread(userId, supabase)
+        }, 15000)
       }
     })
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
-      if (session?.user) fetchUnread(session.user.id, supabase)
-      else setUnread(0)
+      if (session?.user) {
+        userId = session.user.id
+        fetchUnread(session.user.id, supabase)
+      } else {
+        userId = null
+        setUnread(0)
+        if (interval) clearInterval(interval)
+      }
     })
-    return () => subscription.unsubscribe()
+
+    return () => {
+      subscription.unsubscribe()
+      if (interval) clearInterval(interval)
+    }
   }, [])
 
   async function fetchUnread(userId: string, supabase: any) {
-    // Unread as seller
     const { count: sellerUnread } = await supabase
       .from("inquiries")
       .select("id", { count: "exact", head: true })
       .eq("seller_id", userId)
       .eq("is_read", false)
-    // Unread as buyer
     const { count: buyerUnread } = await supabase
       .from("inquiries")
       .select("id", { count: "exact", head: true })
       .eq("buyer_id", userId)
       .eq("unread_for_buyer", true)
     setUnread((sellerUnread ?? 0) + (buyerUnread ?? 0))
-
-    // Subscribe to realtime changes
-    supabase
-      .channel("unread-inquiries")
-      .on("postgres_changes", {
-        event: "*",
-        schema: "public",
-        table: "inquiries",
-        filter: `seller_id=eq.${userId}`,
-      }, () => fetchUnread(userId, supabase))
-      .on("postgres_changes", {
-        event: "INSERT",
-        schema: "public",
-        table: "replies",
-      }, () => fetchUnread(userId, supabase))
-      .subscribe()
   }
 
   async function handleSignOut() {
