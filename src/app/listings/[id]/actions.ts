@@ -1,7 +1,15 @@
 "use server"
 
 import { createClient } from "@/lib/supabase/server"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
+
+function getAdminClient() {
+  return createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -36,19 +44,23 @@ export async function submitInquiry(formData: {
     return { success: false, error: "Failed to save inquiry." }
   }
 
-  // Get seller email
+  // Get seller email — use admin client to read from auth.users reliably
+  const admin = getAdminClient()
+  const { data: sellerAuth } = await admin.auth.admin.getUserById(formData.sellerId)
   const { data: seller } = await supabase
     .from("profiles")
     .select("email, full_name")
     .eq("id", formData.sellerId)
     .single()
 
+  const sellerEmail = sellerAuth?.user?.email || seller?.email
+
   if (!process.env.RESEND_API_KEY) {
     console.error("[Email] RESEND_API_KEY is not set")
     return { success: true }
   }
 
-  if (!seller?.email) {
+  if (!sellerEmail) {
     console.error("[Email] Seller email not found for seller_id:", formData.sellerId)
     return { success: true }
   }
@@ -56,7 +68,7 @@ export async function submitInquiry(formData: {
   try {
     const result = await resend.emails.send({
       from: "RideDirect <noreply@ridedirect.eu>",
-      to: seller.email,
+      to: sellerEmail,
       replyTo: formData.buyerEmail,
       subject: `New inquiry for: ${formData.listingTitle}`,
       html: `

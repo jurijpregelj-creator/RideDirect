@@ -2,7 +2,15 @@
 
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
+
+function getAdminClient() {
+  return createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -53,14 +61,15 @@ export async function sendReply(formData: FormData) {
     }).eq("id", inquiryId)
   }
 
-  // Send email to other participant
+  // Send email to other participant — use admin client for reliable email lookup
+  const admin = getAdminClient()
   let recipientEmail: string | null = null
   if (isSeller) {
-    const { data: buyer } = await supabase.from("profiles").select("email").eq("id", inquiry.buyer_id).single()
-    recipientEmail = buyer?.email || inquiry.buyer_email
+    const { data: buyerAuth } = await admin.auth.admin.getUserById(inquiry.buyer_id)
+    recipientEmail = buyerAuth?.user?.email || inquiry.buyer_email
   } else {
-    const { data: seller } = await supabase.from("profiles").select("email").eq("id", inquiry.seller_id).single()
-    recipientEmail = seller?.email || null
+    const { data: sellerAuth } = await admin.auth.admin.getUserById(inquiry.seller_id)
+    recipientEmail = sellerAuth?.user?.email || null
   }
 
   if (!process.env.RESEND_API_KEY) {
