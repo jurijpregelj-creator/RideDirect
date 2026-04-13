@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server"
 import { ReplyBox } from "@/components/inbox/reply-box"
 import { MarkReadOnMount } from "@/components/inbox/mark-read-on-mount"
 import { TranslatableMessage } from "@/components/inbox/translatable-message"
+import { ScrollToBottom } from "@/components/inbox/scroll-to-bottom"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Conversation — RideDirect" }
@@ -99,6 +100,9 @@ export default async function ConversationPage({ params }: { params: { id: strin
             </div>
           ))}
         </div>
+
+        {/* Scroll to latest message on open */}
+        <ScrollToBottom />
 
         {/* Mark as read on mount */}
         <MarkReadOnMount inquiryId={params.id} isSeller={isSeller} />
