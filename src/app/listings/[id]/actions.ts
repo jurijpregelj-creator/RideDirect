@@ -119,7 +119,7 @@ export async function reportListing(formData: {
   try {
     await resend.emails.send({
       from: "RideDirect <noreply@ridedirect.eu>",
-      to: "info@ridedirect.eu",
+      to: ["info@ridedirect.eu", "jurijpregelj@gmail.com"],
       subject: `[Report] Listing flagged: ${formData.listingTitle}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
