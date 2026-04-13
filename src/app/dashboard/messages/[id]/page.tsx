@@ -4,6 +4,7 @@ import { ArrowLeft, ExternalLink } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import { ReplyBox } from "@/components/inbox/reply-box"
 import { MarkReadOnMount } from "@/components/inbox/mark-read-on-mount"
+import { TranslatableMessage } from "@/components/inbox/translatable-message"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Conversation — RideDirect" }
@@ -88,13 +89,7 @@ export default async function ConversationPage({ params }: { params: { id: strin
                 {!msg.isMe && (
                   <span className="text-xs text-gray-400 px-1">{msg.sender_name}</span>
                 )}
-                <div className={`px-4 py-3 rounded-2xl text-sm whitespace-pre-line ${
-                  msg.isMe
-                    ? "bg-[#1E88E5] text-white rounded-br-sm"
-                    : "bg-white border border-gray-100 text-gray-700 rounded-bl-sm"
-                }`}>
-                  {msg.message}
-                </div>
+                <TranslatableMessage message={msg.message} isMe={msg.isMe} />
                 <span className="text-[10px] text-gray-300 px-1">
                   {new Date(msg.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
                   {" · "}
