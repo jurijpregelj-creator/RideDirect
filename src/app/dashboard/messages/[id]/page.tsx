@@ -48,6 +48,8 @@ export default async function ConversationPage({ params }: { params: { id: strin
       message: inquiry.message,
       created_at: inquiry.created_at,
       isMe: inquiry.buyer_id === user.id,
+      attachmentUrl: null,
+      attachmentType: null,
     },
     ...(replies || []).map((r) => ({
       id: r.id,
@@ -101,10 +103,9 @@ export default async function ConversationPage({ params }: { params: { id: strin
               </div>
             </div>
           ))}
+          {/* Anchor — scroll here on open */}
+          <ScrollToBottom />
         </div>
-
-        {/* Scroll to latest message on open */}
-        <ScrollToBottom />
 
         {/* Mark as read on mount */}
         <MarkReadOnMount inquiryId={params.id} isSeller={isSeller} />
