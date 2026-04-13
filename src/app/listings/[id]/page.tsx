@@ -17,6 +17,7 @@ import { CONDITION_LABELS } from "@/data/mock"
 import { formatPrice } from "@/lib/utils"
 import type { Metadata } from "next"
 import { InquiryForm } from "@/components/listing/inquiry-form"
+import { ReportListingButton } from "@/components/listing/report-listing-button"
 import { createClient } from "@/lib/supabase/server"
 import { ImageGallery } from "@/components/listing/image-gallery"
 import { ViewCounter } from "@/components/listing/view-counter"
@@ -192,6 +193,11 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
               listingTitle={listing.title}
               loggedInUser={currentProfile ? { name: currentProfile.full_name, email: currentProfile.email || currentUser?.email || "" } : null}
             />
+
+            {/* Report */}
+            <div className="flex justify-center">
+              <ReportListingButton listingId={listing.id} listingTitle={listing.title} />
+            </div>
           </div>
         </div>
       </div>

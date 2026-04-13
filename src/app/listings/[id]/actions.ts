@@ -96,3 +96,52 @@ export async function submitInquiry(formData: {
 
   return { success: true }
 }
+
+export async function reportListing(formData: {
+  listingId: string
+  listingTitle: string
+  reason: string
+  details?: string
+}) {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const reporterInfo = user ? `User ID: ${user.id}\nEmail: ${user.email}` : "Not logged in (anonymous)"
+
+  const reasonLabels: Record<string, string> = {
+    fraudulent: "Fraudulent or scam listing",
+    wrong_category: "Wrong category",
+    duplicate: "Duplicate listing",
+    sold: "Item already sold",
+    other: "Other",
+  }
+
+  try {
+    await resend.emails.send({
+      from: "RideDirect <noreply@ridedirect.eu>",
+      to: "info@ridedirect.eu",
+      subject: `[Report] Listing flagged: ${formData.listingTitle}`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+          <h2 style="color: #c0392b;">⚠️ Listing Report</h2>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr><td style="padding: 8px 0; color: #999; width: 140px;">Listing</td><td style="padding: 8px 0; font-weight: 600;">${formData.listingTitle}</td></tr>
+            <tr><td style="padding: 8px 0; color: #999;">Listing ID</td><td style="padding: 8px 0; font-family: monospace;">${formData.listingId}</td></tr>
+            <tr><td style="padding: 8px 0; color: #999;">Reason</td><td style="padding: 8px 0; font-weight: 600; color: #c0392b;">${reasonLabels[formData.reason] || formData.reason}</td></tr>
+            <tr><td style="padding: 8px 0; color: #999;">Reporter</td><td style="padding: 8px 0; white-space: pre-line; font-size: 13px;">${reporterInfo}</td></tr>
+          </table>
+          ${formData.details ? `
+          <div style="background: #fff5f5; border-radius: 8px; padding: 16px; margin-top: 16px; border: 1px solid #fed7d7;">
+            <p style="margin: 0; color: #374151; white-space: pre-line;">${formData.details}</p>
+          </div>` : ""}
+          <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+          <a href="https://ridedirect.eu/listings/${formData.listingId}" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View Listing</a>
+        </div>
+      `,
+    })
+  } catch (err) {
+    console.error("[Email] Failed to send report email:", err)
+  }
+
+  return { success: true }
+}
