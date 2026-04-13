@@ -63,25 +63,34 @@ export async function sendReply(formData: FormData) {
     recipientEmail = seller?.email || null
   }
 
-  if (recipientEmail && process.env.RESEND_API_KEY) {
-    await resend.emails.send({
-      from: "RideDirect <noreply@ridedirect.eu>",
-      to: recipientEmail,
-      replyTo: senderProfile?.email,
-      subject: `New message from ${senderName}: ${listingTitle}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0D2A5E;">New message from ${senderName}</h2>
-          <p style="color: #666;">Regarding: <strong>${listingTitle}</strong></p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-          <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
-            <p style="margin: 0; color: #374151; white-space: pre-line;">${message}</p>
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[Email] RESEND_API_KEY is not set")
+  } else if (!recipientEmail) {
+    console.error("[Email] Recipient email not found for inquiry:", inquiryId)
+  } else {
+    try {
+      const result = await resend.emails.send({
+        from: "RideDirect <noreply@ridedirect.eu>",
+        to: recipientEmail,
+        replyTo: senderProfile?.email,
+        subject: `New message from ${senderName}: ${listingTitle}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #0D2A5E;">New message from ${senderName}</h2>
+            <p style="color: #666;">Regarding: <strong>${listingTitle}</strong></p>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+            <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
+              <p style="margin: 0; color: #374151; white-space: pre-line;">${message}</p>
+            </div>
+            <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+            <a href="https://ridedirect.eu/dashboard/messages/${inquiryId}" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View conversation</a>
           </div>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-          <a href="https://ridedirect.eu/dashboard/messages/${inquiryId}" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View conversation</a>
-        </div>
-      `,
-    })
+        `,
+      })
+      console.log("[Email] Reply email sent:", result)
+    } catch (err) {
+      console.error("[Email] Failed to send reply email:", err)
+    }
   }
 
   revalidatePath(`/dashboard/messages/${inquiryId}`)

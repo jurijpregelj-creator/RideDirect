@@ -43,10 +43,21 @@ export async function submitInquiry(formData: {
     .eq("id", formData.sellerId)
     .single()
 
-  if (seller?.email && process.env.RESEND_API_KEY) {
-    await resend.emails.send({
+  if (!process.env.RESEND_API_KEY) {
+    console.error("[Email] RESEND_API_KEY is not set")
+    return { success: true }
+  }
+
+  if (!seller?.email) {
+    console.error("[Email] Seller email not found for seller_id:", formData.sellerId)
+    return { success: true }
+  }
+
+  try {
+    const result = await resend.emails.send({
       from: "RideDirect <noreply@ridedirect.eu>",
       to: seller.email,
+      replyTo: formData.buyerEmail,
       subject: `New inquiry for: ${formData.listingTitle}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
@@ -62,10 +73,13 @@ export async function submitInquiry(formData: {
             <p style="margin: 0; color: #374151; white-space: pre-line;">${formData.message}</p>
           </div>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-          <p style="color: #999; font-size: 12px;">Reply directly to ${formData.buyerEmail} to respond.</p>
+          <a href="https://ridedirect.eu/dashboard/messages" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View in RideDirect</a>
         </div>
       `,
     })
+    console.log("[Email] Inquiry email sent:", result)
+  } catch (err) {
+    console.error("[Email] Failed to send inquiry email:", err)
   }
 
   return { success: true }
