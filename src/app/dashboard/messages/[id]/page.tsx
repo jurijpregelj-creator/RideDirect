@@ -58,11 +58,11 @@ export default async function ConversationPage({ params }: { params: { id: strin
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      <div className="container mx-auto px-4 py-8 max-w-2xl flex flex-col flex-1">
+    <div className="h-[calc(100dvh-5rem)] bg-gray-50 flex flex-col">
+      <div className="container mx-auto px-4 max-w-2xl flex flex-col h-full py-4">
 
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4 mb-4 shrink-0">
           <Link href="/dashboard/messages" className="text-gray-400 hover:text-gray-600 transition-colors">
             <ArrowLeft size={20} />
           </Link>
@@ -80,8 +80,8 @@ export default async function ConversationPage({ params }: { params: { id: strin
           </div>
         </div>
 
-        {/* Thread */}
-        <div className="flex-1 space-y-4 mb-6">
+        {/* Thread — scrollable */}
+        <div className="flex-1 overflow-y-auto space-y-4 pb-4">
           {thread.map((msg) => (
             <div key={msg.id} className={`flex ${msg.isMe ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[80%] ${msg.isMe ? "items-end" : "items-start"} flex flex-col gap-1`}>
@@ -108,8 +108,10 @@ export default async function ConversationPage({ params }: { params: { id: strin
         {/* Mark as read on mount */}
         <MarkReadOnMount inquiryId={params.id} isSeller={isSeller} />
 
-        {/* Reply box */}
-        <ReplyBox inquiryId={params.id} />
+        {/* Reply box — always visible at bottom */}
+        <div className="shrink-0 pt-2 border-t border-gray-200 bg-gray-50">
+          <ReplyBox inquiryId={params.id} />
+        </div>
       </div>
     </div>
   )
