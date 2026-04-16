@@ -16,13 +16,17 @@ export async function GET(request: Request) {
         null
 
       // Always sync email + avatar_url to profiles
-      const termsAcceptedAt = data.user.user_metadata?.terms_accepted_at || null
+      // For OAuth users: set terms_accepted_at to now if not already set
+      // (implied consent via "By continuing you agree to our Terms" note on signup page)
+      const termsAcceptedAt =
+        data.user.user_metadata?.terms_accepted_at || new Date().toISOString()
+
       await supabase
         .from("profiles")
         .update({
           email: data.user.email,
           ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
-          ...(termsAcceptedAt ? { terms_accepted_at: termsAcceptedAt } : {}),
+          terms_accepted_at: termsAcceptedAt,
         })
         .eq("id", data.user.id)
 

@@ -150,6 +150,13 @@ export default function SignupPage() {
             Continue with Facebook
           </Button>
 
+          <p className="text-center text-xs text-gray-400 -mt-2 mb-4">
+            By continuing, you agree to our{" "}
+            <Link href="/legal/terms" target="_blank" className="underline hover:text-[#1E88E5]">Terms of Service</Link>{" "}
+            and{" "}
+            <Link href="/legal/privacy" target="_blank" className="underline hover:text-[#1E88E5]">Privacy Policy</Link>.
+          </p>
+
           <div className="relative mb-4">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-100" />
