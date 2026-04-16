@@ -9,7 +9,7 @@ export default function PrivacyPage() {
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
           <h1 className="text-3xl font-bold text-[#0D2A5E] mb-2">Privacy Policy</h1>
-          <p className="text-sm text-gray-400 mb-10">Last updated: April 1, 2025</p>
+          <p className="text-sm text-gray-400 mb-10">Last updated: April 17, 2026</p>
 
           <Section title="1. Introduction">
             <p>This Privacy Policy explains how <strong>Orbito d.o.o.</strong> ("we", "us", "our"), the operator of RideDirect.eu, collects, uses, stores, and protects your personal data when you use our Platform.</p>
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
 
           <Section title="3. Data We Collect">
             <SubSection title="3.1 Account Data">
-              <p>When you register: full name, business name, email address, country, and password (stored as a secure hash — never in plaintext).</p>
+              <p>When you register: full name, email address, country, and password (stored as a secure hash — never in plaintext).</p>
             </SubSection>
             <SubSection title="3.2 Listing Data">
               <p>When you post a listing: title, description, category, condition, year, price, location, and uploaded images.</p>
@@ -107,14 +107,14 @@ export default function PrivacyPage() {
                     <td className="p-3 text-gray-600">Authentication session</td>
                   </tr>
                   <tr>
-                    <td className="p-3 font-mono text-gray-600">Analytics cookies</td>
-                    <td className="p-3 text-gray-600">Analytics</td>
-                    <td className="p-3 text-gray-600">Aggregate usage statistics</td>
+                    <td className="p-3 font-mono text-gray-600">va_* (Vercel Analytics)</td>
+                    <td className="p-3 text-gray-600">Analytics (cookie-free)</td>
+                    <td className="p-3 text-gray-600">Aggregate page view statistics — no personal data collected</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <p className="mt-3">Strictly necessary cookies cannot be disabled. For non-essential cookies, we will ask for consent on first visit. You can manage cookies through your browser settings. We do not use cookies for advertising or cross-site tracking.</p>
+            <p className="mt-3">Strictly necessary cookies cannot be disabled. Vercel Analytics does not use cookies or collect personal data — it measures only aggregate page views. We do not use cookies for advertising or cross-site tracking.</p>
           </Section>
 
           <Section title="8. Data Retention">

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { redirect, useRouter } from "next/navigation"
-import { Loader2, Save, ArrowLeft } from "lucide-react"
+import { Loader2, Save, ArrowLeft, ShieldCheck, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { setLocale } from "@/app/actions/locale"
@@ -185,6 +185,37 @@ export default function ProfilePage() {
               {saving ? <><Loader2 size={16} className="animate-spin" /> Saving...</> : <><Save size={16} /> Save Changes</>}
             </Button>
           </form>
+        </div>
+
+        {/* GDPR rights */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mt-6">
+          <div className="flex items-center gap-2 mb-1">
+            <ShieldCheck size={18} className="text-[#1E88E5]" />
+            <h2 className="text-base font-semibold text-[#0D2A5E]">Your Privacy Rights</h2>
+          </div>
+          <p className="text-xs text-gray-400 mb-5">
+            Under GDPR you have the right to access, export, or delete your personal data at any time.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <a
+              href={`mailto:info@ridedirect.eu?subject=Data export request&body=Hi, I would like to request an export of all personal data associated with my account (${email}).`}
+              className="flex-1"
+            >
+              <Button type="button" variant="outline" className="w-full text-sm gap-2">
+                <ShieldCheck size={15} />
+                Request My Data
+              </Button>
+            </a>
+            <a
+              href={`mailto:info@ridedirect.eu?subject=Account deletion request&body=Hi, I would like to permanently delete my RideDirect account and all associated data (${email}).`}
+              className="flex-1"
+            >
+              <Button type="button" variant="outline" className="w-full text-sm gap-2 text-red-500 border-red-200 hover:bg-red-50 hover:border-red-300">
+                <Trash2 size={15} />
+                Delete My Account
+              </Button>
+            </a>
+          </div>
         </div>
       </div>
     </div>

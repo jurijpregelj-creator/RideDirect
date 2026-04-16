@@ -9,7 +9,7 @@ export default function TermsPage() {
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12">
           <h1 className="text-3xl font-bold text-[#0D2A5E] mb-2">Terms of Service</h1>
-          <p className="text-sm text-gray-400 mb-10">Last updated: April 1, 2025</p>
+          <p className="text-sm text-gray-400 mb-10">Last updated: April 17, 2026</p>
 
           <Section title="1. Introduction">
             <p>These Terms of Service ("Terms") govern your access to and use of the RideDirect.eu platform ("Platform"), operated by <strong>Orbito d.o.o.</strong>, Ložnica pri Žalcu 35K, 3310 Žalec, Slovenia ("we", "us", "our").</p>

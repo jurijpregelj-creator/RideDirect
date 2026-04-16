@@ -32,6 +32,7 @@ export default function SignupPage() {
   const [country, setCountry] = useState<string>("")
   const [language, setLanguage] = useState<string>("en")
   const [termsAccepted, setTermsAccepted] = useState(false)
+  const [marketingAccepted, setMarketingAccepted] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -54,7 +55,13 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, country, preferred_language: language, terms_accepted_at: new Date().toISOString() },
+        data: {
+          full_name: fullName,
+          country,
+          preferred_language: language,
+          terms_accepted_at: new Date().toISOString(),
+          marketing_accepted_at: marketingAccepted ? new Date().toISOString() : null,
+        },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
@@ -212,6 +219,20 @@ export default function SignupPage() {
                 <Link href="/legal/terms" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">Terms of Service</Link>{" "}
                 and{" "}
                 <Link href="/legal/privacy" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">Privacy Policy</Link>.
+              </label>
+            </div>
+
+            {/* Marketing opt-in */}
+            <div className="flex items-start gap-3">
+              <input
+                type="checkbox"
+                id="marketing"
+                checked={marketingAccepted}
+                onChange={(e) => setMarketingAccepted(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-[#1E88E5] cursor-pointer shrink-0"
+              />
+              <label htmlFor="marketing" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
+                I'd like to receive occasional product updates and industry news from RideDirect. <span className="text-gray-400">(Optional)</span>
               </label>
             </div>
 
