@@ -21,7 +21,8 @@ export async function sendContactMessage(formData: {
   message: string
 }) {
   try {
-    await resend.emails.send({
+    console.log("[Contact] Sending email from:", formData.email, "subject:", formData.subject)
+    const result = await resend.emails.send({
       from: "RideDirect <noreply@ridedirect.eu>",
       to: ["info@ridedirect.eu", "jurijpregelj@gmail.com"],
       replyTo: formData.email,
@@ -42,6 +43,7 @@ export async function sendContactMessage(formData: {
         </div>
       `,
     })
+    console.log("[Contact] Email sent, id:", result.data?.id, "error:", result.error)
     return { success: true }
   } catch (err) {
     console.error("[Contact] Failed to send email:", err)
