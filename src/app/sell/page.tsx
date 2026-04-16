@@ -9,6 +9,7 @@ import {
   ArrowRight,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { createClient } from "@/lib/supabase/server"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -83,7 +84,11 @@ const CATEGORIES = [
   "Equipment & Parts",
 ]
 
-export default function SellWithUsPage() {
+export default async function SellWithUsPage() {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  const sellHref = user ? "/dashboard/create" : "/auth/signup"
+
   return (
     <div className="min-h-screen">
       {/* Hero */}
@@ -101,7 +106,7 @@ export default function SellWithUsPage() {
             RideDirect.eu connects you with serious, verified buyers across 29 European countries. List your rides for free and reach the entire European amusement industry.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/auth/signup">
+            <Link href={sellHref}>
               <Button variant="brand-orange" size="xl" className="shadow-lg shadow-orange-500/25">
                 Start Selling Free
                 <ArrowRight size={18} />
@@ -202,9 +207,9 @@ export default function SellWithUsPage() {
           <p className="text-blue-200 mb-8 max-w-xl mx-auto">
             Create your free account today and list your first ride in under 10 minutes.
           </p>
-          <Link href="/auth/signup">
+          <Link href={sellHref}>
             <Button variant="brand-orange" size="xl" className="shadow-lg shadow-orange-500/25">
-              Create Free Account
+              {user ? "Post a Ride" : "Create Free Account"}
               <ArrowRight size={18} />
             </Button>
           </Link>
