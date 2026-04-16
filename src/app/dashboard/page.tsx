@@ -87,9 +87,6 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                   📍 {profile.country}
                 </span>
               )}
-              <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full capitalize">
-                {profile?.role || "buyer"}
-              </span>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap">

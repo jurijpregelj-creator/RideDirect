@@ -5,6 +5,7 @@ import { redirect, useRouter } from "next/navigation"
 import { Loader2, Save, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { setLocale } from "@/app/actions/locale"
 import { AvatarUpload } from "@/components/profile/avatar-upload"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -83,11 +84,14 @@ export default function ProfilePage() {
 
     if (updateError) {
       setError("Failed to save changes. Please try again.")
+      setSaving(false)
     } else {
+      // Apply language change immediately via cookie
+      await setLocale(language)
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
+      // Reload so next-intl picks up the new locale
+      setTimeout(() => window.location.reload(), 800)
     }
-    setSaving(false)
   }
 
   if (loading) {

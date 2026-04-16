@@ -29,7 +29,6 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
-  const [role, setRole] = useState<string>("buyer")
   const [country, setCountry] = useState<string>("")
   const [language, setLanguage] = useState<string>("en")
   const [termsAccepted, setTermsAccepted] = useState(false)
@@ -55,7 +54,7 @@ export default function SignupPage() {
       email,
       password,
       options: {
-        data: { full_name: fullName, role, country, preferred_language: language, terms_accepted_at: new Date().toISOString() },
+        data: { full_name: fullName, country, preferred_language: language, terms_accepted_at: new Date().toISOString() },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
     })
@@ -171,17 +170,6 @@ export default function SignupPage() {
             <div>
               <Label htmlFor="password">{t("password")} *</Label>
               <Input id="password" name="password" type="password" placeholder={t("passwordHint")} minLength={8} required className="mt-1.5" />
-            </div>
-            <div>
-              <Label>{t("iWantTo")} *</Label>
-              <div className="grid grid-cols-2 gap-3 mt-1.5">
-                <button type="button" onClick={() => setRole("buyer")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "buyer" ? "border-[#1E88E5] bg-blue-50 text-[#1E88E5]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
-                  🛒 {t("buyRides")}
-                </button>
-                <button type="button" onClick={() => setRole("seller")} className={`p-3 rounded-lg border text-sm font-medium transition-colors text-left ${role === "seller" ? "border-[#1E88E5] bg-blue-50 text-[#1E88E5]" : "border-gray-200 text-gray-600 hover:border-gray-300"}`}>
-                  🏷️ {t("sellRides")}
-                </button>
-              </div>
             </div>
             <div>
               <Label>{t("country")} *</Label>
