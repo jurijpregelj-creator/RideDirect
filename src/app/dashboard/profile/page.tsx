@@ -5,6 +5,7 @@ import { redirect, useRouter } from "next/navigation"
 import { Loader2, Save, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { AvatarUpload } from "@/components/profile/avatar-upload"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -31,6 +32,8 @@ export default function ProfilePage() {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const [userId, setUserId] = useState("")
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [fullName, setFullName] = useState("")
   const [country, setCountry] = useState("")
   const [language, setLanguage] = useState("en")
@@ -44,14 +47,16 @@ export default function ProfilePage() {
 
       const { data: profile } = await supabase
         .from("profiles")
-        .select("full_name, country, preferred_language, email")
+        .select("full_name, country, preferred_language, email, avatar_url")
         .eq("id", user.id)
         .single()
 
+      setUserId(user.id)
       setEmail(user.email || "")
       setFullName(profile?.full_name || "")
       setCountry(profile?.country || "")
       setLanguage(profile?.preferred_language || "en")
+      setAvatarUrl(profile?.avatar_url || null)
       setLoading(false)
     }
     load()
@@ -102,8 +107,17 @@ export default function ProfilePage() {
         </Link>
 
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-          <h1 className="text-2xl font-bold text-[#0D2A5E] mb-1">Edit Profile</h1>
-          <p className="text-sm text-gray-400 mb-8">Update your account details</p>
+          <div className="flex items-center gap-4 mb-8">
+            <AvatarUpload
+              userId={userId}
+              currentUrl={avatarUrl}
+              initials={(fullName || email || "U").split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)}
+            />
+            <div>
+              <h1 className="text-2xl font-bold text-[#0D2A5E]">Edit Profile</h1>
+              <p className="text-sm text-gray-400">Click the avatar to change your photo</p>
+            </div>
+          </div>
 
           {error && (
             <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl mb-6">
