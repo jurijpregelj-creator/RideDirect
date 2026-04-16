@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Mail, Phone, Globe2, MessageSquare, CheckCircle2, Loader2 } from "lucide-react"
+import { Mail, Globe2, MessageSquare, CheckCircle2, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -13,12 +13,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { sendContactMessage } from "./actions"
 
 const CONTACT_INFO = [
   {
     icon: Mail,
     label: "Email",
-    value: "hello@ridedirect.eu",
+    value: "info@ridedirect.eu",
     description: "We reply within 1 business day",
   },
   {
@@ -30,7 +31,7 @@ const CONTACT_INFO = [
   {
     icon: MessageSquare,
     label: "Languages",
-    value: "English, German, French",
+    value: "English, German, Italian",
     description: "Multilingual support team",
   },
 ]
@@ -38,13 +39,28 @@ const CONTACT_INFO = [
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [subject, setSubject] = useState("")
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 800))
+    setError(null)
+
+    const form = e.currentTarget
+    const name = (form.elements.namedItem("name") as HTMLInputElement).value
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value
+    const company = (form.elements.namedItem("company") as HTMLInputElement).value
+    const message = (form.elements.namedItem("message") as HTMLTextAreaElement).value
+
+    const result = await sendContactMessage({ name, email, company, subject, message })
+
+    if (result.success) {
+      setSubmitted(true)
+    } else {
+      setError("Something went wrong. Please email us directly at info@ridedirect.eu.")
+    }
     setLoading(false)
-    setSubmitted(true)
   }
 
   return (
@@ -84,13 +100,6 @@ export default function ContactPage() {
                 </div>
               </div>
             ))}
-
-            <div className="bg-[#0D2A5E] rounded-xl p-5 text-white">
-              <h3 className="font-semibold mb-2 text-sm">For urgent matters</h3>
-              <p className="text-blue-200 text-xs leading-relaxed">
-                If you have a time-sensitive inquiry about an active listing or a verified seller issue, please mark your subject as &quot;URGENT&quot; and we&apos;ll prioritise your message.
-              </p>
-            </div>
           </div>
 
           {/* Contact form */}
@@ -106,6 +115,13 @@ export default function ContactPage() {
             ) : (
               <div className="bg-white rounded-xl border border-gray-100 p-6">
                 <h2 className="font-semibold text-[#0D2A5E] text-lg mb-6">Send a Message</h2>
+
+                {error && (
+                  <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-lg mb-4">
+                    {error}
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
@@ -124,8 +140,8 @@ export default function ContactPage() {
                       <Input id="company" name="company" placeholder="Your company name" className="mt-1.5" />
                     </div>
                     <div>
-                      <Label htmlFor="subject">Subject *</Label>
-                      <Select name="subject" required>
+                      <Label>Subject *</Label>
+                      <Select onValueChange={setSubject} required>
                         <SelectTrigger className="mt-1.5">
                           <SelectValue placeholder="Select a topic" />
                         </SelectTrigger>
@@ -157,13 +173,10 @@ export default function ContactPage() {
                     type="submit"
                     variant="brand"
                     className="w-full"
-                    disabled={loading}
+                    disabled={loading || !subject}
                   >
                     {loading ? (
-                      <>
-                        <Loader2 size={16} className="animate-spin" />
-                        Sending...
-                      </>
+                      <><Loader2 size={16} className="animate-spin" /> Sending...</>
                     ) : (
                       "Send Message"
                     )}
