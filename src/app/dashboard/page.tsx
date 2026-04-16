@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye, MessageSquare } from "lucide-react"
+import { Plus, Eye, MessageSquare, Pencil, Settings } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -92,7 +92,13 @@ export default async function DashboardPage({ searchParams }: PageProps) {
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Link href="/dashboard/profile">
+              <Button variant="outline" size="sm">
+                <Settings size={15} />
+                Edit Profile
+              </Button>
+            </Link>
             <Link href="/dashboard/messages" className="relative">
               <Button variant="outline" size="sm">
                 <MessageSquare size={15} />
@@ -155,19 +161,15 @@ export default async function DashboardPage({ searchParams }: PageProps) {
           ) : (
             <div className="divide-y divide-gray-50">
               {listings.map((listing) => (
-                <Link
-                  key={listing.id}
-                  href={`/listings/${listing.id}`}
-                  className="px-6 py-4 flex items-center gap-4 hover:bg-gray-50/50 transition-colors"
-                >
-                  <div className="flex-1 min-w-0">
+                <div key={listing.id} className="px-6 py-4 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
+                  <Link href={`/listings/${listing.id}`} className="flex-1 min-w-0">
                     <div className="font-medium text-[#0D2A5E] hover:text-[#1E88E5] truncate transition-colors">
                       {listing.title}
                     </div>
                     <div className="text-xs text-gray-400 mt-0.5">
                       {listing.category} · {listing.country} · {new Date(listing.created_at).toLocaleDateString("en-GB")}
                     </div>
-                  </div>
+                  </Link>
                   <div className="text-sm font-semibold text-gray-700 shrink-0">
                     {formatPrice(listing.price, listing.currency)}
                   </div>
@@ -178,7 +180,12 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                     <Eye size={12} />
                     {(listing as any).views ?? 0}
                   </span>
-                </Link>
+                  <Link href={`/dashboard/listings/${listing.id}/edit`} className="shrink-0">
+                    <Button variant="outline" size="sm" className="h-7 px-2">
+                      <Pencil size={12} />
+                    </Button>
+                  </Link>
+                </div>
               ))}
             </div>
           )}
