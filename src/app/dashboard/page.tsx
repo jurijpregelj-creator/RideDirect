@@ -175,7 +175,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                   </span>
                   <span className="shrink-0 flex items-center gap-1 text-xs text-gray-400">
                     <Eye size={12} />
-                    {(listing as any).views ?? 0}
+                    {listing.views ?? 0}
                   </span>
                   <Link href={`/dashboard/listings/${listing.id}/edit`} className="shrink-0">
                     <Button variant="outline" size="sm" className="h-7 px-2">

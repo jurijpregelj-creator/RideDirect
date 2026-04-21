@@ -96,7 +96,7 @@ export default async function SellWithUsPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm text-blue-100 mb-6">
             <Star size={14} className="fill-[#FF6D00] text-[#FF6D00]" />
-            Join 100+ active sellers across Europe
+            Europe's dedicated amusement ride marketplace
           </div>
           <h1 className="text-4xl lg:text-5xl font-bold mb-5 leading-tight">
             Sell Your Amusement Rides<br />
