@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Menu, X, Plus, MessageCircle } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
@@ -17,6 +17,7 @@ export function Header() {
   const [unread, setUnread] = useState(0)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const router = useRouter()
+  const pathname = usePathname()
   const t = useTranslations("nav")
 
   const NAV_LINKS = [
@@ -93,16 +94,24 @@ export function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1E88E5] rounded-md hover:bg-blue-50 transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-1" aria-label="Main navigation">
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  isActive
+                    ? "text-[#1E88E5] bg-blue-50"
+                    : "text-gray-600 hover:text-[#1E88E5] hover:bg-blue-50"
+                }`}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
         {/* CTA Buttons */}
@@ -184,16 +193,22 @@ export function Header() {
       {/* Mobile Nav */}
       {mobileOpen && (
         <div className="md:hidden border-t bg-white px-4 py-4 space-y-1">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="block px-3 py-2.5 text-sm font-medium text-gray-700 hover:text-[#1E88E5] hover:bg-blue-50 rounded-md"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`block px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${
+                  isActive ? "text-[#1E88E5] bg-blue-50" : "text-gray-700 hover:text-[#1E88E5] hover:bg-blue-50"
+                }`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
           <div className="pt-3 flex flex-col gap-2 border-t mt-3">
             <LanguageSwitcher />
             {user ? (

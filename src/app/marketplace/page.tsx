@@ -10,6 +10,8 @@ import type { Metadata } from "next"
 export const metadata: Metadata = {
   title: "Browse Listings",
   description: "Browse amusement rides and attractions for sale across Europe.",
+  alternates: { canonical: "https://ridedirect.eu/marketplace" },
+  openGraph: { url: "https://ridedirect.eu/marketplace" },
 }
 
 interface MarketplacePageProps {
@@ -83,7 +85,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
         </Suspense>
 
         <p className="text-sm text-gray-500 mb-6">
-          {listings.length} {listings.length !== 1 ? t("listingsFound_other", { count: listings.length }) : t("listingsFound_one", { count: listings.length })}
+          {listings.length === 1 ? t("listingsFound_one", { count: 1 }) : t("listingsFound_other", { count: listings.length })}
         </p>
 
         {listings.length > 0 ? (

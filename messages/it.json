@@ -78,8 +78,8 @@
   "marketplace": {
     "title": "Tutti gli annunci",
     "subtitle": "Attrazioni e giostre in vendita in tutta Europa",
-    "listingsFound_one": "{{count}} annuncio trovato",
-    "listingsFound_other": "{{count}} annunci trovati",
+    "listingsFound_one": "{count} annuncio trovato",
+    "listingsFound_other": "{count} annunci trovati",
     "noListings": "Nessun annuncio trovato",
     "noListingsDesc": "Prova a modificare i filtri o i termini di ricerca."
   },

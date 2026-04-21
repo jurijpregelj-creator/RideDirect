@@ -78,8 +78,8 @@
   "marketplace": {
     "title": "Browse Listings",
     "subtitle": "Amusement rides and attractions for sale across Europe",
-    "listingsFound_one": "{{count}} listing found",
-    "listingsFound_other": "{{count}} listings found",
+    "listingsFound_one": "{count} listing found",
+    "listingsFound_other": "{count} listings found",
     "noListings": "No listings found",
     "noListingsDesc": "Try adjusting your filters or search terms to find what you're looking for."
   },

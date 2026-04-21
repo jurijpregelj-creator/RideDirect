@@ -14,8 +14,9 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Sell With Us",
-  description:
-    "List your amusement rides on RideDirect.eu and reach verified buyers across Europe.",
+  description: "List your amusement rides on RideDirect.eu and reach verified buyers across Europe.",
+  alternates: { canonical: "https://ridedirect.eu/sell" },
+  openGraph: { url: "https://ridedirect.eu/sell" },
 }
 
 const BENEFITS = [

@@ -30,11 +30,21 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    locale: "en_EU",
+    locale: "en_GB",
     url: "https://ridedirect.eu",
     siteName: "RideDirect.eu",
     title: "RideDirect.eu — European Amusement Ride Marketplace",
     description: "Buy, sell, and discover funfair equipment across Europe.",
+    images: [{ url: "https://ridedirect.eu/og-image.png", width: 1200, height: 630, alt: "RideDirect.eu" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "RideDirect.eu — European Amusement Ride Marketplace",
+    description: "Buy, sell, and discover funfair equipment across Europe.",
+    images: ["https://ridedirect.eu/og-image.png"],
+  },
+  alternates: {
+    canonical: "https://ridedirect.eu",
   },
 }
 
