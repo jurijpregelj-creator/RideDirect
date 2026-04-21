@@ -210,7 +210,7 @@ export default function EditListingPage() {
                   <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select category" /></SelectTrigger>
                   <SelectContent>
                     {CATEGORIES.map((cat) => (
-                      <SelectItem key={cat.slug} value={cat.name}>{cat.icon} {cat.name}</SelectItem>
+                      <SelectItem key={cat.slug} value={cat.name}><cat.icon size={14} className="inline-block shrink-0 mr-1" />{cat.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

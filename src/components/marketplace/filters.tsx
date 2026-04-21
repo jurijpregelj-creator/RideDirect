@@ -65,7 +65,8 @@ export function MarketplaceFilters() {
             <SelectItem value="all">All Categories</SelectItem>
             {CATEGORIES.map((cat) => (
               <SelectItem key={cat.slug} value={cat.slug}>
-                {cat.icon} {cat.name}
+                <cat.icon size={14} className="inline-block shrink-0 mr-1" />
+                {cat.name}
               </SelectItem>
             ))}
           </SelectContent>
