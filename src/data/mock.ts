@@ -1,64 +1,65 @@
 import type { Listing, Category } from "@/types"
+import { Zap, Users, Baby, Wind, Gamepad2, Car, Truck, Target, Building2, Wrench } from "lucide-react"
 
 export const CATEGORIES: Category[] = [
   {
     name: "Major Rides",
     slug: "major-rides",
-    icon: "🎢",
+    icon: Zap,
     description: "Roller coasters, ferris wheels, thrill rides & large attractions",
   },
   {
     name: "Family Rides",
     slug: "family-rides",
-    icon: "🎠",
+    icon: Users,
     description: "Carousels, ghost trains, family-friendly attractions",
   },
   {
     name: "Kiddie Rides",
     slug: "kiddie-rides",
-    icon: "🧸",
+    icon: Baby,
     description: "Small rides designed for young children",
   },
   {
     name: "Inflatables & Soft Play",
     slug: "inflatables-soft-play",
-    icon: "🏰",
+    icon: Wind,
     description: "Bouncy castles, inflatable slides, soft play equipment",
   },
   {
     name: "Arcade & Coin Machines",
     slug: "arcade-coin-machines",
-    icon: "🎮",
+    icon: Gamepad2,
     description: "Arcade cabinets, redemption games, coin-operated machines",
   },
   {
     name: "Go-Karts & Track Attractions",
     slug: "go-karts-track-attractions",
-    icon: "🚗",
+    icon: Car,
     description: "Bumper cars, go-karts, dodgems, electric tracks",
   },
   {
     name: "Event & Mobile Attractions",
     slug: "event-mobile-attractions",
-    icon: "🎪",
+    icon: Truck,
     description: "Transportable rides, road trains, mobile attractions for events",
   },
   {
     name: "Games & Prize Booths",
     slug: "games-prize-booths",
-    icon: "🎯",
+    icon: Target,
     description: "Fairground games, prize booths, shooting galleries",
   },
   {
     name: "Indoor Parks & Playgrounds",
     slug: "indoor-parks-playgrounds",
-    icon: "🏃",
+    icon: Building2,
     description: "Trampoline parks, climbing walls, indoor play structures",
   },
   {
     name: "Equipment & Parts",
     slug: "equipment-parts",
-    icon: "⚙️",
+    icon: Wrench,
     description: "Spare parts, motors, control systems, maintenance equipment",
   },
 ]

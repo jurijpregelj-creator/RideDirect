@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react"
 import type { ListingImage } from "@/types"
 
 interface ImageGalleryProps {
@@ -20,8 +20,8 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
 
   if (!images.length) {
     return (
-      <div className="relative aspect-[16/9] rounded-xl overflow-hidden bg-gray-200 flex items-center justify-center text-gray-300 text-8xl">
-        🎡
+      <div className="relative aspect-[16/9] rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center" aria-hidden="true">
+        <ImageOff size={48} className="text-gray-200" />
       </div>
     )
   }

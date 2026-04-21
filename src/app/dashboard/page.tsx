@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
-import { Plus, Eye, MessageSquare, Pencil, Settings } from "lucide-react"
+import { Plus, Eye, MessageSquare, Pencil, Settings, Package } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -145,7 +145,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
           {!listings.length ? (
             <div className="py-16 text-center">
-              <div className="text-4xl mb-3">🎡</div>
+              <div className="w-14 h-14 rounded-xl bg-gray-100 flex items-center justify-center mb-3 mx-auto" aria-hidden="true"><Package size={24} className="text-gray-300" /></div>
               <p className="text-gray-400 text-sm mb-4">
                 {statusFilter === "all" ? tDash("noListings") : tDash("noListingsStatus")}
               </p>

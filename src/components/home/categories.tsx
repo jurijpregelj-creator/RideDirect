@@ -21,7 +21,9 @@ export async function Categories() {
               href={`/marketplace?category=${category.slug}`}
               className="group relative bg-gray-50 hover:bg-[#1E88E5] rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 border border-gray-100 hover:border-[#1E88E5]"
             >
-              <div className="text-3xl mb-3">{category.icon}</div>
+              <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center mb-3 group-hover:bg-white/20 transition-colors" aria-hidden="true">
+                <category.icon size={20} className="text-[#1E88E5] group-hover:text-white transition-colors" />
+              </div>
               <h3 className="font-semibold text-[#0D2A5E] group-hover:text-white text-sm leading-tight mb-1.5 transition-colors">
                 {t(category.slug as any) || category.name}
               </h3>

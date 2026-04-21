@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import { Search } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { MarketplaceFilters } from "@/components/marketplace/filters"
@@ -96,7 +97,7 @@ export default async function MarketplacePage({ searchParams }: MarketplacePageP
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="text-5xl mb-4">🎡</div>
+            <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4 mx-auto" aria-hidden="true"><Search size={28} className="text-gray-300" /></div>
             <h3 className="text-lg font-semibold text-gray-700 mb-2">{t("noListings")}</h3>
             <p className="text-gray-400 text-sm max-w-md">{t("noListingsDesc")}</p>
           </div>

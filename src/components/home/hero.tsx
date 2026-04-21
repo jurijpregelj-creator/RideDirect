@@ -31,17 +31,17 @@ export async function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/marketplace">
-              <Button variant="brand-orange" size="xl" className="w-full sm:w-auto shadow-lg shadow-orange-500/25">
+            <Button asChild variant="brand-orange" size="xl" className="w-full sm:w-auto shadow-lg shadow-orange-500/25">
+              <Link href="/marketplace">
                 {t("viewListings")}
                 <ArrowRight size={18} />
-              </Button>
-            </Link>
-            <Link href="/sell">
-              <Button size="xl" className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur">
+              </Link>
+            </Button>
+            <Button asChild size="xl" className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur">
+              <Link href="/sell">
                 {t("sellWithUs")}
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-14 pt-10 border-t border-white/10">

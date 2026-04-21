@@ -1,3 +1,5 @@
+import type React from "react"
+
 export type UserRole = "buyer" | "seller" | "admin"
 export type ListingStatus = "draft" | "pending" | "approved" | "rejected" | "expired"
 export type ListingCondition = "new" | "like_new" | "good" | "fair" | "parts_only"
@@ -55,6 +57,6 @@ export interface Inquiry {
 export interface Category {
   name: string
   slug: string
-  icon: string
+  icon: React.ComponentType<{ size?: number; className?: string }>
   description: string
 }

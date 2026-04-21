@@ -107,17 +107,17 @@ export default async function SellWithUsPage() {
             RideDirect.eu connects you with serious, verified buyers across 29 European countries. List your rides for free and reach the entire European amusement industry.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href={sellHref}>
-              <Button variant="brand-orange" size="xl" className="shadow-lg shadow-orange-500/25">
+            <Button asChild variant="brand-orange" size="xl" className="shadow-lg shadow-orange-500/25">
+              <Link href={sellHref}>
                 Start Selling Free
                 <ArrowRight size={18} />
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button size="xl" className="bg-white/10 hover:bg-white/20 text-white border border-white/30">
+              </Link>
+            </Button>
+            <Button asChild size="xl" className="bg-white/10 hover:bg-white/20 text-white border border-white/30">
+              <Link href="/contact">
                 Talk to Our Team
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -208,12 +208,12 @@ export default async function SellWithUsPage() {
           <p className="text-blue-200 mb-8 max-w-xl mx-auto">
             Create your free account today and list your first ride in under 10 minutes.
           </p>
-          <Link href={sellHref}>
-            <Button variant="brand-orange" size="xl" className="shadow-lg shadow-orange-500/25">
+          <Button asChild variant="brand-orange" size="xl" className="shadow-lg shadow-orange-500/25">
+            <Link href={sellHref}>
               {user ? "Post a Ride" : "Create Free Account"}
               <ArrowRight size={18} />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </section>
     </div>

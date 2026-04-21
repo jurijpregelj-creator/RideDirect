@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Calendar, CheckCircle2, ShieldCheck } from "lucide-react"
+import { MapPin, Calendar, CheckCircle2, ShieldCheck, ImageOff } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { type Listing } from "@/types"
 import { formatPrice } from "@/lib/utils"
@@ -27,8 +27,8 @@ export function ListingCard({ listing }: ListingCardProps) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-300 text-5xl">
-            🎡
+          <div className="flex items-center justify-center h-full" aria-hidden="true">
+            <ImageOff size={36} className="text-gray-200" />
           </div>
         )}
         <div className="absolute top-2 left-2 flex gap-1.5 flex-wrap">

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, MapPin, Calendar, CheckCircle2 } from "lucide-react"
+import { ArrowRight, MapPin, Calendar, CheckCircle2, ImageOff } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/server"
@@ -67,8 +67,8 @@ export async function FeaturedListings() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
                   ) : (
-                    <div className="flex items-center justify-center h-full text-gray-300 text-4xl">
-                      🎡
+                    <div className="flex items-center justify-center h-full" aria-hidden="true">
+                      <ImageOff size={32} className="text-gray-200" />
                     </div>
                   )}
                   {listing.ce_docs_available && (
