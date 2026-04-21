@@ -37,7 +37,9 @@ export async function GET(request: Request) {
         .eq("id", data.user.id)
         .single()
 
-      const redirectTo = profile?.role === "admin" ? "/admin" : next
+      // Don't override next= for password reset; admins need /auth/reset-password too
+      const redirectTo =
+        profile?.role === "admin" && next !== "/auth/reset-password" ? "/admin" : next
       return NextResponse.redirect(`${origin}${redirectTo}`)
     }
   }

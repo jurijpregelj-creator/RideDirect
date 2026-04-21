@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Loader2, CheckCircle2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
@@ -14,6 +14,20 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [sessionReady, setSessionReady] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    createClient()
+      .auth.getSession()
+      .then(({ data }) => {
+        if (!data.session) {
+          // No active session — the reset link was not followed or already expired
+          setSessionReady(false)
+        } else {
+          setSessionReady(true)
+        }
+      })
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -40,6 +54,22 @@ export default function ResetPasswordPage() {
       setTimeout(() => router.push("/dashboard"), 2000)
     }
     setLoading(false)
+  }
+
+  if (sessionReady === false) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+        <div className="w-full max-w-md text-center">
+          <h1 className="text-2xl font-bold text-[#0D2A5E] mb-3">Link expired or invalid</h1>
+          <p className="text-gray-500 mb-6">
+            This password reset link has expired or already been used. Request a new one below.
+          </p>
+          <Link href="/auth/forgot-password">
+            <Button variant="brand">Request a new reset link</Button>
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   if (done) {
