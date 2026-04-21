@@ -1,4 +1,4 @@
-import type React from "react"
+import type { LucideIcon } from "lucide-react"
 
 export type UserRole = "buyer" | "seller" | "admin"
 export type ListingStatus = "draft" | "pending" | "approved" | "rejected" | "expired"
@@ -57,6 +57,6 @@ export interface Inquiry {
 export interface Category {
   name: string
   slug: string
-  icon: React.ComponentType<{ size?: number; className?: string }>
+  icon: LucideIcon
   description: string
 }
