@@ -33,15 +33,19 @@ const nextConfig = {
         headers: securityHeaders,
       },
       // Cache public pages for 60s, stale-while-revalidate 24h
-      {
-        source: "/(|marketplace|sell|about|contact|legal/(.*)|listings/(.*))",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, s-maxage=60, stale-while-revalidate=86400",
-          },
-        ],
-      },
+      // Note: Next.js does not allow capturing groups in source patterns,
+      // so we list each pattern separately.
+      ...["/", "/marketplace", "/sell", "/about", "/contact", "/legal/:path*", "/listings/:path*"].map(
+        (source) => ({
+          source,
+          headers: [
+            {
+              key: "Cache-Control",
+              value: "public, s-maxage=60, stale-while-revalidate=86400",
+            },
+          ],
+        })
+      ),
     ]
   },
 }
