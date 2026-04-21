@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next"
+import { createClient } from "@/lib/supabase/server"
 
 const BASE_URL = "https://ridedirect.eu"
 
@@ -15,7 +16,7 @@ const CATEGORY_SLUGS = [
   "equipment-parts",
 ]
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
     { url: `${BASE_URL}/marketplace`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
@@ -33,5 +34,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }))
 
-  return [...staticPages, ...categoryPages]
+  // Fetch all approved listings for individual listing pages
+  let listingPages: MetadataRoute.Sitemap = []
+  try {
+    const supabase = createClient()
+    const { data: listings } = await supabase
+      .from("listings")
+      .select("id, updated_at")
+      .eq("status", "approved")
+      .order("updated_at", { ascending: false })
+
+    if (listings) {
+      listingPages = listings.map((listing) => ({
+        url: `${BASE_URL}/listings/${listing.id}`,
+        lastModified: new Date(listing.updated_at),
+        changeFrequency: "weekly" as const,
+        priority: 0.8,
+      }))
+    }
+  } catch {
+    // Silently fail — sitemap still works without individual listings
+  }
+
+  return [...staticPages, ...categoryPages, ...listingPages]
 }

@@ -235,7 +235,7 @@ export default function EditListingPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label htmlFor="price">Price *</Label>
-                <Input id="price" type="number" min="0" value={price} onChange={(e) => setPrice(e.target.value)} required className="mt-1.5" />
+                <Input id="price" type="number" min="1" value={price} onChange={(e) => setPrice(e.target.value)} required className="mt-1.5" />
               </div>
               <div>
                 <Label>Currency</Label>

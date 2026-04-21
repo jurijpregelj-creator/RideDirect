@@ -186,13 +186,19 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
               </div>
             </div>
 
-            {/* Inquiry form */}
-            <InquiryForm
-              listingId={listing.id}
-              sellerId={listing.seller_id}
-              listingTitle={listing.title}
-              loggedInUser={currentProfile ? { name: currentProfile.full_name, email: currentProfile.email || currentUser?.email || "" } : null}
-            />
+            {/* Inquiry form — hidden for the seller of this listing */}
+            {currentUser?.id === listing.seller_id ? (
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-center text-sm text-blue-600">
+                This is your listing. Buyers will see a contact form here.
+              </div>
+            ) : (
+              <InquiryForm
+                listingId={listing.id}
+                sellerId={listing.seller_id}
+                listingTitle={listing.title}
+                loggedInUser={currentProfile ? { name: currentProfile.full_name, email: currentProfile.email || currentUser?.email || "" } : null}
+              />
+            )}
 
             {/* Report */}
             <div className="flex justify-center">

@@ -227,7 +227,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
               id="price"
               name="price"
               type="number"
-              min="0"
+              min="1"
               step="1"
               placeholder="e.g. 25000"
               required
