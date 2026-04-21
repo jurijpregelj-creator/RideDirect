@@ -30,7 +30,15 @@ export async function GET(request: Request) {
         })
         .eq("id", data.user.id)
 
-      return NextResponse.redirect(`${origin}${next}`)
+      // Redirect admins always to /admin
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", data.user.id)
+        .single()
+
+      const redirectTo = profile?.role === "admin" ? "/admin" : next
+      return NextResponse.redirect(`${origin}${redirectTo}`)
     }
   }
 
