@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Admin — Users" }
@@ -11,7 +11,7 @@ const ROLE_COLORS: Record<string, string> = {
 }
 
 export default async function AdminUsersPage() {
-  const supabase = createClient()
+  const supabase = createAdminClient()
   const { data: users } = await supabase
     .from("profiles")
     .select("id, email, full_name, role, country, created_at")
