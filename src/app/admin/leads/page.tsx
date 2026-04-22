@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { formatPrice } from "@/lib/utils"
+import { DeleteLeadButton } from "./delete-lead-button"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Leads | Admin" }
@@ -104,6 +105,8 @@ export default async function AdminLeadsPage() {
                     {lead.lang}
                   </span>
                 </div>
+
+                <DeleteLeadButton leadId={lead.id} />
               </div>
             ))}
           </div>
