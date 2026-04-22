@@ -13,10 +13,11 @@ import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
 
 interface FunnelRegisterProps {
   t: typeof FUNNEL_T[FunnelLang]
+  email: string
   onBack: () => void
 }
 
-export function FunnelRegister({ t, onBack }: FunnelRegisterProps) {
+export function FunnelRegister({ t, email, onBack }: FunnelRegisterProps) {
   const r = t.register
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -177,8 +178,8 @@ export function FunnelRegister({ t, onBack }: FunnelRegisterProps) {
           <Input id="full_name" name="full_name" placeholder="John Smith" required className="mt-1.5 rounded-xl" />
         </div>
         <div>
-          <Label htmlFor="email">{r.email} *</Label>
-          <Input id="email" name="email" type="email" placeholder="john@company.com" required className="mt-1.5 rounded-xl" />
+          <Label htmlFor="email">{r.email}</Label>
+          <Input id="email" name="email" type="email" defaultValue={email} readOnly={!!email} required className={`mt-1.5 rounded-xl ${email ? "bg-gray-50 text-gray-600" : ""}`} />
         </div>
         <div>
           <Label htmlFor="password">{r.password} *</Label>

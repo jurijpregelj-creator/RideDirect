@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server"
 export async function saveLead(data: {
   title: string
   description: string
+  email?: string | null
   price: number
   currency: string
   category: string

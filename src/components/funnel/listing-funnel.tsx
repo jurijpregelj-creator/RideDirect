@@ -18,10 +18,12 @@ export function ListingFunnel({ lang }: ListingFunnelProps) {
   const t = FUNNEL_T[lang]
   const [step, setStep] = useState<Step>("form")
   const [claimError, setClaimError] = useState<string | null>(null)
+  const [leadEmail, setLeadEmail] = useState("")
 
   // If the user is already logged in when they reach step 2,
   // skip registration and claim the lead immediately.
-  async function handleFormSuccess() {
+  async function handleFormSuccess(_leadId: string, email: string) {
+    setLeadEmail(email)
     setStep("register")
     window.scrollTo({ top: 0, behavior: "smooth" })
 
@@ -113,6 +115,7 @@ export function ListingFunnel({ lang }: ListingFunnelProps) {
           )}
           <FunnelRegister
             t={t}
+            email={leadEmail}
             onBack={() => setStep("form")}
           />
         </div>

@@ -25,7 +25,7 @@ const CONDITIONS = [
 interface FunnelFormProps {
   t: typeof FUNNEL_T[FunnelLang]
   lang: FunnelLang
-  onSuccess: (leadId: string) => void
+  onSuccess: (leadId: string, email: string) => void
 }
 
 export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
@@ -68,6 +68,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
     const form = e.currentTarget
     const title = (form.elements.namedItem("title") as HTMLInputElement).value
     const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value
     const price = parseFloat((form.elements.namedItem("price") as HTMLInputElement).value)
     const manufacturer = (form.elements.namedItem("manufacturer") as HTMLInputElement).value
     const yearRaw = (form.elements.namedItem("year") as HTMLInputElement).value
@@ -81,6 +82,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
       const { leadId, claimToken } = await saveLead({
         title,
         description,
+        email: email || null,
         price,
         currency,
         category,
@@ -121,7 +123,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
         localStorage.setItem("funnel_lead_id", leadId)
       } catch {}
 
-      onSuccess(leadId)
+      onSuccess(leadId, email)
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.")
       setLoading(false)
@@ -148,6 +150,12 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
         <div>
           <Label htmlFor="description">Description *</Label>
           <Textarea id="description" name="description" placeholder="Describe the ride: capacity, specs, history, condition…" required rows={5} className="mt-1.5" />
+        </div>
+
+        <div>
+          <Label htmlFor="email">Your email *</Label>
+          <Input id="email" name="email" type="email" placeholder="you@company.com" required className="mt-1.5" />
+          <p className="text-xs text-gray-400 mt-1">So we can notify you when your listing goes live.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
