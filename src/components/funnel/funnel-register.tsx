@@ -122,11 +122,12 @@ export function FunnelRegister({ t, listingId, onBack }: FunnelRegisterProps) {
     <div className="space-y-5">
       {/* Header */}
       <div className="text-center">
-        <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-3">
-          <CheckCircle2 size={28} className="text-green-600" />
+        <div className="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+          <CheckCircle2 size={11} />
+          Listing saved — Step 2 of 2
         </div>
-        <h2 className="text-xl font-bold text-[#0D2A5E]">{r.title}</h2>
-        <p className="text-sm text-gray-500 mt-1 leading-relaxed">{r.sub}</p>
+        <h2 className="text-xl font-bold text-[#0D2A5E] leading-snug">{r.title}</h2>
+        <p className="text-sm text-gray-500 mt-2 leading-relaxed">{r.sub}</p>
       </div>
 
       {error && (
