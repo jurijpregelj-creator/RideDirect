@@ -5,44 +5,42 @@ import { CheckCircle2, Loader2 } from "lucide-react"
 import { claimLead } from "@/app/funnel/actions"
 
 /**
- * Mounts on the dashboard when ?submitted=1 is in the URL.
- * Reads funnel_claim_token from localStorage, calls claimLead(),
- * then shows a success banner. Cleans up localStorage after claim.
+ * Always mounts on the dashboard.
+ * If funnel_claim_token exists in localStorage, claims the lead and shows a banner.
+ * This handles both: users who came from the funnel OAuth flow and users who
+ * registered via email and clicked the verification link.
  */
 export function ClaimLeadOnLoad() {
-  const [state, setState] = useState<"loading" | "success" | "error" | "done">("loading")
+  const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle")
 
   useEffect(() => {
     async function run() {
+      let token: string | null = null
+      try { token = localStorage.getItem("funnel_claim_token") } catch {}
+      if (!token) return // No pending lead — do nothing
+
+      setState("loading")
       try {
-        const token = localStorage.getItem("funnel_claim_token")
-        if (!token) {
-          setState("done")
-          return
-        }
-
         const result = await claimLead(token)
-
-        if ("error" in result) {
-          console.error("Claim lead failed:", result.error)
-          setState("error")
-        } else {
-          localStorage.removeItem("funnel_claim_token")
-          localStorage.removeItem("funnel_lead_id")
+        if ("listingId" in result) {
+          try {
+            localStorage.removeItem("funnel_claim_token")
+            localStorage.removeItem("funnel_lead_id")
+          } catch {}
           setState("success")
+        } else {
+          console.error("Claim failed:", result.error)
+          setState("error")
         }
       } catch (err) {
         setState("error")
       }
-
-      // Auto-dismiss after 6 s
-      setTimeout(() => setState("done"), 6000)
     }
 
     run()
   }, [])
 
-  if (state === "done") return null
+  if (state === "idle") return null
 
   if (state === "loading") {
     return (
@@ -59,7 +57,7 @@ export function ClaimLeadOnLoad() {
         <CheckCircle2 size={20} className="text-green-600 shrink-0" />
         <div>
           <p className="text-sm font-semibold text-green-800">Your listing is submitted for review!</p>
-          <p className="text-xs text-green-600 mt-0.5">We'll notify you as soon as it goes live. Usually within 24 hours.</p>
+          <p className="text-xs text-green-600 mt-0.5">We'll notify you when it goes live — usually within 24 hours.</p>
         </div>
       </div>
     )

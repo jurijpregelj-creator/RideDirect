@@ -80,8 +80,8 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-10 max-w-4xl">
 
-        {/* Funnel claim banner — auto-claims lead from localStorage */}
-        {isFunnelSubmit && <ClaimLeadOnLoad />}
+        {/* Funnel claim banner — checks localStorage for pending lead on every load */}
+        <ClaimLeadOnLoad />
 
         {/* Profile card */}
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6 flex items-center gap-5">
