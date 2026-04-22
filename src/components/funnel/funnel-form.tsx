@@ -62,6 +62,16 @@ export function FunnelForm({ t, onSuccess }: FunnelFormProps) {
       setError("Please fill in all required fields.")
       return
     }
+
+    // Read all form values BEFORE any async calls (React nullifies e.currentTarget after first await)
+    const form = e.currentTarget
+    const title = (form.elements.namedItem("title") as HTMLInputElement).value
+    const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value
+    const price = parseFloat((form.elements.namedItem("price") as HTMLInputElement).value)
+    const manufacturer = (form.elements.namedItem("manufacturer") as HTMLInputElement).value
+    const yearRaw = (form.elements.namedItem("year") as HTMLInputElement).value
+    const year = yearRaw ? parseInt(yearRaw) : null
+
     setLoading(true)
     setError(null)
 
@@ -79,14 +89,6 @@ export function FunnelForm({ t, onSuccess }: FunnelFormProps) {
         }
         userId = anonData.user.id
       }
-
-      const form = e.currentTarget
-      const title = (form.elements.namedItem("title") as HTMLInputElement).value
-      const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value
-      const price = parseFloat((form.elements.namedItem("price") as HTMLInputElement).value)
-      const manufacturer = (form.elements.namedItem("manufacturer") as HTMLInputElement).value
-      const yearRaw = (form.elements.namedItem("year") as HTMLInputElement).value
-      const year = yearRaw ? parseInt(yearRaw) : null
 
       // Create listing as draft
       const { data: listing, error: listingError } = await supabase
