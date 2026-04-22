@@ -39,13 +39,13 @@ export function LanguageSwitcher() {
           disabled={isPending}
           aria-label={l.ariaLabel}
           aria-pressed={current === l.code}
-          className={`text-xs px-1.5 py-0.5 rounded transition-colors ${
+          className={`text-lg px-1 py-0.5 rounded transition-opacity ${
             current === l.code
-              ? "bg-blue-100 text-[#1E88E5] font-bold"
-              : "text-gray-400 hover:text-gray-700"
+              ? "opacity-100 ring-2 ring-blue-200 ring-offset-1"
+              : "opacity-40 hover:opacity-80"
           }`}
         >
-          {l.flag} {l.label}
+          {l.flag}
         </button>
       ))}
     </div>
