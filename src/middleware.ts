@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
   // 1. Handle Supabase session
   const supabaseResponse = await updateSession(request)
 
-  // 2. Protect /admin routes
+  // 2. Protect /admin routes — must be logged in AND have role = 'admin'
   if (request.nextUrl.pathname.startsWith("/admin")) {
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,6 +21,14 @@ export async function middleware(request: NextRequest) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) {
       return NextResponse.redirect(new URL("/auth/login?next=/admin", request.url))
+    }
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+    if (profile?.role !== "admin") {
+      return NextResponse.redirect(new URL("/dashboard", request.url))
     }
   }
 

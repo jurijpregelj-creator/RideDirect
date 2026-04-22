@@ -33,15 +33,11 @@ export default function LoginPage() {
       const { data: { user: loggedIn } } = await supabase.auth.getUser()
       if (loggedIn) {
         const { data: profile } = await supabase.from("profiles").select("role").eq("id", loggedIn.id).single()
-        if (profile?.role === "admin") {
-          router.push("/admin")
-        } else {
-          router.push("/marketplace")
-        }
+        // Hard redirect to avoid Next.js router race conditions between push + refresh
+        window.location.href = profile?.role === "admin" ? "/admin" : "/dashboard"
       } else {
-        router.push("/marketplace")
+        window.location.href = "/marketplace"
       }
-      router.refresh()
     }
   }
 
