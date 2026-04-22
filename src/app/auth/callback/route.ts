@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr"
-import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { NextResponse, type NextRequest } from "next/server"
+
+const ADMIN_EMAILS = ["jurijpregelj@gmail.com"]
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
@@ -53,23 +54,14 @@ export async function GET(request: NextRequest) {
     })
     .eq("id", data.user.id)
 
-  // Use service role to read role — bypasses RLS, always reliable
-  const admin = createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-  const { data: profile } = await admin
-    .from("profiles")
-    .select("role")
-    .eq("id", data.user.id)
-    .single()
-
-  console.log("[callback] profile role:", profile?.role ?? "null")
+  // Admin check: email from JWT — no DB query needed, always reliable
+  const isAdmin = ADMIN_EMAILS.includes(data.user.email ?? "")
+  console.log("[callback] email:", data.user.email, "isAdmin:", isAdmin)
   console.log("[callback] next param:", next)
 
   // Don't override next= for password reset flow
   const redirectTo =
-    profile?.role === "admin" && next !== "/auth/reset-password" ? "/admin" : next
+    isAdmin && next !== "/auth/reset-password" ? "/admin" : next
 
   console.log("[callback] redirecting to:", redirectTo)
 
