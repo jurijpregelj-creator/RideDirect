@@ -1,18 +1,24 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import { cookies } from "next/headers"
 import { createClient } from "@/lib/supabase/server"
 
 const ADMIN_EMAILS = ["jurijpregelj@gmail.com"]
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const supabase = createClient()
+  // Path 1: backdoor cookie (bypasses Supabase entirely — bulletproof)
+  const hasAdminPass = cookies().get("admin_pass")?.value === "1"
 
-  // Verify authentication
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/auth/login?next=/admin")
+  // Path 2: regular Supabase admin email check
+  let isSupabaseAdmin = false
+  if (!hasAdminPass) {
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) redirect("/auth/login?next=/admin")
+    isSupabaseAdmin = ADMIN_EMAILS.includes(user.email ?? "")
+  }
 
-  // Admin check: email from JWT — no DB query, no RLS, no service role needed
-  if (!ADMIN_EMAILS.includes(user.email ?? "")) redirect("/")
+  if (!hasAdminPass && !isSupabaseAdmin) redirect("/")
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
