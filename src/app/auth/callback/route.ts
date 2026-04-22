@@ -20,12 +20,17 @@ export async function GET(request: NextRequest) {
     {
       cookies: {
         getAll() { return request.cookies.getAll() },
-        setAll(cookies) { cookiesToSet.push(...cookies) },
+        setAll(cookies: { name: string; value: string; options?: Record<string, unknown> }[]) {
+          cookiesToSet.push(...cookies)
+        },
       },
     }
   )
 
   const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+  console.log("[callback] exchange error:", error?.message ?? "none")
+  console.log("[callback] user id:", data.user?.id ?? "null")
+  console.log("[callback] cookies collected:", cookiesToSet.length)
 
   if (error || !data.user) {
     return NextResponse.redirect(`${origin}/auth/login?error=auth_failed`)
@@ -59,9 +64,14 @@ export async function GET(request: NextRequest) {
     .eq("id", data.user.id)
     .single()
 
+  console.log("[callback] profile role:", profile?.role ?? "null")
+  console.log("[callback] next param:", next)
+
   // Don't override next= for password reset flow
   const redirectTo =
     profile?.role === "admin" && next !== "/auth/reset-password" ? "/admin" : next
+
+  console.log("[callback] redirecting to:", redirectTo)
 
   // Build the redirect and attach session cookies to it
   const response = NextResponse.redirect(`${origin}${redirectTo}`)
