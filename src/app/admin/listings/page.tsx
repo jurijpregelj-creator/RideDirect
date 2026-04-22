@@ -115,7 +115,7 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
                         : "—"}
                     </td>
                     <td className="px-4 py-3">
-                      <ListingActions listingId={listing.id} status={listing.status} />
+                      <ListingActions listingId={listing.id} sellerId={listing.seller_id} status={listing.status} />
                     </td>
                   </tr>
                 )

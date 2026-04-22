@@ -1,9 +1,20 @@
 "use server"
 
+import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
 
 async function requireAdmin() {
+  // Accept backdoor cookie OR Supabase admin session
+  const adminPass = cookies().get("admin_pass")?.value
+  if (adminPass === "1") {
+    // Use service role for mutations when using backdoor
+    return createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+  }
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error("Unauthorized")
@@ -35,7 +46,6 @@ export async function rejectListing(listingId: string) {
 
 export async function extendListing(listingId: string) {
   const supabase = await requireAdmin()
-  // Extend 90 days from now (or from current expires_at if it's in the future)
   const { data } = await supabase.from("listings").select("expires_at").eq("id", listingId).single()
   const base = data?.expires_at && new Date(data.expires_at) > new Date()
     ? new Date(data.expires_at)
@@ -53,4 +63,47 @@ export async function deleteListing(listingId: string) {
   await supabase.from("listings").delete().eq("id", listingId)
   revalidatePath("/admin/listings")
   revalidatePath("/marketplace")
+}
+
+export async function sendAdminMessage(listingId: string, sellerId: string, message: string) {
+  await requireAdmin()
+  // Use service role for insert since admin might not have a session
+  const admin = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+  await admin.from("inquiries").insert({
+    listing_id: listingId,
+    seller_id: sellerId,
+    buyer_name: "RideDirect Admin",
+    buyer_email: "admin@ridedirect.eu",
+    message,
+    is_read: false,
+    unread_for_buyer: false,
+  })
+  revalidatePath("/admin/listings")
+}
+
+export async function adminUpdateListing(
+  listingId: string,
+  data: {
+    title?: string
+    description?: string
+    category?: string
+    country?: string
+    price?: number
+    currency?: string
+    condition?: string
+    manufacturer?: string
+    year?: number
+  }
+) {
+  await requireAdmin()
+  const admin = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+  await admin.from("listings").update({ ...data, updated_at: new Date().toISOString() }).eq("id", listingId)
+  revalidatePath("/admin/listings")
+  revalidatePath(`/listings/${listingId}`)
 }
