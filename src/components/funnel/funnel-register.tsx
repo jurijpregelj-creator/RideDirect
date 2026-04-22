@@ -208,7 +208,7 @@ export function FunnelRegister({ t, onBack }: FunnelRegisterProps) {
       {/* Already have account */}
       <p className="text-center text-xs text-gray-400">
         {r.alreadyHave}{" "}
-        <Link href={`/auth/login?next=/dashboard`} className="text-[#1E88E5] hover:underline font-medium">
+        <Link href={`/auth/login?next=${encodeURIComponent("/dashboard?submitted=1")}`} className="text-[#1E88E5] hover:underline font-medium">
           {r.signIn}
         </Link>
       </p>
