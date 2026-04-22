@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react"
 import { useRouter, useParams } from "next/navigation"
-import { Loader2, Upload, X, ArrowLeft, Save } from "lucide-react"
+import { Loader2, Upload, X, ArrowLeft, Save, Star } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -54,6 +54,7 @@ export default function EditListingPage() {
   const [newFiles, setNewFiles] = useState<File[]>([])
   const [newPreviews, setNewPreviews] = useState<string[]>([])
   const [deletedImageIds, setDeletedImageIds] = useState<string[]>([])
+  const [coverImageId, setCoverImageId] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -82,9 +83,9 @@ export default function EditListingPage() {
       setCondition(listing.condition || "")
       setManufacturer(listing.manufacturer || "")
       setYear(listing.year ? String(listing.year) : "")
-      setExistingImages(
-        (listing.listing_images || []).sort((a: any, b: any) => a.sort_order - b.sort_order)
-      )
+      const sorted = (listing.listing_images || []).sort((a: any, b: any) => a.sort_order - b.sort_order)
+      setExistingImages(sorted)
+      if (sorted.length > 0) setCoverImageId(sorted[0].id)
       setLoading(false)
     }
     load()
@@ -102,6 +103,11 @@ export default function EditListingPage() {
 
   function removeExisting(id: string) {
     setDeletedImageIds((prev) => [...prev, id])
+    // If the deleted image was the cover, pick the next available one
+    if (coverImageId === id) {
+      const next = existingImages.find((img) => img.id !== id && !deletedImageIds.includes(img.id))
+      setCoverImageId(next?.id ?? null)
+    }
   }
 
   function removeNew(index: number) {
@@ -145,8 +151,20 @@ export default function EditListingPage() {
       await supabase.from("listing_images").delete().eq("id", imgId)
     }
 
-    // 3. Upload new images
-    const baseOrder = existingImages.filter((img) => !deletedImageIds.includes(img.id)).length
+    // 3. Update sort_order for remaining existing images (cover = 0)
+    const remaining = existingImages.filter((img) => !deletedImageIds.includes(img.id))
+    const ordered = coverImageId
+      ? [
+          ...remaining.filter((img) => img.id === coverImageId),
+          ...remaining.filter((img) => img.id !== coverImageId),
+        ]
+      : remaining
+    for (let i = 0; i < ordered.length; i++) {
+      await supabase.from("listing_images").update({ sort_order: i }).eq("id", ordered[i].id)
+    }
+
+    // 4. Upload new images
+    const baseOrder = ordered.length
     for (let i = 0; i < newFiles.length; i++) {
       const file = newFiles[i]
       const ext = file.name.split(".").pop()
@@ -275,18 +293,40 @@ export default function EditListingPage() {
 
           {/* Images */}
           <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
-            <h2 className="font-semibold text-[#0D2A5E]">Photos</h2>
+            <div>
+              <h2 className="font-semibold text-[#0D2A5E]">Photos</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Click an image to set it as the cover photo.</p>
+            </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-              {visibleExisting.map((img, i) => (
-                <div key={img.id} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={img.image_url} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                  {i === 0 && <div className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">Cover</div>}
-                  <button type="button" onClick={() => removeExisting(img.id)} className="absolute top-1 right-1 w-6 h-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <X size={12} />
-                  </button>
-                </div>
-              ))}
+              {visibleExisting.map((img) => {
+                const isCover = img.id === coverImageId
+                return (
+                  <div
+                    key={img.id}
+                    onClick={() => setCoverImageId(img.id)}
+                    className={`relative aspect-square rounded-lg overflow-hidden bg-gray-100 group cursor-pointer ring-2 transition-all ${isCover ? "ring-[#1E88E5]" : "ring-transparent hover:ring-gray-300"}`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img.image_url} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                    {isCover ? (
+                      <div className="absolute bottom-1 left-1 bg-[#1E88E5] text-white text-[10px] px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                        <Star size={8} className="fill-white" />Cover
+                      </div>
+                    ) : (
+                      <div className="absolute bottom-1 left-1 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Set cover
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); removeExisting(img.id) }}
+                      className="absolute top-1 right-1 w-6 h-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+                )
+              })}
               {newPreviews.map((src, i) => (
                 <div key={`new-${i}`} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
