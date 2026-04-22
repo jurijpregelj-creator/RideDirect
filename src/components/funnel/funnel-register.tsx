@@ -13,17 +13,18 @@ import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
 
 interface FunnelRegisterProps {
   t: typeof FUNNEL_T[FunnelLang]
-  listingId: string
   onBack: () => void
 }
 
-export function FunnelRegister({ t, listingId, onBack }: FunnelRegisterProps) {
+export function FunnelRegister({ t, onBack }: FunnelRegisterProps) {
   const r = t.register
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [emailSent, setEmailSent] = useState<string | null>(null)
   const [country, setCountry] = useState("")
 
+  // After OAuth redirect or email verification, dashboard will read
+  // funnel_claim_token from localStorage and claim the lead automatically
   const redirectTo = typeof window !== "undefined"
     ? `${window.location.origin}/auth/callback?next=/dashboard?submitted=1`
     : "/auth/callback?next=/dashboard?submitted=1"
@@ -31,8 +32,7 @@ export function FunnelRegister({ t, listingId, onBack }: FunnelRegisterProps) {
   async function handleGoogle() {
     setLoading(true)
     const supabase = createClient()
-    // linkIdentity keeps the same user_id → draft listing stays connected
-    await supabase.auth.linkIdentity({
+    await supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo },
     })
@@ -41,7 +41,7 @@ export function FunnelRegister({ t, listingId, onBack }: FunnelRegisterProps) {
   async function handleFacebook() {
     setLoading(true)
     const supabase = createClient()
-    await supabase.auth.linkIdentity({
+    await supabase.auth.signInWithOAuth({
       provider: "facebook",
       options: { redirectTo },
     })
@@ -66,31 +66,21 @@ export function FunnelRegister({ t, listingId, onBack }: FunnelRegisterProps) {
     try {
       const supabase = createClient()
 
-      // Convert anonymous user → real user (same user_id, draft listing stays linked)
-      // Also update profile metadata
-      const { error: updateError } = await supabase.auth.updateUser(
-        {
-          email,
-          password,
+      // Sign up new user (claimLead runs on dashboard load via localStorage token)
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
           data: {
             full_name: fullName,
             country,
             terms_accepted_at: new Date().toISOString(),
           },
-        },
-        {
           emailRedirectTo: redirectTo,
-        }
-      )
+        },
+      })
 
-      if (updateError) throw updateError
-
-      // Update profile with name + country immediately
-      await supabase.from("profiles").update({
-        full_name: fullName,
-        country,
-        email,
-      }).eq("id", (await supabase.auth.getUser()).data.user?.id ?? "")
+      if (signUpError) throw signUpError
 
       setEmailSent(email)
     } catch (err: any) {

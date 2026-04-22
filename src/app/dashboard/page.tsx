@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
 import { AvatarUpload } from "@/components/profile/avatar-upload"
+import { ClaimLeadOnLoad } from "@/components/funnel/claim-lead-on-load"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "My Dashboard" }
@@ -27,7 +28,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 interface PageProps {
-  searchParams: { status?: string }
+  searchParams: { status?: string; submitted?: string }
 }
 
 export default async function DashboardPage({ searchParams }: PageProps) {
@@ -37,6 +38,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login?next=/dashboard")
 
+  const isFunnelSubmit = searchParams.submitted === "1"
   const statusFilter = searchParams.status || "all"
 
   const [{ data: profile }, { data: allListings }, { count: unreadCount }] = await Promise.all([
@@ -75,6 +77,9 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-10 max-w-4xl">
+
+        {/* Funnel claim banner — auto-claims lead from localStorage */}
+        {isFunnelSubmit && <ClaimLeadOnLoad />}
 
         {/* Profile card */}
         <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6 flex items-center gap-5">

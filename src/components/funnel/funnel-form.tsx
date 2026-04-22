@@ -9,8 +9,8 @@ import { Textarea } from "@/components/ui/textarea"
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select"
-import { createClient } from "@/lib/supabase/client"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
+import { saveLead, updateLeadImages } from "@/app/funnel/actions"
 import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
 
 const CURRENCIES = ["EUR", "GBP", "PLN", "CHF", "SEK", "DKK", "NOK"]
@@ -24,10 +24,11 @@ const CONDITIONS = [
 
 interface FunnelFormProps {
   t: typeof FUNNEL_T[FunnelLang]
-  onSuccess: (listingId: string) => void
+  lang: FunnelLang
+  onSuccess: (leadId: string) => void
 }
 
-export function FunnelForm({ t, onSuccess }: FunnelFormProps) {
+export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -63,7 +64,7 @@ export function FunnelForm({ t, onSuccess }: FunnelFormProps) {
       return
     }
 
-    // Read all form values BEFORE any async calls (React nullifies e.currentTarget after first await)
+    // Read all form values BEFORE any async calls
     const form = e.currentTarget
     const title = (form.elements.namedItem("title") as HTMLInputElement).value
     const description = (form.elements.namedItem("description") as HTMLTextAreaElement).value
@@ -76,66 +77,51 @@ export function FunnelForm({ t, onSuccess }: FunnelFormProps) {
     setError(null)
 
     try {
-      const supabase = createClient()
+      // Save lead (no auth required)
+      const { leadId, claimToken } = await saveLead({
+        title,
+        description,
+        price,
+        currency,
+        category,
+        country,
+        condition,
+        manufacturer: manufacturer || null,
+        year,
+        lang,
+      })
 
-      // Sign in anonymously if not already authenticated
-      const { data: { user: existingUser } } = await supabase.auth.getUser()
-      let userId = existingUser?.id
-
-      if (!userId) {
-        const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously()
-        if (anonError || !anonData.user) {
-          throw new Error(anonError?.message || "Could not initialise session. Please try again.")
-        }
-        userId = anonData.user.id
-      }
-
-      // Create listing as draft
-      const { data: listing, error: listingError } = await supabase
-        .from("listings")
-        .insert({
-          seller_id: userId,
-          title,
-          description,
-          category,
-          country,
-          price,
-          currency,
-          condition,
-          manufacturer: manufacturer || null,
-          year,
-          ce_docs_available: false,
-          inspection_available: false,
-          status: "draft",
-        })
-        .select()
-        .single()
-
-      if (listingError || !listing) {
-        throw new Error(listingError?.message || "Failed to save listing.")
-      }
-
-      // Upload images
+      // Upload images via API route (service role, no auth needed)
+      const imageUrls: string[] = []
       for (let i = 0; i < imageFiles.length; i++) {
-        const file = imageFiles[i]
-        const ext = file.name.split(".").pop()
-        const path = `${userId}/${listing.id}/${i}-${Date.now()}.${ext}`
-        const { error: uploadError } = await supabase.storage
-          .from("listing-images")
-          .upload(path, file, { upsert: false })
-        if (uploadError) continue
-        const { data: { publicUrl } } = supabase.storage.from("listing-images").getPublicUrl(path)
-        await supabase.from("listing_images").insert({
-          listing_id: listing.id,
-          image_url: publicUrl,
-          sort_order: i,
-        })
+        try {
+          const fd = new FormData()
+          fd.append("leadId", leadId)
+          fd.append("claimToken", claimToken)
+          fd.append("file", imageFiles[i])
+          fd.append("index", String(i))
+
+          const res = await fetch("/api/funnel/upload-image", { method: "POST", body: fd })
+          if (res.ok) {
+            const { url } = await res.json()
+            if (url) imageUrls.push(url)
+          }
+        } catch {
+          // Skip failed uploads — don't block the flow
+        }
       }
 
-      // Persist draft listing ID in case user refreshes before completing registration
-      try { localStorage.setItem("funnel_listing_id", listing.id) } catch {}
+      if (imageUrls.length > 0) {
+        await updateLeadImages(leadId, claimToken, imageUrls)
+      }
 
-      onSuccess(listing.id)
+      // Persist for dashboard claim after registration
+      try {
+        localStorage.setItem("funnel_claim_token", claimToken)
+        localStorage.setItem("funnel_lead_id", leadId)
+      } catch {}
+
+      onSuccess(leadId)
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.")
       setLoading(false)

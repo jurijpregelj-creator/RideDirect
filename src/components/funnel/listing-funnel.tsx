@@ -15,12 +15,11 @@ type Step = "form" | "register"
 export function ListingFunnel({ lang }: ListingFunnelProps) {
   const t = FUNNEL_T[lang]
   const [step, setStep] = useState<Step>("form")
-  const [listingId, setListingId] = useState<string | null>(null)
+  const [leadSaved, setLeadSaved] = useState(false)
 
-  function handleFormSuccess(id: string) {
-    setListingId(id)
+  function handleFormSuccess() {
+    setLeadSaved(true)
     setStep("register")
-    // Scroll to top of funnel
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -45,14 +44,13 @@ export function ListingFunnel({ lang }: ListingFunnelProps) {
 
       {/* Step content */}
       {step === "form" && (
-        <FunnelForm t={t} onSuccess={handleFormSuccess} />
+        <FunnelForm t={t} lang={lang} onSuccess={handleFormSuccess} />
       )}
 
-      {step === "register" && listingId && (
+      {step === "register" && leadSaved && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <FunnelRegister
             t={t}
-            listingId={listingId}
             onBack={() => setStep("form")}
           />
         </div>
