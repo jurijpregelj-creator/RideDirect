@@ -23,11 +23,13 @@ export function FunnelRegister({ t, onBack }: FunnelRegisterProps) {
   const [emailSent, setEmailSent] = useState<string | null>(null)
   const [country, setCountry] = useState("")
 
-  // Simple callback URL — no next= param needed.
-  // The dashboard always checks localStorage for funnel_claim_token on load.
-  const redirectTo = typeof window !== "undefined"
-    ? `${window.location.origin}/auth/callback`
-    : "/auth/callback"
+  // Always use the canonical non-www origin so the callback URL matches
+  // the Supabase whitelist (https://ridedirect.eu/auth/callback).
+  // www.ridedirect.eu would be rejected and fall back to the homepage.
+  const canonicalOrigin = typeof window !== "undefined"
+    ? window.location.origin.replace("://www.", "://")
+    : "https://ridedirect.eu"
+  const redirectTo = `${canonicalOrigin}/auth/callback`
 
   async function handleGoogle() {
     setLoading(true)
