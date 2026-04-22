@@ -24,10 +24,11 @@ export function FunnelRegister({ t, onBack }: FunnelRegisterProps) {
   const [country, setCountry] = useState("")
 
   // After OAuth redirect or email verification, dashboard will read
-  // funnel_claim_token from localStorage and claim the lead automatically
+  // funnel_claim_token from localStorage and claim the lead automatically.
+  // Encode the next param so the nested ? doesn't confuse URL parsers.
   const redirectTo = typeof window !== "undefined"
-    ? `${window.location.origin}/auth/callback?next=/dashboard?submitted=1`
-    : "/auth/callback?next=/dashboard?submitted=1"
+    ? `${window.location.origin}/auth/callback?next=${encodeURIComponent("/dashboard?submitted=1")}`
+    : `/auth/callback?next=${encodeURIComponent("/dashboard?submitted=1")}`
 
   async function handleGoogle() {
     setLoading(true)

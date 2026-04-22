@@ -59,9 +59,10 @@ export async function GET(request: NextRequest) {
   console.log("[callback] email:", data.user.email, "isAdmin:", isAdmin)
   console.log("[callback] next param:", next)
 
-  // Don't override next= for password reset flow
+  // Don't override next= for password reset or funnel submission flows
+  const isFunnelSubmit = next.includes("submitted=1")
   const redirectTo =
-    isAdmin && next !== "/auth/reset-password" ? "/admin" : next
+    isAdmin && next !== "/auth/reset-password" && !isFunnelSubmit ? "/admin" : next
 
   console.log("[callback] redirecting to:", redirectTo)
 
