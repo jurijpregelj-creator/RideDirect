@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Plus, Eye, MessageSquare, Pencil, Settings, Package } from "lucide-react"
+import { DeleteListingButton } from "@/components/dashboard/delete-listing-button"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
 import { Button } from "@/components/ui/button"
@@ -182,6 +183,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                       <Pencil size={12} />
                     </Button>
                   </Link>
+                  <DeleteListingButton listingId={listing.id} />
                 </div>
               ))}
             </div>
