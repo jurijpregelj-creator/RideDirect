@@ -85,7 +85,7 @@ export function FunnelForm({ t, onSuccess }: FunnelFormProps) {
       if (!userId) {
         const { data: anonData, error: anonError } = await supabase.auth.signInAnonymously()
         if (anonError || !anonData.user) {
-          throw new Error("Could not initialise session. Please try again.")
+          throw new Error(anonError?.message || "Could not initialise session. Please try again.")
         }
         userId = anonData.user.id
       }
