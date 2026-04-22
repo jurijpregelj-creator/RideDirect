@@ -1,10 +1,18 @@
 import { createClient } from "@/lib/supabase/server"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { NextResponse } from "next/server"
+
+function getAdminClient() {
+  return createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
-  const next = searchParams.get("next") ?? "/marketplace"
+  const next = searchParams.get("next") ?? "/dashboard"
 
   if (code) {
     const supabase = createClient()
@@ -30,8 +38,9 @@ export async function GET(request: Request) {
         })
         .eq("id", data.user.id)
 
-      // Redirect admins always to /admin
-      const { data: profile } = await supabase
+      // Use service role to reliably read role (bypasses RLS, no anon-key auth issues)
+      const admin = getAdminClient()
+      const { data: profile } = await admin
         .from("profiles")
         .select("role")
         .eq("id", data.user.id)
