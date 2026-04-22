@@ -36,9 +36,11 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   const tDash = await getTranslations("dashboard")
   const tCommon = await getTranslations("common")
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/auth/login?next=/dashboard")
-
   const isFunnelSubmit = searchParams.submitted === "1"
+  if (!user) {
+    const next = isFunnelSubmit ? "/dashboard?submitted=1" : "/dashboard"
+    redirect(`/auth/login?next=${encodeURIComponent(next)}`)
+  }
   const statusFilter = searchParams.status || "all"
 
   const [{ data: profile }, { data: allListings }, { count: unreadCount }] = await Promise.all([
