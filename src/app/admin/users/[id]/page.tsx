@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ChevronLeft, Mail, MapPin, Calendar, Tag } from "lucide-react"
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createClient } from "@/lib/supabase/server"
 import { formatPrice } from "@/lib/utils"
 import type { Metadata } from "next"
 
@@ -22,7 +22,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export default async function AdminUserDetailPage({ params }: { params: { id: string } }) {
-  const supabase = createAdminClient()
+  const supabase = createClient()
 
   const [{ data: user }, { data: listings }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", params.id).single(),

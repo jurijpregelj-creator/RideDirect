@@ -1,11 +1,11 @@
 import Link from "next/link"
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createClient } from "@/lib/supabase/server"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Admin Dashboard" }
 
 export default async function AdminDashboardPage() {
-  const supabase = createAdminClient()
+  const supabase = createClient()
 
   const [
     { count: totalUsers },

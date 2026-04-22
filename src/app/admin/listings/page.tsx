@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createClient } from "@/lib/supabase/server"
 import { ListingActions } from "./_components/listing-actions"
 import type { Metadata } from "next"
 
@@ -25,7 +25,7 @@ interface PageProps {
 }
 
 export default async function AdminListingsPage({ searchParams }: PageProps) {
-  const supabase = createAdminClient()
+  const supabase = createClient()
   const statusFilter = searchParams.status || "all"
 
   let query = supabase
