@@ -198,9 +198,9 @@ export function Header() {
 
     </header>
 
-      {/* Mobile Nav — rendered outside <header> to avoid backdrop-filter clipping (iOS Safari) */}
+      {/* Mobile Nav — fixed below header, outside <header> to avoid backdrop-filter clipping */}
       {mobileOpen && (
-        <div className="fixed inset-x-0 top-16 z-40 md:hidden border-t border-b bg-white shadow-lg px-4 py-4 space-y-1">
+        <div className="fixed inset-x-0 top-16 z-40 border-t border-b bg-white shadow-lg px-4 py-4 space-y-1">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
             return (
@@ -247,12 +247,6 @@ export function Header() {
             )}
           </div>
 
-          {/* Backdrop overlay — tap outside to close */}
-          <div
-            className="fixed inset-0 -z-10"
-            aria-hidden="true"
-            onClick={() => setMobileOpen(false)}
-          />
         </div>
       )}
     </>
