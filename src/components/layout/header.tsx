@@ -26,6 +26,11 @@ export function Header() {
     { href: "/contact", label: t("contact") },
   ]
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
+
   useEffect(() => {
     const supabase = createClient()
     let userId: string | null = null
@@ -86,6 +91,7 @@ export function Header() {
   }
 
   return (
+    <>
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
@@ -190,9 +196,11 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Nav */}
+    </header>
+
+      {/* Mobile Nav — rendered outside <header> to avoid backdrop-filter clipping (iOS Safari) */}
       {mobileOpen && (
-        <div className="md:hidden border-t bg-white px-4 py-4 space-y-1">
+        <div className="fixed inset-x-0 top-16 z-40 md:hidden border-t border-b bg-white shadow-lg px-4 py-4 space-y-1">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
             return (
@@ -238,8 +246,15 @@ export function Header() {
               </>
             )}
           </div>
+
+          {/* Backdrop overlay — tap outside to close */}
+          <div
+            className="fixed inset-0 -z-10"
+            aria-hidden="true"
+            onClick={() => setMobileOpen(false)}
+          />
         </div>
       )}
-    </header>
+    </>
   )
 }

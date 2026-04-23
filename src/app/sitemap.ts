@@ -25,6 +25,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/legal/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE_URL}/legal/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
+    // Seller funnel landing pages
+    { url: `${BASE_URL}/list-your-ride`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/it/pubblica-il-tuo-annuncio`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/de/inserat-erstellen`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
   ]
 
   const categoryPages: MetadataRoute.Sitemap = CATEGORY_SLUGS.map((slug) => ({

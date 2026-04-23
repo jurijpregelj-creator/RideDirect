@@ -5,6 +5,20 @@ import { FUNNEL_T } from "@/components/funnel/funnel-translations"
 export const metadata: Metadata = {
   title: "List Your Amusement Ride for Free | RideDirect",
   description: "Sell your amusement ride fast. List for free and reach serious buyers across Europe. No commission, no credit card needed.",
+  alternates: {
+    canonical: "https://ridedirect.eu/list-your-ride",
+    languages: {
+      "it": "https://ridedirect.eu/it/pubblica-il-tuo-annuncio",
+      "de": "https://ridedirect.eu/de/inserat-erstellen",
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: "https://ridedirect.eu/list-your-ride",
+    title: "List Your Amusement Ride for Free | RideDirect",
+    description: "Sell your amusement ride fast. List for free and reach serious buyers across Europe. No commission, no credit card needed.",
+    images: [{ url: "https://ridedirect.eu/list-your-ride/opengraph-image", width: 1200, height: 630 }],
+  },
 }
 
 const t = FUNNEL_T.en
