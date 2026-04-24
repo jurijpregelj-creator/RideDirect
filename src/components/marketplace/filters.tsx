@@ -2,9 +2,9 @@
 
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
-import { Search, SlidersHorizontal } from "lucide-react"
+import { Search } from "lucide-react"
+import { useTranslations } from "next-intl"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectContent,
@@ -17,6 +17,9 @@ import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 export function MarketplaceFilters() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const t = useTranslations("marketplace")
+  const tCat = useTranslations("categories")
+  const tCond = useTranslations("common.condition")
 
   const updateFilter = useCallback(
     (key: string, value: string) => {
@@ -38,7 +41,7 @@ export function MarketplaceFilters() {
         <div className="relative flex-1">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <Input
-            placeholder="Search rides, brands, keywords..."
+            placeholder={t("searchPlaceholder")}
             className="pl-9"
             defaultValue={searchParams.get("q") || ""}
             onChange={(e) => {
@@ -59,14 +62,14 @@ export function MarketplaceFilters() {
           onValueChange={(v) => updateFilter("category", v)}
         >
           <SelectTrigger className="lg:w-52">
-            <SelectValue placeholder="All Categories" />
+            <SelectValue placeholder={t("allCategories")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
+            <SelectItem value="all">{t("allCategories")}</SelectItem>
             {CATEGORIES.map((cat) => (
               <SelectItem key={cat.slug} value={cat.slug}>
                 <cat.icon size={14} className="inline-block shrink-0 mr-1" />
-                {cat.name}
+                {tCat(cat.slug)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -78,10 +81,10 @@ export function MarketplaceFilters() {
           onValueChange={(v) => updateFilter("country", v)}
         >
           <SelectTrigger className="lg:w-44">
-            <SelectValue placeholder="All Countries" />
+            <SelectValue placeholder={t("allCountries")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Countries</SelectItem>
+            <SelectItem value="all">{t("allCountries")}</SelectItem>
             {EUROPEAN_COUNTRIES.map((country) => (
               <SelectItem key={country} value={country.toLowerCase()}>
                 {country}
@@ -96,15 +99,15 @@ export function MarketplaceFilters() {
           onValueChange={(v) => updateFilter("condition", v)}
         >
           <SelectTrigger className="lg:w-40">
-            <SelectValue placeholder="Condition" />
+            <SelectValue placeholder={t("anyCondition")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Any Condition</SelectItem>
-            <SelectItem value="new">New</SelectItem>
-            <SelectItem value="like_new">Like New</SelectItem>
-            <SelectItem value="good">Good</SelectItem>
-            <SelectItem value="fair">Fair</SelectItem>
-            <SelectItem value="parts_only">Parts Only</SelectItem>
+            <SelectItem value="all">{t("anyCondition")}</SelectItem>
+            <SelectItem value="new">{tCond("new")}</SelectItem>
+            <SelectItem value="like_new">{tCond("like_new")}</SelectItem>
+            <SelectItem value="good">{tCond("good")}</SelectItem>
+            <SelectItem value="fair">{tCond("fair")}</SelectItem>
+            <SelectItem value="parts_only">{tCond("parts_only")}</SelectItem>
           </SelectContent>
         </Select>
       </div>

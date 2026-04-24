@@ -81,7 +81,11 @@
     "listingsFound_one": "{count} listing found",
     "listingsFound_other": "{count} listings found",
     "noListings": "No listings found",
-    "noListingsDesc": "Try adjusting your filters or search terms to find what you're looking for."
+    "noListingsDesc": "Try adjusting your filters or search terms to find what you're looking for.",
+    "searchPlaceholder": "Search rides, brands, keywords...",
+    "allCategories": "All Categories",
+    "allCountries": "All Countries",
+    "anyCondition": "Any Condition"
   },
   "dashboard": {
     "title": "My Dashboard",

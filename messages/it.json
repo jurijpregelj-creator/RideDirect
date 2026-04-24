@@ -81,7 +81,11 @@
     "listingsFound_one": "{count} annuncio trovato",
     "listingsFound_other": "{count} annunci trovati",
     "noListings": "Nessun annuncio trovato",
-    "noListingsDesc": "Prova a modificare i filtri o i termini di ricerca."
+    "noListingsDesc": "Prova a modificare i filtri o i termini di ricerca.",
+    "searchPlaceholder": "Cerca attrazioni, marchi, parole chiave...",
+    "allCategories": "Tutte le categorie",
+    "allCountries": "Tutti i paesi",
+    "anyCondition": "Qualsiasi condizione"
   },
   "dashboard": {
     "title": "Il mio dashboard",

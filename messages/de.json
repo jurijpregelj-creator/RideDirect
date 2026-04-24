@@ -81,7 +81,11 @@
     "listingsFound_one": "{count} Inserat gefunden",
     "listingsFound_other": "{count} Inserate gefunden",
     "noListings": "Keine Inserate gefunden",
-    "noListingsDesc": "Versuchen Sie, Ihre Filter oder Suchbegriffe anzupassen."
+    "noListingsDesc": "Versuchen Sie, Ihre Filter oder Suchbegriffe anzupassen.",
+    "searchPlaceholder": "Fahrgeschäfte, Marken, Stichwörter...",
+    "allCategories": "Alle Kategorien",
+    "allCountries": "Alle Länder",
+    "anyCondition": "Beliebiger Zustand"
   },
   "dashboard": {
     "title": "Mein Dashboard",
