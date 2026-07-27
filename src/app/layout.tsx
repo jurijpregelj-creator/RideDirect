@@ -48,11 +48,41 @@ export const metadata: Metadata = {
   },
 }
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "RideDirect.eu",
+  url: "https://ridedirect.eu",
+  logo: "https://ridedirect.eu/logo.svg",
+  description:
+    "Europe's dedicated B2B marketplace for buying and selling amusement rides, funfair equipment, and attractions.",
+}
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "RideDirect.eu",
+  url: "https://ridedirect.eu",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://ridedirect.eu/marketplace?q={search_term_string}",
+    "query-input": "required name=search_term_string",
+  },
+}
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages()
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <NextIntlClientProvider messages={messages}>
           <div className="flex min-h-screen flex-col">
             <Header />

@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
+import { expireStaleListings } from "@/lib/supabase/admin"
 import { ListingActions } from "./_components/listing-actions"
 import type { Metadata } from "next"
 
@@ -27,6 +28,8 @@ interface PageProps {
 export default async function AdminListingsPage({ searchParams }: PageProps) {
   const supabase = createClient()
   const statusFilter = searchParams.status || "all"
+
+  await expireStaleListings()
 
   let query = supabase
     .from("listings")

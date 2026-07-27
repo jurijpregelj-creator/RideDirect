@@ -4,6 +4,7 @@ import { Plus, Eye, MessageSquare, Pencil, Settings, Package } from "lucide-reac
 import { DeleteListingButton } from "@/components/dashboard/delete-listing-button"
 import { getTranslations } from "next-intl/server"
 import { createClient } from "@/lib/supabase/server"
+import { expireStaleListings } from "@/lib/supabase/admin"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
 import { AvatarUpload } from "@/components/profile/avatar-upload"
@@ -42,6 +43,8 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     redirect(`/auth/login?next=${encodeURIComponent(next)}`)
   }
   const statusFilter = searchParams.status || "all"
+
+  await expireStaleListings()
 
   const [{ data: profile }, { data: allListings }, { count: unreadCount }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),

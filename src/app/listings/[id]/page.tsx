@@ -89,8 +89,36 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
     currentProfile = data
   }
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: listing.title,
+    description: listing.description?.slice(0, 5000),
+    category: listing.category,
+    ...(listing.manufacturer ? { brand: { "@type": "Brand", name: listing.manufacturer } } : {}),
+    ...(listing.images?.length
+      ? { image: listing.images.map((img) => img.image_url) }
+      : {}),
+    offers: {
+      "@type": "Offer",
+      url: `https://ridedirect.eu/listings/${listing.id}`,
+      priceCurrency: listing.currency,
+      price: listing.price,
+      itemCondition:
+        listing.condition === "new"
+          ? "https://schema.org/NewCondition"
+          : "https://schema.org/UsedCondition",
+      availability: "https://schema.org/InStock",
+      areaServed: listing.country,
+    },
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-6">
