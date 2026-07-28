@@ -1,6 +1,36 @@
 import type { ListingLocale } from "@/lib/translate-listing"
 
 interface SiteContentStrings {
+  nav: {
+    browse: string
+    sell: string
+    contact: string
+    postARide: string
+    signOut: string
+    myDashboard: string
+    logIn: string
+    signUpFree: string
+  }
+  footer: {
+    description: string
+    tagline: string
+    marketplace: string
+    sellers: string
+    company: string
+    browseAll: string
+    majorRides: string
+    familyRides: string
+    inflatables: string
+    sellWithUs: string
+    createAccount: string
+    sellerLogin: string
+    contactUs: string
+    about: string
+    privacy: string
+    terms: string
+    copyright: string
+    builtFor: string
+  }
   hero: {
     badge: string
     title1: string
@@ -67,6 +97,20 @@ interface SiteContentStrings {
 // hero/categories/howItWorks/marketplace namespaces.
 export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
   en: {
+    nav: {
+      browse: "Browse Listings", sell: "Sell With Us", contact: "Contact", postARide: "Post a Ride",
+      signOut: "Sign out", myDashboard: "My Dashboard", logIn: "Log in", signUpFree: "Sign up free",
+    },
+    footer: {
+      description: "Europe's dedicated B2B marketplace for buying and selling amusement rides and attractions.",
+      tagline: "The future of amusement ride trading starts here.",
+      marketplace: "Marketplace", sellers: "Sellers", company: "Company",
+      browseAll: "Browse All Listings", majorRides: "Major Rides", familyRides: "Family Rides",
+      inflatables: "Inflatables & Soft Play", sellWithUs: "Sell With Us", createAccount: "Create Account",
+      sellerLogin: "Seller Login", contactUs: "Contact Us", about: "About RideDirect",
+      privacy: "Privacy Policy", terms: "Terms of Service", copyright: "All rights reserved.",
+      builtFor: "Built for the European amusement industry.",
+    },
     hero: {
       badge: "Europe's #1 Amusement Ride Marketplace",
       title1: "The European Marketplace for",
@@ -130,6 +174,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "CE Docs", inspection: "Inspection" },
   },
   de: {
+    nav: {
+      browse: "Alle Inserate", sell: "Mit uns verkaufen", contact: "Kontakt", postARide: "Inserat aufgeben",
+      signOut: "Abmelden", myDashboard: "Mein Dashboard", logIn: "Anmelden", signUpFree: "Kostenlos registrieren",
+    },
+    footer: {
+      description: "Europas spezialisierter B2B-Marktplatz für den Kauf und Verkauf von Fahrgeschäften und Attraktionen.",
+      tagline: "Die Zukunft des Fahrgeschäft-Handels beginnt hier.",
+      marketplace: "Marktplatz", sellers: "Verkäufer", company: "Unternehmen",
+      browseAll: "Alle Inserate durchsuchen", majorRides: "Große Fahrgeschäfte", familyRides: "Familienfahrgeschäfte",
+      inflatables: "Hüpfburgen & Softplay", sellWithUs: "Mit uns verkaufen", createAccount: "Konto erstellen",
+      sellerLogin: "Verkäufer-Login", contactUs: "Kontakt", about: "Über RideDirect",
+      privacy: "Datenschutz", terms: "Nutzungsbedingungen", copyright: "Alle Rechte vorbehalten.",
+      builtFor: "Für die europäische Vergnügungsbranche entwickelt.",
+    },
     hero: {
       badge: "Europas führender Marktplatz für Fahrgeschäfte",
       title1: "Der europäische Marktplatz für",
@@ -193,6 +251,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "CE-Dok.", inspection: "Besichtigung" },
   },
   it: {
+    nav: {
+      browse: "Tutti gli annunci", sell: "Vendi con noi", contact: "Contatti", postARide: "Pubblica annuncio",
+      signOut: "Esci", myDashboard: "Il mio dashboard", logIn: "Accedi", signUpFree: "Registrati gratis",
+    },
+    footer: {
+      description: "Il marketplace B2B europeo dedicato alla compravendita di attrazioni e giostre.",
+      tagline: "Il futuro del commercio di attrazioni inizia qui.",
+      marketplace: "Marketplace", sellers: "Venditori", company: "Azienda",
+      browseAll: "Tutti gli annunci", majorRides: "Grandi attrazioni", familyRides: "Attrazioni per famiglie",
+      inflatables: "Gonfiabili & Soft Play", sellWithUs: "Vendi con noi", createAccount: "Crea account",
+      sellerLogin: "Accesso venditori", contactUs: "Contattaci", about: "Chi siamo",
+      privacy: "Privacy Policy", terms: "Termini di servizio", copyright: "Tutti i diritti riservati.",
+      builtFor: "Costruito per il settore europeo delle attrazioni.",
+    },
     hero: {
       badge: "Il marketplace n°1 in Europa per le attrazioni",
       title1: "Il marketplace europeo per",
@@ -256,6 +328,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "Doc. CE", inspection: "Ispezione" },
   },
   fr: {
+    nav: {
+      browse: "Toutes les annonces", sell: "Vendre avec nous", contact: "Contact", postARide: "Publier une annonce",
+      signOut: "Se déconnecter", myDashboard: "Mon tableau de bord", logIn: "Connexion", signUpFree: "Inscription gratuite",
+    },
+    footer: {
+      description: "Le marketplace B2B européen dédié à l'achat et la vente d'attractions et de manèges.",
+      tagline: "L'avenir du commerce des attractions commence ici.",
+      marketplace: "Marketplace", sellers: "Vendeurs", company: "Entreprise",
+      browseAll: "Voir toutes les annonces", majorRides: "Grandes Attractions", familyRides: "Attractions Familiales",
+      inflatables: "Structures Gonflables & Soft Play", sellWithUs: "Vendre avec nous", createAccount: "Créer un compte",
+      sellerLogin: "Connexion vendeur", contactUs: "Nous contacter", about: "À propos de RideDirect",
+      privacy: "Politique de confidentialité", terms: "Conditions d'utilisation", copyright: "Tous droits réservés.",
+      builtFor: "Conçu pour le secteur européen des attractions.",
+    },
     hero: {
       badge: "Le marketplace n°1 des attractions en Europe",
       title1: "Le marketplace européen pour",
@@ -319,6 +405,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "Docs CE", inspection: "Inspection" },
   },
   es: {
+    nav: {
+      browse: "Todos los anuncios", sell: "Vender con nosotros", contact: "Contacto", postARide: "Publicar anuncio",
+      signOut: "Cerrar sesión", myDashboard: "Mi panel", logIn: "Iniciar sesión", signUpFree: "Registro gratis",
+    },
+    footer: {
+      description: "El marketplace B2B europeo dedicado a la compra y venta de atracciones y ferias.",
+      tagline: "El futuro del comercio de atracciones empieza aquí.",
+      marketplace: "Marketplace", sellers: "Vendedores", company: "Empresa",
+      browseAll: "Ver todos los anuncios", majorRides: "Atracciones Principales", familyRides: "Atracciones Familiares",
+      inflatables: "Inflables & Soft Play", sellWithUs: "Vender con nosotros", createAccount: "Crear cuenta",
+      sellerLogin: "Acceso vendedores", contactUs: "Contáctanos", about: "Sobre RideDirect",
+      privacy: "Política de privacidad", terms: "Términos de servicio", copyright: "Todos los derechos reservados.",
+      builtFor: "Creado para el sector europeo de atracciones.",
+    },
     hero: {
       badge: "El marketplace nº1 de atracciones en Europa",
       title1: "El marketplace europeo de",
@@ -382,6 +482,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "Docs CE", inspection: "Inspección" },
   },
   nl: {
+    nav: {
+      browse: "Alle advertenties", sell: "Verkoop met ons", contact: "Contact", postARide: "Advertentie plaatsen",
+      signOut: "Uitloggen", myDashboard: "Mijn dashboard", logIn: "Inloggen", signUpFree: "Gratis registreren",
+    },
+    footer: {
+      description: "De Europese B2B-marktplaats voor de aan- en verkoop van attracties en kermisuitrusting.",
+      tagline: "De toekomst van attractiehandel begint hier.",
+      marketplace: "Marktplaats", sellers: "Verkopers", company: "Bedrijf",
+      browseAll: "Alle advertenties bekijken", majorRides: "Grote Attracties", familyRides: "Familieattracties",
+      inflatables: "Springkussens & Soft Play", sellWithUs: "Verkoop met ons", createAccount: "Account aanmaken",
+      sellerLogin: "Verkoper login", contactUs: "Neem contact op", about: "Over RideDirect",
+      privacy: "Privacybeleid", terms: "Gebruiksvoorwaarden", copyright: "Alle rechten voorbehouden.",
+      builtFor: "Gebouwd voor de Europese attractiebranche.",
+    },
     hero: {
       badge: "Europa's nr. 1 marktplaats voor attracties",
       title1: "De Europese marktplaats voor",
@@ -445,6 +559,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "CE-docs", inspection: "Inspectie" },
   },
   pl: {
+    nav: {
+      browse: "Wszystkie ogłoszenia", sell: "Sprzedawaj z nami", contact: "Kontakt", postARide: "Dodaj ogłoszenie",
+      signOut: "Wyloguj się", myDashboard: "Mój panel", logIn: "Zaloguj się", signUpFree: "Zarejestruj się bezpłatnie",
+    },
+    footer: {
+      description: "Europejski rynek B2B dedykowany kupnu i sprzedaży atrakcji i karuzeli.",
+      tagline: "Przyszłość handlu atrakcjami zaczyna się tutaj.",
+      marketplace: "Rynek", sellers: "Sprzedawcy", company: "Firma",
+      browseAll: "Zobacz wszystkie ogłoszenia", majorRides: "Duże Atrakcje", familyRides: "Atrakcje Rodzinne",
+      inflatables: "Dmuchańce & Soft Play", sellWithUs: "Sprzedawaj z nami", createAccount: "Utwórz konto",
+      sellerLogin: "Logowanie sprzedawcy", contactUs: "Skontaktuj się z nami", about: "O RideDirect",
+      privacy: "Polityka prywatności", terms: "Regulamin", copyright: "Wszelkie prawa zastrzeżone.",
+      builtFor: "Stworzone dla europejskiej branży rozrywkowej.",
+    },
     hero: {
       badge: "Wiodący europejski rynek atrakcji rozrywkowych",
       title1: "Europejski rynek dla",
@@ -508,6 +636,20 @@ export const SITE_T: Record<ListingLocale, SiteContentStrings> = {
     listingCard: { ceDocs: "Dok. CE", inspection: "Inspekcja" },
   },
   pt: {
+    nav: {
+      browse: "Todos os anúncios", sell: "Vender connosco", contact: "Contacto", postARide: "Publicar anúncio",
+      signOut: "Terminar sessão", myDashboard: "O meu painel", logIn: "Iniciar sessão", signUpFree: "Registo gratuito",
+    },
+    footer: {
+      description: "O marketplace B2B europeu dedicado à compra e venda de atrações e diversões.",
+      tagline: "O futuro do comércio de atrações começa aqui.",
+      marketplace: "Marketplace", sellers: "Vendedores", company: "Empresa",
+      browseAll: "Ver todos os anúncios", majorRides: "Grandes Atrações", familyRides: "Atrações Familiares",
+      inflatables: "Insufláveis & Soft Play", sellWithUs: "Vender connosco", createAccount: "Criar conta",
+      sellerLogin: "Acesso vendedores", contactUs: "Contacte-nos", about: "Sobre a RideDirect",
+      privacy: "Política de Privacidade", terms: "Termos de Serviço", copyright: "Todos os direitos reservados.",
+      builtFor: "Criado para o setor europeu de atrações.",
+    },
     hero: {
       badge: "O marketplace nº1 de atrações na Europa",
       title1: "O marketplace europeu para",

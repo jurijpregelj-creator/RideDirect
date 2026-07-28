@@ -2,7 +2,22 @@ import { type NextRequest, NextResponse } from "next/server"
 import { createServerClient } from "@supabase/ssr"
 import { updateSession } from "@/lib/supabase/middleware"
 
+// Kept as a plain literal (not imported from src/lib/translate-listing.ts)
+// because that file pulls in deepl-node / the Supabase admin client, which
+// are not safe to bundle into the Edge middleware runtime.
+const URL_LOCALE_PATTERN = /^\/(de|it|fr|es|nl|pl|pt)(\/|$)/
+
 export async function middleware(request: NextRequest) {
+  // 0. Detect a locale prefix (/de/..., /fr, etc.) and expose it to Server
+  // Components downstream via a request header — Header/Footer live in the
+  // root layout, shared by every route, and need to know whether the current
+  // page is one of the URL-localized ones (public marketing pages) or a
+  // cookie-driven one (dashboard/admin/auth) that should be left alone.
+  const urlLocaleMatch = request.nextUrl.pathname.match(URL_LOCALE_PATTERN)
+  if (urlLocaleMatch) {
+    request.headers.set("x-url-locale", urlLocaleMatch[1])
+  }
+
   // 1. Handle Supabase session
   const supabaseResponse = await updateSession(request)
 

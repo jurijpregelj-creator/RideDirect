@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers"
 
-const VALID_LOCALES = ["en", "de", "it"]
+const VALID_LOCALES = ["en", "de", "it", "fr", "es", "nl", "pl", "pt"]
 
 export async function setLocale(locale: string) {
   if (!VALID_LOCALES.includes(locale)) return

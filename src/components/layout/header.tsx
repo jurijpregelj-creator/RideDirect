@@ -10,20 +10,28 @@ import { createClient } from "@/lib/supabase/client"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { RideDirectLogo } from "@/components/ui/logo"
 import type { User } from "@supabase/supabase-js"
+import type { ListingLocale } from "@/lib/translate-listing"
+import { buildPageUrl } from "@/lib/site-locale-urls"
+import { SITE_T } from "@/components/home/site-content-translations"
 
-export function Header() {
+interface HeaderProps {
+  urlLocale?: ListingLocale
+}
+
+export function Header({ urlLocale }: HeaderProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [unread, setUnread] = useState(0)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const router = useRouter()
   const pathname = usePathname()
-  const t = useTranslations("nav")
+  const cookieT = useTranslations("nav")
+  const t = urlLocale ? (key: keyof (typeof SITE_T)["en"]["nav"]) => SITE_T[urlLocale].nav[key] : cookieT
 
   const NAV_LINKS = [
-    { href: "/marketplace", label: t("browse") },
-    { href: "/sell", label: t("sell") },
-    { href: "/contact", label: t("contact") },
+    { href: urlLocale ? buildPageUrl("/marketplace", urlLocale) : "/marketplace", label: t("browse") },
+    { href: urlLocale ? buildPageUrl("/sell", urlLocale) : "/sell", label: t("sell") },
+    { href: urlLocale ? buildPageUrl("/contact", urlLocale) : "/contact", label: t("contact") },
   ]
 
   // Close mobile menu on route change
@@ -95,7 +103,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center group">
+        <Link href={urlLocale ? buildPageUrl("", urlLocale) : "/"} className="flex items-center group">
           <img src="/logo.svg" alt="RideDirect.eu" style={{height: '60px', width: 'auto'}} />
         </Link>
 
@@ -122,7 +130,7 @@ export function Header() {
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center gap-3">
-          <LanguageSwitcher />
+          <LanguageSwitcher urlLocale={urlLocale} />
           {user ? (
             <>
               {/* Notification bell */}
@@ -218,7 +226,7 @@ export function Header() {
             )
           })}
           <div className="pt-3 flex flex-col gap-2 border-t mt-3">
-            <LanguageSwitcher />
+            <LanguageSwitcher urlLocale={urlLocale} />
             {user ? (
               <>
                 <Link href="/dashboard/create" onClick={() => setMobileOpen(false)}>

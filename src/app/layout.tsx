@@ -1,13 +1,17 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import { Inter, Poppins } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
+import { headers } from "next/headers"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Header } from "@/components/layout/header"
 import { Footer } from "@/components/layout/footer"
+import { LanguageSuggestionBanner } from "@/components/layout/language-suggestion-banner"
 import { MessageToaster } from "@/components/notifications/message-toaster"
 import { CookieBanner } from "@/components/layout/cookie-banner"
+import type { ListingLocale } from "@/lib/translate-listing"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 const poppins = Poppins({
@@ -72,6 +76,7 @@ const websiteJsonLd = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const messages = await getMessages()
+  const urlLocale = headers().get("x-url-locale") as ListingLocale | null
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable} font-sans`}>
@@ -85,9 +90,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
         <NextIntlClientProvider messages={messages}>
           <div className="flex min-h-screen flex-col">
-            <Header />
+            <Suspense fallback={null}>
+              <LanguageSuggestionBanner urlLocale={urlLocale ?? undefined} />
+            </Suspense>
+            <Suspense fallback={null}>
+              <Header urlLocale={urlLocale ?? undefined} />
+            </Suspense>
             <main className="flex-1">{children}</main>
-            <Footer />
+            <Footer locale={urlLocale ?? undefined} />
             <MessageToaster />
             <CookieBanner />
           </div>
