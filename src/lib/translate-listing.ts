@@ -1,8 +1,9 @@
 import * as deepl from "deepl-node"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
 
-export const SUPPORTED_LISTING_LOCALES = ["en", "de", "it", "fr", "es", "nl", "pl", "pt"] as const
-export type ListingLocale = (typeof SUPPORTED_LISTING_LOCALES)[number]
+export { SUPPORTED_LISTING_LOCALES, buildListingUrl, buildListingAlternates } from "@/lib/locales"
+export type { ListingLocale } from "@/lib/locales"
 
 const DEEPL_TARGET: Record<ListingLocale, deepl.TargetLanguageCode> = {
   en: "en-US",
@@ -101,22 +102,6 @@ export async function translateListingToAllLocales(
   }
 
   return { succeeded, failed }
-}
-
-export function buildListingUrl(id: string, locale: ListingLocale): string {
-  return locale === "en"
-    ? `https://ridedirect.eu/listings/${id}`
-    : `https://ridedirect.eu/${locale}/listings/${id}`
-}
-
-export function buildListingAlternates(id: string, locale: ListingLocale) {
-  return {
-    canonical: buildListingUrl(id, locale),
-    languages: {
-      "x-default": buildListingUrl(id, "en"),
-      ...Object.fromEntries(SUPPORTED_LISTING_LOCALES.map((l) => [l, buildListingUrl(id, l)])),
-    },
-  }
 }
 
 export async function getListingTranslation(listingId: string, locale: ListingLocale) {

@@ -1,4 +1,4 @@
-import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/translate-listing"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
 
 const BASE_URL = "https://ridedirect.eu"
 
