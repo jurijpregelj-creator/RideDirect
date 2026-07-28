@@ -10,24 +10,18 @@ import {
   Factory,
   Tag,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { CONDITION_LABELS } from "@/data/mock"
 import { formatPrice } from "@/lib/utils"
-import type { Metadata } from "next"
 import { InquiryForm } from "@/components/listing/inquiry-form"
 import { ReportListingButton } from "@/components/listing/report-listing-button"
 import { createClient } from "@/lib/supabase/server"
 import { ImageGallery } from "@/components/listing/image-gallery"
 import { ViewCounter } from "@/components/listing/view-counter"
-import { ListingDescription } from "@/components/listing/listing-description"
 import type { Listing } from "@/types"
-import { buildListingAlternates } from "@/lib/translate-listing"
-
-interface ListingDetailPageProps {
-  params: { id: string }
-}
+import type { ListingLocale } from "@/lib/translate-listing"
+import { getListingTranslation } from "@/lib/translate-listing"
+import { LISTING_PAGE_T, categorySlugFromName } from "@/components/listing/listing-page-translations"
 
 async function getListing(id: string): Promise<Listing | null> {
   const supabase = createClient()
@@ -45,41 +39,37 @@ async function getListing(id: string): Promise<Listing | null> {
   } as Listing
 }
 
-export async function generateMetadata({ params }: ListingDetailPageProps): Promise<Metadata> {
-  const listing = await getListing(params.id)
-  if (!listing) return { title: "Listing not found" }
+export async function getListingPageMeta(id: string, locale: ListingLocale) {
+  const listing = await getListing(id)
+  if (!listing) return null
+  const translation = await getListingTranslation(id, locale)
   return {
-    title: listing.title,
-    description: listing.description?.slice(0, 160),
-    alternates: buildListingAlternates(params.id, "en"),
+    title: translation?.title || listing.title,
+    description: (translation?.description || listing.description)?.slice(0, 160),
   }
 }
 
-export default async function ListingDetailPage({ params }: ListingDetailPageProps) {
-  const listing = await getListing(params.id)
+export async function ListingPageContent({ id, locale }: { id: string; locale: ListingLocale }) {
+  const listing = await getListing(id)
+  if (!listing) notFound()
 
-  if (!listing) {
-    notFound()
-  }
+  const translation = await getListingTranslation(id, locale)
+  const title = translation?.title || listing.title
+  const description = translation?.description || listing.description
+
+  const t = LISTING_PAGE_T[locale]
+  const categorySlug = categorySlugFromName(listing.category)
+  const categoryLabel = categorySlug ? t.categories[categorySlug] : listing.category
+  const conditionLabel = t.conditions[listing.condition]
 
   const details = [
-    { label: "Category", value: listing.category, icon: Tag },
-    { label: "Country", value: listing.country, icon: MapPin },
-    { label: "Condition", value: CONDITION_LABELS[listing.condition], icon: ShieldCheck },
-    ...(listing.manufacturer
-      ? [{ label: "Manufacturer", value: listing.manufacturer, icon: Factory }]
-      : []),
-    ...(listing.year
-      ? [{ label: "Year", value: String(listing.year), icon: Calendar }]
-      : []),
+    { label: t.category, value: categoryLabel, icon: Tag },
+    { label: t.country, value: listing.country, icon: MapPin },
+    { label: t.condition, value: conditionLabel, icon: ShieldCheck },
+    ...(listing.manufacturer ? [{ label: t.manufacturer, value: listing.manufacturer, icon: Factory }] : []),
+    ...(listing.year ? [{ label: t.year, value: String(listing.year), icon: Calendar }] : []),
     ...(listing.original_language
-      ? [
-          {
-            label: "Original Language",
-            value: listing.original_language.toUpperCase(),
-            icon: Globe,
-          },
-        ]
+      ? [{ label: t.originalLanguage, value: listing.original_language.toUpperCase(), icon: Globe }]
       : []),
   ]
 
@@ -91,25 +81,22 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
     currentProfile = data
   }
 
+  const localizedUrl = `https://ridedirect.eu/${locale}/listings/${listing.id}`
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: listing.title,
-    description: listing.description?.slice(0, 5000),
+    name: title,
+    description: description?.slice(0, 5000),
     category: listing.category,
     ...(listing.manufacturer ? { brand: { "@type": "Brand", name: listing.manufacturer } } : {}),
-    ...(listing.images?.length
-      ? { image: listing.images.map((img) => img.image_url) }
-      : {}),
+    ...(listing.images?.length ? { image: listing.images.map((img) => img.image_url) } : {}),
     offers: {
       "@type": "Offer",
-      url: `https://ridedirect.eu/listings/${listing.id}`,
+      url: localizedUrl,
       priceCurrency: listing.currency,
       price: listing.price,
       itemCondition:
-        listing.condition === "new"
-          ? "https://schema.org/NewCondition"
-          : "https://schema.org/UsedCondition",
+        listing.condition === "new" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
       availability: "https://schema.org/InStock",
       areaServed: listing.country,
     },
@@ -129,7 +116,7 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
             className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#1E88E5] transition-colors"
           >
             <ChevronLeft size={16} />
-            Back to listings
+            {t.backToListings}
           </Link>
         </div>
 
@@ -140,40 +127,39 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left: Images + Description */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Image gallery */}
-            <ImageGallery images={listing.images || []} title={listing.title} />
+            <ImageGallery images={listing.images || []} title={title} />
 
-            {/* Listing info */}
             <div className="bg-white rounded-xl border border-gray-100 p-6">
-              {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-4">
-                <Badge variant="outline" className="text-sm">{listing.category}</Badge>
+                <Badge variant="outline" className="text-sm">{categoryLabel}</Badge>
                 {listing.ce_docs_available && (
                   <Badge variant="success" className="flex items-center gap-1">
                     <CheckCircle2 size={12} />
-                    CE Documentation Available
+                    {t.ceDocsAvailable}
                   </Badge>
                 )}
                 {listing.inspection_available && (
                   <Badge variant="blue" className="flex items-center gap-1">
                     <ShieldCheck size={12} />
-                    Inspection Available
+                    {t.inspectionAvailable}
                   </Badge>
                 )}
               </div>
 
               <h1 className="text-2xl sm:text-3xl font-bold text-[#0D2A5E] mb-4 leading-tight">
-                {listing.title}
+                {title}
               </h1>
 
               <Separator className="my-4" />
 
-              <ListingDescription description={listing.description} />
+              <div>
+                <h2 className="font-semibold text-gray-700 mb-3">{t.description}</h2>
+                <p className="text-gray-600 leading-relaxed whitespace-pre-line">{description}</p>
+              </div>
             </div>
 
-            {/* Details grid */}
             <div className="bg-white rounded-xl border border-gray-100 p-6">
-              <h2 className="font-semibold text-gray-700 mb-4">Listing Details</h2>
+              <h2 className="font-semibold text-gray-700 mb-4">{t.details}</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {details.map(({ label, value, icon: Icon }) => (
                   <div key={label} className="flex items-start gap-3">
@@ -192,47 +178,44 @@ export default async function ListingDetailPage({ params }: ListingDetailPagePro
 
           {/* Right: Price + Inquiry */}
           <div className="space-y-5">
-            {/* Price card */}
             <div className="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
               <div className="text-3xl font-bold text-[#1E88E5] mb-1">
                 {formatPrice(listing.price, listing.currency)}
               </div>
               <div className="text-sm text-gray-400 mb-4">
-                {CONDITION_LABELS[listing.condition]} · {listing.country}
+                {conditionLabel} · {listing.country}
               </div>
               <div className="space-y-2 text-sm text-gray-500">
                 {listing.ce_docs_available && (
                   <div className="flex items-center gap-2">
                     <CheckCircle2 size={14} className="text-green-500" />
-                    CE documentation available
+                    {t.ceDocsAvailable}
                   </div>
                 )}
                 {listing.inspection_available && (
                   <div className="flex items-center gap-2">
                     <ShieldCheck size={14} className="text-blue-500" />
-                    Pre-purchase inspection possible
+                    {t.inspectionAvailable}
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Inquiry form — hidden for the seller of this listing */}
             {currentUser?.id === listing.seller_id ? (
               <div className="bg-blue-50 border border-blue-100 rounded-xl p-5 text-center text-sm text-blue-600">
-                This is your listing. Buyers will see a contact form here.
+                {t.yourListingNotice}
               </div>
             ) : (
               <InquiryForm
                 listingId={listing.id}
                 sellerId={listing.seller_id}
-                listingTitle={listing.title}
+                listingTitle={title}
                 loggedInUser={currentProfile ? { name: currentProfile.full_name, email: currentProfile.email || currentUser?.email || "" } : null}
               />
             )}
 
-            {/* Report */}
             <div className="flex justify-center">
-              <ReportListingButton listingId={listing.id} listingTitle={listing.title} />
+              <ReportListingButton listingId={listing.id} listingTitle={title} />
             </div>
           </div>
         </div>

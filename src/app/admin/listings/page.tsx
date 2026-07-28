@@ -2,6 +2,7 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { expireStaleListings } from "@/lib/supabase/admin"
 import { ListingActions } from "./_components/listing-actions"
+import { BackfillTranslationsButton } from "./_components/backfill-translations-button"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Admin — Listings" }
@@ -53,9 +54,12 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
 
   return (
     <div className="p-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#0D2A5E]">Listings</h1>
-        <p className="text-sm text-gray-400 mt-1">{listings?.length ?? 0} listings found</p>
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-[#0D2A5E]">Listings</h1>
+          <p className="text-sm text-gray-400 mt-1">{listings?.length ?? 0} listings found</p>
+        </div>
+        <BackfillTranslationsButton />
       </div>
 
       {/* Status tabs */}

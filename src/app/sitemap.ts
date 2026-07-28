@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { createClient } from "@/lib/supabase/server"
+import { SUPPORTED_LISTING_LOCALES, buildListingUrl } from "@/lib/translate-listing"
 
 const BASE_URL = "https://ridedirect.eu"
 
@@ -49,12 +50,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .order("updated_at", { ascending: false })
 
     if (listings) {
-      listingPages = listings.map((listing) => ({
-        url: `${BASE_URL}/listings/${listing.id}`,
-        lastModified: new Date(listing.updated_at),
-        changeFrequency: "weekly" as const,
-        priority: 0.8,
-      }))
+      listingPages = listings.flatMap((listing) =>
+        SUPPORTED_LISTING_LOCALES.map((locale) => ({
+          url: buildListingUrl(listing.id, locale),
+          lastModified: new Date(listing.updated_at),
+          changeFrequency: "weekly" as const,
+          priority: locale === "en" ? 0.8 : 0.7,
+        }))
+      )
     }
   } catch {
     // Silently fail — sitemap still works without individual listings

@@ -4,6 +4,7 @@ import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdminClient } from "@supabase/supabase-js"
+import { translateListingToAllLocales } from "@/lib/translate-listing"
 
 async function requireAdmin() {
   // Accept backdoor cookie OR Supabase admin session
@@ -32,6 +33,20 @@ export async function approveListing(listingId: string) {
     .eq("id", listingId)
   revalidatePath("/admin/listings")
   revalidatePath("/marketplace")
+
+  // Fire-and-catch: translation into all supported locales must never block approval.
+  try {
+    const { data: listing } = await supabase
+      .from("listings")
+      .select("title, description")
+      .eq("id", listingId)
+      .single()
+    if (listing) {
+      await translateListingToAllLocales(listingId, listing.title, listing.description)
+    }
+  } catch (e) {
+    console.error("Listing translation failed for", listingId, e)
+  }
 }
 
 export async function rejectListing(listingId: string) {
@@ -82,6 +97,26 @@ export async function sendAdminMessage(listingId: string, sellerId: string, mess
     unread_for_buyer: false,
   })
   revalidatePath("/admin/listings")
+}
+
+export async function backfillMissingTranslations() {
+  const supabase = await requireAdmin()
+  const { data: listings } = await supabase
+    .from("listings")
+    .select("id, title, description")
+    .eq("status", "approved")
+
+  let translated = 0
+  for (const listing of listings || []) {
+    try {
+      await translateListingToAllLocales(listing.id, listing.title, listing.description)
+      translated++
+    } catch (e) {
+      console.error("Backfill translation failed for", listing.id, e)
+    }
+  }
+  revalidatePath("/admin/listings")
+  return { translated, total: listings?.length ?? 0 }
 }
 
 export async function adminUpdateListing(
