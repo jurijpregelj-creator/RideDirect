@@ -5,15 +5,27 @@ import { Badge } from "@/components/ui/badge"
 import { type Listing } from "@/types"
 import { formatPrice } from "@/lib/utils"
 import { CONDITION_LABELS } from "@/data/mock"
+import type { ListingLocale } from "@/lib/translate-listing"
+import { buildListingUrl } from "@/lib/translate-listing"
+import { LISTING_PAGE_T, categorySlugFromName } from "@/components/listing/listing-page-translations"
+import { SITE_T } from "@/components/home/site-content-translations"
 
 interface ListingCardProps {
   listing: Listing
+  locale?: ListingLocale
+  translatedTitle?: string
 }
 
-export function ListingCard({ listing }: ListingCardProps) {
+export function ListingCard({ listing, locale, translatedTitle }: ListingCardProps) {
+  const title = translatedTitle ?? listing.title
+  const categorySlug = categorySlugFromName(listing.category)
+  const categoryLabel = locale && categorySlug ? LISTING_PAGE_T[locale].categories[categorySlug] : listing.category
+  const conditionLabel = locale ? LISTING_PAGE_T[locale].conditions[listing.condition] : CONDITION_LABELS[listing.condition]
+  const badges = locale ? SITE_T[locale].listingCard : { ceDocs: "CE Docs", inspection: "Inspection" }
+
   return (
     <Link
-      href={`/listings/${listing.id}`}
+      href={locale ? buildListingUrl(listing.id, locale) : `/listings/${listing.id}`}
       className="group flex flex-col bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
     >
       {/* Image */}
@@ -21,7 +33,7 @@ export function ListingCard({ listing }: ListingCardProps) {
         {listing.images?.[0] ? (
           <Image
             src={listing.images[0].image_url}
-            alt={listing.title}
+            alt={title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -35,13 +47,13 @@ export function ListingCard({ listing }: ListingCardProps) {
           {listing.ce_docs_available && (
             <Badge variant="success" className="text-xs flex items-center gap-1">
               <CheckCircle2 size={10} />
-              CE Docs
+              {badges.ceDocs}
             </Badge>
           )}
           {listing.inspection_available && (
             <Badge variant="blue" className="text-xs flex items-center gap-1">
               <ShieldCheck size={10} />
-              Inspection
+              {badges.inspection}
             </Badge>
           )}
         </div>
@@ -50,11 +62,11 @@ export function ListingCard({ listing }: ListingCardProps) {
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
         <div className="mb-2">
-          <Badge variant="outline" className="text-xs text-gray-500">{listing.category}</Badge>
+          <Badge variant="outline" className="text-xs text-gray-500">{categoryLabel}</Badge>
         </div>
 
         <h3 className="font-semibold text-[#0D2A5E] leading-snug mb-3 group-hover:text-[#1E88E5] transition-colors line-clamp-2 flex-1">
-          {listing.title}
+          {title}
         </h3>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-400 mb-4">
@@ -79,7 +91,7 @@ export function ListingCard({ listing }: ListingCardProps) {
               {formatPrice(listing.price, listing.currency)}
             </div>
             <div className="text-xs text-gray-400 mt-0.5">
-              {CONDITION_LABELS[listing.condition]}
+              {conditionLabel}
             </div>
           </div>
           <div className="text-xs text-gray-300 text-right">

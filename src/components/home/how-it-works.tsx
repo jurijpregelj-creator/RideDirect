@@ -1,8 +1,12 @@
 import { Search, MessageSquare, Handshake } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import type { ListingLocale } from "@/lib/translate-listing"
+import { SITE_T } from "@/components/home/site-content-translations"
 
-export async function HowItWorks() {
-  const t = await getTranslations("howItWorks")
+export async function HowItWorks({ locale }: { locale?: ListingLocale } = {}) {
+  const t = locale
+    ? (key: string) => (SITE_T[locale].howItWorks as Record<string, string>)[key]
+    : await getTranslations("howItWorks")
 
   const STEPS = [
     { icon: Search, step: "01", titleKey: "step1Title", descKey: "step1Desc", color: "bg-blue-50 text-[#1E88E5]" },

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { createClient } from "@/lib/supabase/server"
 import { SUPPORTED_LISTING_LOCALES, buildListingUrl } from "@/lib/translate-listing"
+import { buildPageUrl } from "@/lib/site-locale-urls"
 
 const BASE_URL = "https://ridedirect.eu"
 
@@ -18,9 +19,21 @@ const CATEGORY_SLUGS = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const homepagePages: MetadataRoute.Sitemap = SUPPORTED_LISTING_LOCALES.map((locale) => ({
+    url: buildPageUrl("", locale),
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: locale === "en" ? 1.0 : 0.9,
+  }))
+
+  const marketplacePages: MetadataRoute.Sitemap = SUPPORTED_LISTING_LOCALES.map((locale) => ({
+    url: buildPageUrl("/marketplace", locale),
+    lastModified: new Date(),
+    changeFrequency: "daily" as const,
+    priority: locale === "en" ? 0.9 : 0.8,
+  }))
+
   const staticPages: MetadataRoute.Sitemap = [
-    { url: BASE_URL, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
-    { url: `${BASE_URL}/marketplace`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
     { url: `${BASE_URL}/sell`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
@@ -63,5 +76,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Silently fail — sitemap still works without individual listings
   }
 
-  return [...staticPages, ...categoryPages, ...listingPages]
+  return [...homepagePages, ...marketplacePages, ...staticPages, ...categoryPages, ...listingPages]
 }

@@ -2,9 +2,13 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { CATEGORIES } from "@/data/mock"
+import type { ListingLocale } from "@/lib/translate-listing"
+import { SITE_T } from "@/components/home/site-content-translations"
 
-export async function Categories() {
-  const t = await getTranslations("categories")
+export async function Categories({ locale }: { locale?: ListingLocale } = {}) {
+  const t = locale
+    ? (key: string) => (SITE_T[locale].categories as Record<string, string>)[key]
+    : await getTranslations("categories")
 
   return (
     <section className="py-20 bg-white">

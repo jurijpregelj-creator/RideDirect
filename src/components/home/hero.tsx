@@ -2,9 +2,13 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ShieldCheck, Globe2, TrendingUp } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import type { ListingLocale } from "@/lib/translate-listing"
+import { SITE_T } from "@/components/home/site-content-translations"
 
-export async function Hero() {
-  const t = await getTranslations("hero")
+export async function Hero({ locale }: { locale?: ListingLocale } = {}) {
+  const t = locale
+    ? (key: keyof (typeof SITE_T)["en"]["hero"]) => SITE_T[locale].hero[key]
+    : await getTranslations("hero")
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0D2A5E] via-[#1a2d5a] to-[#1E88E5]">
