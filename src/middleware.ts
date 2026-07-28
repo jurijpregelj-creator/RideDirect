@@ -6,8 +6,11 @@ export async function middleware(request: NextRequest) {
   // 1. Handle Supabase session
   const supabaseResponse = await updateSession(request)
 
-  // 2. Protect /admin routes
-  if (request.nextUrl.pathname.startsWith("/admin")) {
+  // 2. Protect /admin routes (but not /admin-key/<secret>, the bootstrap route
+  // that ISSUES the admin_pass cookie — startsWith("/admin") would otherwise
+  // match "/admin-key/..." too and redirect it to login before it ever runs)
+  const path = request.nextUrl.pathname
+  if (path === "/admin" || path.startsWith("/admin/")) {
     // Backdoor cookie bypasses Supabase entirely
     if (request.cookies.get("admin_pass")?.value === "1") {
       // cookie present — allow through, layout will render
