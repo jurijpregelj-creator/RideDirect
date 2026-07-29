@@ -1,18 +1,33 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { createClient } from "@/lib/supabase/client"
 import { useSearchParams } from "next/navigation"
+import { AUTH_T } from "@/components/auth/auth-translations"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
+
+function readLocaleCookie(): ListingLocale {
+  if (typeof document === "undefined") return "en"
+  const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/)
+  const value = match ? decodeURIComponent(match[1]) : ""
+  return (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(value) ? (value as ListingLocale) : "en"
+}
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [locale, setLocale] = useState<ListingLocale>("en")
   const searchParams = useSearchParams()
+  const t = AUTH_T[locale]
+
+  useEffect(() => {
+    setLocale(readLocaleCookie())
+  }, [])
 
   // next= may be encoded (e.g. /dashboard?submitted=1)
   const nextParam = searchParams.get("next") || ""
@@ -84,13 +99,13 @@ export default function LoginPage() {
           </Link>
           {isFunnelSubmit ? (
             <>
-              <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">Almost there!</h1>
-              <p className="text-gray-500 text-sm">Sign in to publish your saved listing</p>
+              <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">{t.almostThere}</h1>
+              <p className="text-gray-500 text-sm">{t.signInToPublish}</p>
             </>
           ) : (
             <>
-              <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">Welcome back</h1>
-              <p className="text-gray-500 text-sm">Sign in to your account</p>
+              <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">{t.welcomeBack}</h1>
+              <p className="text-gray-500 text-sm">{t.signInSubtitle}</p>
             </>
           )}
         </div>
@@ -109,7 +124,7 @@ export default function LoginPage() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            Continue with Google
+            {t.continueWithGoogle}
           </Button>
 
           <Button
@@ -121,14 +136,14 @@ export default function LoginPage() {
             <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="#1877F2">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
             </svg>
-            Continue with Facebook
+            {t.continueWithFacebook}
           </Button>
 
           <p className="text-center text-xs text-gray-400 -mt-2 mb-4">
-            By continuing, you agree to our{" "}
-            <Link href="/legal/terms" target="_blank" className="underline hover:text-[#1E88E5]">Terms of Service</Link>{" "}
-            and{" "}
-            <Link href="/legal/privacy" target="_blank" className="underline hover:text-[#1E88E5]">Privacy Policy</Link>.
+            {t.agreeIntro}{" "}
+            <Link href="/legal/terms" target="_blank" className="underline hover:text-[#1E88E5]">{t.termsOfService}</Link>{" "}
+            {t.andWord}{" "}
+            <Link href="/legal/privacy" target="_blank" className="underline hover:text-[#1E88E5]">{t.privacyPolicy}</Link>.
           </p>
 
           <div className="relative mb-4">
@@ -136,7 +151,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-gray-100" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-400">or sign in with email</span>
+              <span className="bg-white px-3 text-gray-400">{t.orSignInWithEmail}</span>
             </div>
           </div>
 
@@ -148,27 +163,27 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="email">{t.emailAddress}</Label>
               <Input id="email" name="email" type="email" placeholder="john@company.com" required className="mt-1.5" />
             </div>
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t.password}</Label>
                 <Link href="/auth/forgot-password" className="text-xs text-[#1E88E5] hover:underline">
-                  Forgot password?
+                  {t.forgotPassword}
                 </Link>
               </div>
               <Input id="password" name="password" type="password" placeholder="••••••••" required />
             </div>
             <Button type="submit" variant="brand" className="w-full" disabled={loading}>
-              {loading ? <><Loader2 size={16} className="animate-spin" />Signing in...</> : "Sign In"}
+              {loading ? <><Loader2 size={16} className="animate-spin" />{t.signingIn}</> : t.signIn}
             </Button>
           </form>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          Don&apos;t have an account?{" "}
-          <Link href="/auth/signup" className="text-[#1E88E5] hover:underline font-medium">Sign up free</Link>
+          {t.noAccount}{" "}
+          <Link href="/auth/signup" className="text-[#1E88E5] hover:underline font-medium">{t.signUpFree}</Link>
         </p>
       </div>
     </div>

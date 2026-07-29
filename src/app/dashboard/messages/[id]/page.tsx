@@ -1,4 +1,5 @@
 import { redirect, notFound } from "next/navigation"
+import { cookies } from "next/headers"
 import Link from "next/link"
 import { ArrowLeft, ExternalLink } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
@@ -6,12 +7,18 @@ import { ReplyBox } from "@/components/inbox/reply-box"
 import { MarkReadOnMount } from "@/components/inbox/mark-read-on-mount"
 import { TranslatableMessage } from "@/components/inbox/translatable-message"
 import { ScrollToBottom } from "@/components/inbox/scroll-to-bottom"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Conversation — RideDirect" }
 
 export default async function ConversationPage({ params }: { params: { id: string } }) {
   const supabase = createClient()
+
+  const cookieLocale = cookies().get("NEXT_LOCALE")?.value
+  const locale: ListingLocale = (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(cookieLocale ?? "")
+    ? (cookieLocale as ListingLocale)
+    : "en"
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login")
@@ -94,7 +101,7 @@ export default async function ConversationPage({ params }: { params: { id: strin
                 {!msg.isMe && (
                   <span className="text-xs text-gray-400 px-1">{msg.sender_name}</span>
                 )}
-                <TranslatableMessage message={msg.message} isMe={msg.isMe} attachmentUrl={msg.attachmentUrl} attachmentType={msg.attachmentType} />
+                <TranslatableMessage message={msg.message} isMe={msg.isMe} attachmentUrl={msg.attachmentUrl} attachmentType={msg.attachmentType} locale={locale} />
                 <span className="text-[10px] text-gray-300 px-1">
                   {new Date(msg.created_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
                   {" · "}
@@ -112,7 +119,7 @@ export default async function ConversationPage({ params }: { params: { id: strin
 
         {/* Reply box — always visible at bottom */}
         <div className="shrink-0 pt-2 border-t border-gray-200 bg-gray-50">
-          <ReplyBox inquiryId={params.id} />
+          <ReplyBox inquiryId={params.id} locale={locale} />
         </div>
       </div>
     </div>

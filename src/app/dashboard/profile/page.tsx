@@ -18,16 +18,25 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { EUROPEAN_COUNTRIES } from "@/data/mock"
+import { SUPPORTED_LISTING_LOCALES, PREFERRED_LANGUAGES, type ListingLocale } from "@/lib/locales"
+import { PROFILE_T } from "@/app/dashboard/dashboard-translations"
+import { AUTH_T } from "@/components/auth/auth-translations"
+import { COUNTRY_NAMES } from "@/components/listing/listing-form-translations"
 import type { Metadata } from "next"
 
-const LANGUAGES = [
-  { code: "en", label: "English 🇬🇧" },
-  { code: "de", label: "Deutsch 🇩🇪" },
-  { code: "it", label: "Italiano 🇮🇹" },
-]
+function readLocaleCookie(): ListingLocale {
+  if (typeof document === "undefined") return "en"
+  const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/)
+  const value = match ? decodeURIComponent(match[1]) : ""
+  return (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(value) ? (value as ListingLocale) : "en"
+}
 
 export default function ProfilePage() {
   const router = useRouter()
+  const [pageLocale, setPageLocale] = useState<ListingLocale>("en")
+  const t = PROFILE_T[pageLocale]
+  const authT = AUTH_T[pageLocale]
+  const countryNames = COUNTRY_NAMES[pageLocale]
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -39,6 +48,10 @@ export default function ProfilePage() {
   const [country, setCountry] = useState("")
   const [language, setLanguage] = useState("en")
   const [email, setEmail] = useState("")
+
+  useEffect(() => {
+    setPageLocale(readLocaleCookie())
+  }, [])
 
   useEffect(() => {
     async function load() {
@@ -83,7 +96,7 @@ export default function ProfilePage() {
       .eq("id", user.id)
 
     if (updateError) {
-      setError("Failed to save changes. Please try again.")
+      setError(t.failedToSave)
       setSaving(false)
     } else {
       // Apply language change immediately via cookie
@@ -107,7 +120,7 @@ export default function ProfilePage() {
       <div className="container mx-auto px-4 max-w-lg">
         <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#1E88E5] transition-colors mb-6">
           <ArrowLeft size={16} />
-          Back to Dashboard
+          {t.backToDashboard}
         </Link>
 
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
@@ -118,8 +131,8 @@ export default function ProfilePage() {
               initials={(fullName || email || "U").split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2)}
             />
             <div>
-              <h1 className="text-2xl font-bold text-[#0D2A5E]">Edit Profile</h1>
-              <p className="text-sm text-gray-400">Click the avatar to change your photo</p>
+              <h1 className="text-2xl font-bold text-[#0D2A5E]">{t.editProfileTitle}</h1>
+              <p className="text-sm text-gray-400">{t.avatarHint}</p>
             </div>
           </div>
 
@@ -130,51 +143,51 @@ export default function ProfilePage() {
           )}
           {success && (
             <div className="bg-green-50 border border-green-100 text-green-600 text-sm px-4 py-3 rounded-xl mb-6">
-              ✓ Changes saved successfully
+              {t.changesSavedSuccess}
             </div>
           )}
 
           <form onSubmit={handleSave} className="space-y-5">
             <div>
-              <Label>Email</Label>
+              <Label>{t.emailLabel}</Label>
               <Input value={email} disabled className="mt-1.5 bg-gray-50 text-gray-400 cursor-not-allowed" />
-              <p className="text-xs text-gray-400 mt-1">Email cannot be changed here. Contact support if needed.</p>
+              <p className="text-xs text-gray-400 mt-1">{t.emailCannotChange}</p>
             </div>
 
             <div>
-              <Label htmlFor="full_name">Full Name *</Label>
+              <Label htmlFor="full_name">{authT.fullName} *</Label>
               <Input
                 id="full_name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                placeholder="Your full name"
+                placeholder={t.fullNamePlaceholder}
                 required
                 className="mt-1.5"
               />
             </div>
 
             <div>
-              <Label>Country *</Label>
+              <Label>{authT.country} *</Label>
               <Select value={country} onValueChange={setCountry}>
                 <SelectTrigger className="mt-1.5">
-                  <SelectValue placeholder="Select country" />
+                  <SelectValue placeholder={authT.selectCountry} />
                 </SelectTrigger>
                 <SelectContent>
                   {EUROPEAN_COUNTRIES.map((c) => (
-                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                    <SelectItem key={c} value={c}>{countryNames[c] || c}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div>
-              <Label>Preferred Language</Label>
+              <Label>{authT.preferredLanguage}</Label>
               <Select value={language} onValueChange={setLanguage}>
                 <SelectTrigger className="mt-1.5">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {LANGUAGES.map((l) => (
+                  {PREFERRED_LANGUAGES.map((l) => (
                     <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>
                   ))}
                 </SelectContent>
@@ -182,7 +195,7 @@ export default function ProfilePage() {
             </div>
 
             <Button type="submit" variant="brand" className="w-full" disabled={saving}>
-              {saving ? <><Loader2 size={16} className="animate-spin" /> Saving...</> : <><Save size={16} /> Save Changes</>}
+              {saving ? <><Loader2 size={16} className="animate-spin" /> {t.saving}</> : <><Save size={16} /> {t.saveChanges}</>}
             </Button>
           </form>
         </div>
@@ -191,10 +204,10 @@ export default function ProfilePage() {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 mt-6">
           <div className="flex items-center gap-2 mb-1">
             <ShieldCheck size={18} className="text-[#1E88E5]" />
-            <h2 className="text-base font-semibold text-[#0D2A5E]">Your Privacy Rights</h2>
+            <h2 className="text-base font-semibold text-[#0D2A5E]">{t.privacyRightsTitle}</h2>
           </div>
           <p className="text-xs text-gray-400 mb-5">
-            Under GDPR you have the right to access, export, or delete your personal data at any time.
+            {t.privacyRightsDesc}
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <a
@@ -203,7 +216,7 @@ export default function ProfilePage() {
             >
               <Button type="button" variant="outline" className="w-full text-sm gap-2">
                 <ShieldCheck size={15} />
-                Request My Data
+                {t.requestMyData}
               </Button>
             </a>
             <a
@@ -212,7 +225,7 @@ export default function ProfilePage() {
             >
               <Button type="button" variant="outline" className="w-full text-sm gap-2 text-red-500 border-red-200 hover:bg-red-50 hover:border-red-300">
                 <Trash2 size={15} />
-                Delete My Account
+                {t.deleteMyAccount}
               </Button>
             </a>
           </div>

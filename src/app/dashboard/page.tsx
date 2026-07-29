@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 import Link from "next/link"
 import { Plus, Eye, MessageSquare, Pencil, Settings, Package } from "lucide-react"
 import { DeleteListingButton } from "@/components/dashboard/delete-listing-button"
@@ -9,17 +10,12 @@ import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
 import { AvatarUpload } from "@/components/profile/avatar-upload"
 import { ClaimLeadOnLoad } from "@/components/funnel/claim-lead-on-load"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
+import { STATUS_LABELS as STATUS_LABELS_BY_LOCALE } from "@/lib/status-labels"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "My Dashboard" }
 
-const STATUS_LABELS: Record<string, string> = {
-  pending: "Pending review",
-  approved: "Active",
-  rejected: "Rejected",
-  expired: "Expired",
-  draft: "Draft",
-}
 const STATUS_COLORS: Record<string, string> = {
   pending: "bg-amber-100 text-amber-700",
   approved: "bg-green-100 text-green-700",
@@ -43,6 +39,12 @@ export default async function DashboardPage({ searchParams }: PageProps) {
     redirect(`/auth/login?next=${encodeURIComponent(next)}`)
   }
   const statusFilter = searchParams.status || "all"
+
+  const cookieLocale = cookies().get("NEXT_LOCALE")?.value
+  const locale: ListingLocale = (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(cookieLocale ?? "")
+    ? (cookieLocale as ListingLocale)
+    : "en"
+  const statusLabels = STATUS_LABELS_BY_LOCALE[locale]
 
   await expireStaleListings()
 
@@ -182,7 +184,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
                     {formatPrice(listing.price, listing.currency)}
                   </div>
                   <span className={`shrink-0 inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[listing.status] || "bg-gray-100"}`}>
-                    {STATUS_LABELS[listing.status] || listing.status}
+                    {statusLabels[listing.status] || listing.status}
                   </span>
                   <span className="shrink-0 flex items-center gap-1 text-xs text-gray-400">
                     <Eye size={12} />

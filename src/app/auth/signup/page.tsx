@@ -1,9 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Loader2, CheckCircle2 } from "lucide-react"
-import { useTranslations } from "next-intl"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -17,15 +16,21 @@ import {
 import { createClient } from "@/lib/supabase/client"
 import { setLocale } from "@/app/actions/locale"
 import { EUROPEAN_COUNTRIES } from "@/data/mock"
+import { AUTH_T } from "@/components/auth/auth-translations"
+import { COUNTRY_NAMES } from "@/components/listing/listing-form-translations"
+import { SUPPORTED_LISTING_LOCALES, PREFERRED_LANGUAGES, type ListingLocale } from "@/lib/locales"
 
-const LANGUAGES = [
-  { code: "en", label: "English 🇬🇧" },
-  { code: "de", label: "Deutsch 🇩🇪" },
-  { code: "it", label: "Italiano 🇮🇹" },
-]
+function readLocaleCookie(): ListingLocale {
+  if (typeof document === "undefined") return "en"
+  const match = document.cookie.match(/(?:^|; )NEXT_LOCALE=([^;]+)/)
+  const value = match ? decodeURIComponent(match[1]) : ""
+  return (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(value) ? (value as ListingLocale) : "en"
+}
 
 export default function SignupPage() {
-  const t = useTranslations("auth.signup")
+  const [locale, setPageLocale] = useState<ListingLocale>("en")
+  const t = AUTH_T[locale]
+  const countryNames = COUNTRY_NAMES[locale]
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
@@ -33,6 +38,10 @@ export default function SignupPage() {
   const [language, setLanguage] = useState<string>("en")
   const [termsAccepted, setTermsAccepted] = useState(false)
   const [marketingAccepted, setMarketingAccepted] = useState(false)
+
+  useEffect(() => {
+    setPageLocale(readLocaleCookie())
+  }, [])
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -45,7 +54,7 @@ export default function SignupPage() {
     const fullName = (form.elements.namedItem("full_name") as HTMLInputElement).value
 
     if (!termsAccepted) {
-      setError("You must accept the Terms of Service and Privacy Policy to continue.")
+      setError(t.mustAcceptTerms)
       setLoading(false)
       return
     }
@@ -96,10 +105,10 @@ export default function SignupPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="w-full max-w-md text-center">
           <CheckCircle2 size={56} className="text-green-500 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-[#0D2A5E] mb-3">{t("checkEmail")}</h1>
-          <p className="text-gray-500 mb-6">{t("checkEmailDesc")}</p>
+          <h1 className="text-2xl font-bold text-[#0D2A5E] mb-3">{t.checkEmail}</h1>
+          <p className="text-gray-500 mb-6">{t.checkEmailDesc}</p>
           <Link href="/auth/login">
-            <Button variant="brand">{t("backToSignIn")}</Button>
+            <Button variant="brand">{t.backToSignIn}</Button>
           </Link>
         </div>
       </div>
@@ -117,8 +126,8 @@ export default function SignupPage() {
             </div>
             <span className="font-bold text-[#0D2A5E] text-xl">RideDirect<span className="text-gray-400">.eu</span></span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">{t("title")}</h1>
-          <p className="text-gray-500 text-sm">{t("subtitle")}</p>
+          <h1 className="text-2xl font-bold text-[#0D2A5E] mt-6 mb-1">{t.createTitle}</h1>
+          <p className="text-gray-500 text-sm">{t.createSubtitle}</p>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
@@ -135,7 +144,7 @@ export default function SignupPage() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            {t("withGoogle")}
+            {t.continueWithGoogle}
           </Button>
 
           <Button
@@ -147,14 +156,14 @@ export default function SignupPage() {
             <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24" fill="#1877F2">
               <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
             </svg>
-            Continue with Facebook
+            {t.continueWithFacebook}
           </Button>
 
           <p className="text-center text-xs text-gray-400 -mt-2 mb-4">
-            By continuing, you agree to our{" "}
-            <Link href="/legal/terms" target="_blank" className="underline hover:text-[#1E88E5]">Terms of Service</Link>{" "}
-            and{" "}
-            <Link href="/legal/privacy" target="_blank" className="underline hover:text-[#1E88E5]">Privacy Policy</Link>.
+            {t.agreeIntro}{" "}
+            <Link href="/legal/terms" target="_blank" className="underline hover:text-[#1E88E5]">{t.termsOfService}</Link>{" "}
+            {t.andWord}{" "}
+            <Link href="/legal/privacy" target="_blank" className="underline hover:text-[#1E88E5]">{t.privacyPolicy}</Link>.
           </p>
 
           <div className="relative mb-4">
@@ -162,7 +171,7 @@ export default function SignupPage() {
               <div className="w-full border-t border-gray-100" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-3 text-gray-400">{t("orEmail")}</span>
+              <span className="bg-white px-3 text-gray-400">{t.orSignUpWithEmail}</span>
             </div>
           </div>
 
@@ -174,38 +183,38 @@ export default function SignupPage() {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="full_name">{t("fullName")} *</Label>
+              <Label htmlFor="full_name">{t.fullName} *</Label>
               <Input id="full_name" name="full_name" placeholder="John Smith" required className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="email">{t("email")} *</Label>
+              <Label htmlFor="email">{t.emailAddress} *</Label>
               <Input id="email" name="email" type="email" placeholder="john@company.com" required className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="password">{t("password")} *</Label>
-              <Input id="password" name="password" type="password" placeholder={t("passwordHint")} minLength={8} required className="mt-1.5" />
+              <Label htmlFor="password">{t.password} *</Label>
+              <Input id="password" name="password" type="password" placeholder={t.passwordHint} minLength={8} required className="mt-1.5" />
             </div>
             <div>
-              <Label>{t("country")} *</Label>
+              <Label>{t.country} *</Label>
               <Select onValueChange={setCountry} required>
                 <SelectTrigger className="mt-1.5">
-                  <SelectValue placeholder={t("selectCountry")} />
+                  <SelectValue placeholder={t.selectCountry} />
                 </SelectTrigger>
                 <SelectContent>
                   {EUROPEAN_COUNTRIES.map((c) => (
-                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                    <SelectItem key={c} value={c}>{countryNames[c] || c}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label>{t("preferredLanguage")} *</Label>
+              <Label>{t.preferredLanguage} *</Label>
               <Select onValueChange={setLanguage} defaultValue="en">
                 <SelectTrigger className="mt-1.5">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {LANGUAGES.map((l) => (
+                  {PREFERRED_LANGUAGES.map((l) => (
                     <SelectItem key={l.code} value={l.code}>{l.label}</SelectItem>
                   ))}
                 </SelectContent>
@@ -222,10 +231,10 @@ export default function SignupPage() {
                 className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-[#1E88E5] cursor-pointer shrink-0"
               />
               <label htmlFor="terms" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
-                I have read and agree to the{" "}
-                <Link href="/legal/terms" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">Terms of Service</Link>{" "}
-                and{" "}
-                <Link href="/legal/privacy" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">Privacy Policy</Link>.
+                {t.termsCheckboxLabel}{" "}
+                <Link href="/legal/terms" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">{t.termsOfService}</Link>{" "}
+                {t.andWord}{" "}
+                <Link href="/legal/privacy" target="_blank" className="text-[#1E88E5] underline hover:text-[#1565C0]">{t.privacyPolicy}</Link>.
               </label>
             </div>
 
@@ -239,20 +248,20 @@ export default function SignupPage() {
                 className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-[#1E88E5] cursor-pointer shrink-0"
               />
               <label htmlFor="marketing" className="text-xs text-gray-500 leading-relaxed cursor-pointer">
-                I'd like to receive occasional product updates and industry news from RideDirect. <span className="text-gray-400">(Optional)</span>
+                {t.marketingOptIn} <span className="text-gray-400">{t.optional}</span>
               </label>
             </div>
 
             <Button type="submit" variant="brand" className="w-full" disabled={loading || !termsAccepted}>
-              {loading ? (<><Loader2 size={16} className="animate-spin" /> {t("creating")}</>) : t("createAccount")}
+              {loading ? (<><Loader2 size={16} className="animate-spin" /> {t.creating}</>) : t.createAccount}
             </Button>
           </form>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">
-          {t("alreadyAccount")}{" "}
+          {t.alreadyAccount}{" "}
           <Link href="/auth/login" className="text-[#1E88E5] hover:underline font-medium">
-            {t("signIn")}
+            {t.signIn}
           </Link>
         </p>
       </div>

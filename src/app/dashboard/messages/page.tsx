@@ -1,13 +1,22 @@
 import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 import Link from "next/link"
 import { ArrowLeft, MessageSquare, ChevronRight } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
+import { MESSAGES_LIST_T } from "@/app/dashboard/dashboard-translations"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Messages — RideDirect" }
 
 export default async function MessagesPage() {
   const supabase = createClient()
+
+  const cookieLocale = cookies().get("NEXT_LOCALE")?.value
+  const locale: ListingLocale = (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(cookieLocale ?? "")
+    ? (cookieLocale as ListingLocale)
+    : "en"
+  const t = MESSAGES_LIST_T[locale]
 
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login?next=/dashboard/messages")
@@ -51,9 +60,9 @@ export default async function MessagesPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-[#0D2A5E]">Messages</h1>
+            <h1 className="text-2xl font-bold text-[#0D2A5E]">{t.title}</h1>
             {unreadCount > 0 && (
-              <p className="text-sm text-gray-400">{unreadCount} unread</p>
+              <p className="text-sm text-gray-400">{unreadCount} {t.unreadLabel}</p>
             )}
           </div>
         </div>
@@ -61,16 +70,16 @@ export default async function MessagesPage() {
         {!all.length ? (
           <div className="bg-white rounded-2xl border border-gray-100 py-20 text-center">
             <MessageSquare size={40} className="text-gray-200 mx-auto mb-4" />
-            <p className="text-gray-400">No messages yet.</p>
+            <p className="text-gray-400">{t.noMessagesYet}</p>
             <Link href="/marketplace" className="inline-block mt-4 text-sm text-[#1E88E5] hover:underline">
-              Browse listings
+              {t.browseListings}
             </Link>
           </div>
         ) : (
           <div className="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-50 overflow-hidden">
             {all.map((inquiry) => {
               const listing = inquiry.listings
-              const otherName = inquiry.isSeller ? inquiry.buyer_name : (listing?.title || "Seller")
+              const otherName = inquiry.isSeller ? inquiry.buyer_name : (listing?.title || t.sellerFallback)
               const isMe = inquiry.lastSenderId === user.id
 
               return (

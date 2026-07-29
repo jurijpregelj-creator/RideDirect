@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { Languages, Loader2, RotateCcw, FileText } from "lucide-react"
 import { translateText } from "@/app/actions/translate"
+import type { ListingLocale } from "@/lib/locales"
+import { MESSAGE_DETAIL_T } from "@/app/dashboard/dashboard-translations"
 
 const LANGUAGE_NAMES: Record<string, string> = {
   BG: "Bulgarian", CS: "Czech", DA: "Danish", DE: "Deutsch",
@@ -19,9 +21,11 @@ interface Props {
   isMe: boolean
   attachmentUrl?: string | null
   attachmentType?: string | null
+  locale?: ListingLocale
 }
 
-export function TranslatableMessage({ message, isMe, attachmentUrl, attachmentType }: Props) {
+export function TranslatableMessage({ message, isMe, attachmentUrl, attachmentType, locale = "en" }: Props) {
+  const t = MESSAGE_DETAIL_T[locale]
   const [translated, setTranslated] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [targetLang, setTargetLang] = useState("EN")
@@ -65,7 +69,7 @@ export function TranslatableMessage({ message, isMe, attachmentUrl, attachmentTy
             className={`flex items-center gap-2 px-4 py-3 text-xs font-medium underline ${isMe ? "text-blue-100" : "text-red-500"}`}
           >
             <FileText size={14} />
-            Open PDF
+            {t.openPdf}
           </a>
         )}
         {/* Text */}
@@ -85,8 +89,8 @@ export function TranslatableMessage({ message, isMe, attachmentUrl, attachmentTy
             }`}
           >
             {loading
-              ? <><Loader2 size={11} className="animate-spin" /> Translating...</>
-              : <><Languages size={11} /> Translate to {langName}</>
+              ? <><Loader2 size={11} className="animate-spin" /> {t.translating}</>
+              : <><Languages size={11} /> {t.translateTo} {langName}</>
             }
           </button>
         ) : (
@@ -96,7 +100,7 @@ export function TranslatableMessage({ message, isMe, attachmentUrl, attachmentTy
               isMe ? "text-blue-200 hover:text-white" : "text-gray-400 hover:text-gray-600"
             }`}
           >
-            <RotateCcw size={11} /> Show original
+            <RotateCcw size={11} /> {t.showOriginal}
           </button>
         )}
       </div>

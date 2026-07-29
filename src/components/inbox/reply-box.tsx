@@ -4,8 +4,11 @@ import { useState, useRef } from "react"
 import { Send, Loader2, Paperclip, X, FileText, Image } from "lucide-react"
 import { sendReply } from "@/app/dashboard/messages/actions"
 import { createClient } from "@/lib/supabase/client"
+import type { ListingLocale } from "@/lib/locales"
+import { MESSAGE_DETAIL_T } from "@/app/dashboard/dashboard-translations"
 
-export function ReplyBox({ inquiryId }: { inquiryId: string }) {
+export function ReplyBox({ inquiryId, locale = "en" }: { inquiryId: string; locale?: ListingLocale }) {
+  const t = MESSAGE_DETAIL_T[locale]
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState("")
   const [file, setFile] = useState<File | null>(null)
@@ -70,7 +73,7 @@ export function ReplyBox({ inquiryId }: { inquiryId: string }) {
           type="button"
           onClick={() => fileRef.current?.click()}
           className="text-gray-400 hover:text-[#1E88E5] transition-colors shrink-0 mb-1"
-          title="Attach image or PDF"
+          title={t.attachTitle}
         >
           <Paperclip size={18} />
         </button>
@@ -87,7 +90,7 @@ export function ReplyBox({ inquiryId }: { inquiryId: string }) {
           name="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Write a message..."
+          placeholder={t.writeMessage}
           rows={2}
           onKeyDown={(e) => {
             if (e.key === "Enter" && !e.shiftKey) {
