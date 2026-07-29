@@ -3,6 +3,12 @@
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
+import { EMAIL_T } from "@/lib/email-translations"
+
+function resolveLocale(value: string | null | undefined): ListingLocale {
+  return (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(value ?? "") ? (value as ListingLocale) : "en"
+}
 
 function getAdminClient() {
   return createAdminClient(
@@ -49,7 +55,7 @@ export async function submitInquiry(formData: {
   const { data: sellerAuth } = await admin.auth.admin.getUserById(formData.sellerId)
   const { data: seller } = await supabase
     .from("profiles")
-    .select("email, full_name")
+    .select("email, full_name, preferred_language")
     .eq("id", formData.sellerId)
     .single()
 
@@ -65,27 +71,29 @@ export async function submitInquiry(formData: {
     return { success: true }
   }
 
+  const t = EMAIL_T[resolveLocale(seller?.preferred_language)]
+
   try {
     const result = await resend.emails.send({
       from: "RideDirect <noreply@ridedirect.eu>",
       to: sellerEmail,
       replyTo: formData.buyerEmail,
-      subject: `New inquiry for: ${formData.listingTitle}`,
+      subject: t.newInquirySubject(formData.listingTitle),
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #0D2A5E;">New inquiry for your listing</h2>
-          <p style="color: #666;">Someone is interested in: <strong>${formData.listingTitle}</strong></p>
+          <h2 style="color: #0D2A5E;">${t.newInquiryHeading}</h2>
+          <p style="color: #666;">${t.someoneInterested} <strong>${formData.listingTitle}</strong></p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
           <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #999; width: 120px;">Name</td><td style="padding: 8px 0; font-weight: 600;">${formData.buyerName}</td></tr>
-            <tr><td style="padding: 8px 0; color: #999;">Email</td><td style="padding: 8px 0;"><a href="mailto:${formData.buyerEmail}" style="color: #1E88E5;">${formData.buyerEmail}</a></td></tr>
-            ${formData.buyerPhone ? `<tr><td style="padding: 8px 0; color: #999;">Phone</td><td style="padding: 8px 0;">${formData.buyerPhone}</td></tr>` : ""}
+            <tr><td style="padding: 8px 0; color: #999; width: 120px;">${t.nameLabel}</td><td style="padding: 8px 0; font-weight: 600;">${formData.buyerName}</td></tr>
+            <tr><td style="padding: 8px 0; color: #999;">${t.emailLabel}</td><td style="padding: 8px 0;"><a href="mailto:${formData.buyerEmail}" style="color: #1E88E5;">${formData.buyerEmail}</a></td></tr>
+            ${formData.buyerPhone ? `<tr><td style="padding: 8px 0; color: #999;">${t.phoneLabel}</td><td style="padding: 8px 0;">${formData.buyerPhone}</td></tr>` : ""}
           </table>
           <div style="background: #f9fafb; border-radius: 8px; padding: 16px; margin-top: 16px;">
             <p style="margin: 0; color: #374151; white-space: pre-line;">${formData.message}</p>
           </div>
           <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-          <a href="https://ridedirect.eu/dashboard/messages" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View in RideDirect</a>
+          <a href="https://ridedirect.eu/dashboard/messages" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">${t.viewListingButton}</a>
         </div>
       `,
     })

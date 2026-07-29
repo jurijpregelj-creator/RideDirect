@@ -4,6 +4,12 @@ import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { Resend } from "resend"
+import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
+import { EMAIL_T } from "@/lib/email-translations"
+
+function resolveLocale(value: string | null | undefined): ListingLocale {
+  return (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(value ?? "") ? (value as ListingLocale) : "en"
+}
 
 function getAdminClient() {
   return createAdminClient(
@@ -69,12 +75,27 @@ export async function sendReply(formData: FormData) {
   // Send email to other participant — use admin client for reliable email lookup
   const admin = getAdminClient()
   let recipientEmail: string | null = null
+  let recipientLocale: string | null = null
   if (isSeller) {
     const { data: buyerAuth } = await admin.auth.admin.getUserById(inquiry.buyer_id)
     recipientEmail = buyerAuth?.user?.email || inquiry.buyer_email
+    if (inquiry.buyer_id) {
+      const { data: buyerProfile } = await supabase
+        .from("profiles")
+        .select("preferred_language")
+        .eq("id", inquiry.buyer_id)
+        .single()
+      recipientLocale = buyerProfile?.preferred_language ?? null
+    }
   } else {
     const { data: sellerAuth } = await admin.auth.admin.getUserById(inquiry.seller_id)
     recipientEmail = sellerAuth?.user?.email || null
+    const { data: sellerProfile } = await supabase
+      .from("profiles")
+      .select("preferred_language")
+      .eq("id", inquiry.seller_id)
+      .single()
+    recipientLocale = sellerProfile?.preferred_language ?? null
   }
 
   if (!process.env.RESEND_API_KEY) {
@@ -82,22 +103,23 @@ export async function sendReply(formData: FormData) {
   } else if (!recipientEmail) {
     console.error("[Email] Recipient email not found for inquiry:", inquiryId)
   } else {
+    const t = EMAIL_T[resolveLocale(recipientLocale)]
     try {
       const result = await resend.emails.send({
         from: "RideDirect <noreply@ridedirect.eu>",
         to: recipientEmail,
         replyTo: senderProfile?.email,
-        subject: `New message from ${senderName}: ${listingTitle}`,
+        subject: t.newMessageSubject(senderName, listingTitle),
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #0D2A5E;">New message from ${senderName}</h2>
-            <p style="color: #666;">Regarding: <strong>${listingTitle}</strong></p>
+            <h2 style="color: #0D2A5E;">${t.newMessageHeading(senderName)}</h2>
+            <p style="color: #666;">${t.regarding} <strong>${listingTitle}</strong></p>
             <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
             <div style="background: #f9fafb; border-radius: 8px; padding: 16px;">
               <p style="margin: 0; color: #374151; white-space: pre-line;">${message}</p>
             </div>
             <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
-            <a href="https://ridedirect.eu/dashboard/messages/${inquiryId}" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">View conversation</a>
+            <a href="https://ridedirect.eu/dashboard/messages/${inquiryId}" style="display:inline-block;background:#1E88E5;color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-size:14px;">${t.viewConversationButton}</a>
           </div>
         `,
       })
