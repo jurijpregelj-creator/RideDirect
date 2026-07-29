@@ -3,15 +3,15 @@ import { ContactPageContent } from "@/components/contact/contact-page-content"
 import { buildPageAlternates } from "@/lib/site-locale-urls"
 import { CONTACT_T } from "@/app/contact/contact-translations"
 
-const t = CONTACT_T.en
+const t = CONTACT_T.es
 
 export const metadata: Metadata = {
   title: t.metaTitle,
   description: t.metaDescription,
-  alternates: buildPageAlternates("/contact", "en"),
-  openGraph: { url: "https://ridedirect.eu/contact", title: t.metaTitle, description: t.metaDescription },
+  alternates: buildPageAlternates("/contact", "es"),
+  openGraph: { url: "https://ridedirect.eu/es/contact", title: t.metaTitle, description: t.metaDescription },
 }
 
-export default function ContactPage() {
-  return <ContactPageContent locale="en" />
+export default function ContactEsPage() {
+  return <ContactPageContent locale="es" />
 }

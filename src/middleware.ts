@@ -47,8 +47,18 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 3. Auto-detect locale on first visit (if no NEXT_LOCALE cookie yet)
-  if (!request.cookies.get("NEXT_LOCALE")) {
+  // 3. Sync NEXT_LOCALE to a URL-locale prefix whenever one is present, so
+  // cookie-driven pages reached by clicking through from a localized page
+  // (e.g. /pl/sell -> /auth/signup) inherit the same language instead of
+  // falling back to whatever the cookie previously held.
+  if (urlLocaleMatch) {
+    supabaseResponse.cookies.set("NEXT_LOCALE", urlLocaleMatch[1], {
+      path: "/",
+      maxAge: 60 * 60 * 24 * 365,
+      sameSite: "lax",
+    })
+  } else if (!request.cookies.get("NEXT_LOCALE")) {
+    // Auto-detect locale on first visit to a non-prefixed page
     const acceptLang = request.headers.get("accept-language") ?? ""
     const detected = acceptLang.split(",")[0].split("-")[0].toLowerCase()
     const valid = ["en", "de", "it"].includes(detected) ? detected : "en"

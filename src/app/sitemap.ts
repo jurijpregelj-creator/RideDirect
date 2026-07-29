@@ -34,10 +34,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: locale === "en" ? 0.9 : 0.8,
   }))
 
+  const sellPages: MetadataRoute.Sitemap = SUPPORTED_LISTING_LOCALES.map((locale) => ({
+    url: buildPageUrl("/sell", locale),
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: locale === "en" ? 0.8 : 0.7,
+  }))
+
+  const aboutPages: MetadataRoute.Sitemap = SUPPORTED_LISTING_LOCALES.map((locale) => ({
+    url: buildPageUrl("/about", locale),
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: locale === "en" ? 0.6 : 0.5,
+  }))
+
+  const contactPages: MetadataRoute.Sitemap = SUPPORTED_LISTING_LOCALES.map((locale) => ({
+    url: buildPageUrl("/contact", locale),
+    lastModified: new Date(),
+    changeFrequency: "monthly" as const,
+    priority: locale === "en" ? 0.6 : 0.5,
+  }))
+
+  // Legal pages stay English-only (machine-translation risk for binding legal text)
   const staticPages: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}/sell`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE_URL}/about`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${BASE_URL}/contact`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE_URL}/legal/terms`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE_URL}/legal/privacy`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.3 },
   ]
@@ -81,5 +100,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Silently fail — sitemap still works without individual listings
   }
 
-  return [...homepagePages, ...marketplacePages, ...staticPages, ...funnelPages, ...categoryPages, ...listingPages]
+  return [...homepagePages, ...marketplacePages, ...sellPages, ...aboutPages, ...contactPages, ...staticPages, ...funnelPages, ...categoryPages, ...listingPages]
 }
