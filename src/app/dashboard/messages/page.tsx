@@ -7,7 +7,7 @@ import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
 import { MESSAGES_LIST_T } from "@/app/dashboard/dashboard-translations"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = { title: "Messages — RideDirect" }
+export const metadata: Metadata = { title: "Messages" }
 
 export default async function MessagesPage() {
   const supabase = createClient()

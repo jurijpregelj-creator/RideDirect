@@ -43,7 +43,7 @@ interface ContactStrings {
 // per-locale rendering the same way the surrounding labels are.
 export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
   en: {
-    metaTitle: "Contact Us | RideDirect",
+    metaTitle: "Contact Us",
     metaDescription: "Get in touch with the RideDirect.eu team about buying, selling, or listing amusement rides in Europe.",
     headerTitle: "Contact Us", headerSub: "Have questions about buying, selling, or listing on RideDirect? We're here to help.",
     getInTouchTitle: "Get in Touch", getInTouchSub: "Whether you're buying, selling, or just exploring — our team is ready to help.",
@@ -60,7 +60,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Something went wrong. Please email us directly at info@ridedirect.eu.",
   },
   de: {
-    metaTitle: "Kontakt | RideDirect",
+    metaTitle: "Kontakt",
     metaDescription: "Kontaktieren Sie das RideDirect.eu-Team zu Kauf, Verkauf oder Inserierung von Fahrgeschäften in Europa.",
     headerTitle: "Kontakt", headerSub: "Haben Sie Fragen zum Kauf, Verkauf oder zur Auflistung auf RideDirect? Wir helfen Ihnen gerne.",
     getInTouchTitle: "Kontaktieren Sie uns", getInTouchSub: "Ob Sie kaufen, verkaufen oder einfach nur stöbern — unser Team ist bereit zu helfen.",
@@ -77,7 +77,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Etwas ist schiefgelaufen. Bitte schreiben Sie uns direkt an info@ridedirect.eu.",
   },
   it: {
-    metaTitle: "Contattaci | RideDirect",
+    metaTitle: "Contattaci",
     metaDescription: "Contatta il team di RideDirect.eu per acquistare, vendere o pubblicare attrazioni in Europa.",
     headerTitle: "Contattaci", headerSub: "Hai domande sull'acquisto, la vendita o la pubblicazione su RideDirect? Siamo qui per aiutarti.",
     getInTouchTitle: "Mettiti in Contatto", getInTouchSub: "Che tu stia comprando, vendendo o semplicemente esplorando — il nostro team è pronto ad aiutarti.",
@@ -94,7 +94,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Qualcosa è andato storto. Scrivici direttamente a info@ridedirect.eu.",
   },
   fr: {
-    metaTitle: "Contactez-nous | RideDirect",
+    metaTitle: "Contactez-nous",
     metaDescription: "Contactez l'équipe RideDirect.eu pour acheter, vendre ou publier des attractions en Europe.",
     headerTitle: "Contactez-nous", headerSub: "Des questions sur l'achat, la vente ou la publication sur RideDirect ? Nous sommes là pour vous aider.",
     getInTouchTitle: "Entrer en Contact", getInTouchSub: "Que vous achetiez, vendiez ou exploriez simplement — notre équipe est prête à vous aider.",
@@ -111,7 +111,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Une erreur s'est produite. Veuillez nous écrire directement à info@ridedirect.eu.",
   },
   es: {
-    metaTitle: "Contáctanos | RideDirect",
+    metaTitle: "Contáctanos",
     metaDescription: "Ponte en contacto con el equipo de RideDirect.eu para comprar, vender o publicar atracciones en Europa.",
     headerTitle: "Contáctanos", headerSub: "¿Tienes preguntas sobre comprar, vender o publicar en RideDirect? Estamos aquí para ayudarte.",
     getInTouchTitle: "Ponte en Contacto", getInTouchSub: "Ya sea que compres, vendas o simplemente estés explorando — nuestro equipo está listo para ayudarte.",
@@ -128,7 +128,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Algo salió mal. Escríbenos directamente a info@ridedirect.eu.",
   },
   nl: {
-    metaTitle: "Neem Contact Op | RideDirect",
+    metaTitle: "Neem Contact Op",
     metaDescription: "Neem contact op met het RideDirect.eu-team over het kopen, verkopen of plaatsen van attracties in Europa.",
     headerTitle: "Neem Contact Op", headerSub: "Heeft u vragen over kopen, verkopen of adverteren op RideDirect? Wij helpen u graag.",
     getInTouchTitle: "Neem Contact Op", getInTouchSub: "Of u nu koopt, verkoopt of gewoon aan het rondkijken bent — ons team staat klaar om te helpen.",
@@ -145,7 +145,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Er is iets misgegaan. Stuur ons rechtstreeks een e-mail naar info@ridedirect.eu.",
   },
   pl: {
-    metaTitle: "Skontaktuj się z Nami | RideDirect",
+    metaTitle: "Skontaktuj się z Nami",
     metaDescription: "Skontaktuj się z zespołem RideDirect.eu w sprawie kupna, sprzedaży lub wystawiania atrakcji w Europie.",
     headerTitle: "Skontaktuj się z Nami", headerSub: "Masz pytania dotyczące kupna, sprzedaży lub wystawiania ogłoszeń na RideDirect? Jesteśmy tu, aby pomóc.",
     getInTouchTitle: "Skontaktuj się", getInTouchSub: "Niezależnie od tego, czy kupujesz, sprzedajesz, czy po prostu przeglądasz — nasz zespół jest gotowy do pomocy.",
@@ -162,7 +162,7 @@ export const CONTACT_T: Record<ListingLocale, ContactStrings> = {
     errorGeneric: "Coś poszło nie tak. Napisz do nas bezpośrednio na info@ridedirect.eu.",
   },
   pt: {
-    metaTitle: "Contacte-nos | RideDirect",
+    metaTitle: "Contacte-nos",
     metaDescription: "Entre em contacto com a equipa da RideDirect.eu sobre comprar, vender ou publicar atrações na Europa.",
     headerTitle: "Contacte-nos", headerSub: "Tem perguntas sobre comprar, vender ou publicar na RideDirect? Estamos aqui para ajudar.",
     getInTouchTitle: "Entre em Contacto", getInTouchSub: "Quer esteja a comprar, vender ou apenas a explorar — a nossa equipa está pronta para ajudar.",

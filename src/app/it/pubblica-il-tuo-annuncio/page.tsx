@@ -3,13 +3,13 @@ import { ListingFunnel } from "@/components/funnel/listing-funnel"
 import { FUNNEL_T, funnelAlternates } from "@/components/funnel/funnel-translations"
 
 export const metadata: Metadata = {
-  title: "Pubblica la tua attrazione gratis | RideDirect",
+  title: "Pubblica la tua attrazione gratis",
   description: "Vendi la tua attrazione rapidamente. Pubblica gratis e raggiungi acquirenti seri in tutta Europa. Nessuna commissione, nessuna carta richiesta.",
   alternates: funnelAlternates("it"),
   openGraph: {
     type: "website",
     url: "https://ridedirect.eu/it/pubblica-il-tuo-annuncio",
-    title: "Pubblica la tua attrazione gratis | RideDirect",
+    title: "Pubblica la tua attrazione gratis",
     description: "Vendi la tua attrazione rapidamente. Pubblica gratis e raggiungi acquirenti seri in tutta Europa. Nessuna commissione, nessuna carta richiesta.",
     images: [{ url: "https://ridedirect.eu/it/pubblica-il-tuo-annuncio/opengraph-image", width: 1200, height: 630 }],
   },

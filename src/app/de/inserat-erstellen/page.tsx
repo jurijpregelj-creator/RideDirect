@@ -3,13 +3,13 @@ import { ListingFunnel } from "@/components/funnel/listing-funnel"
 import { FUNNEL_T, funnelAlternates } from "@/components/funnel/funnel-translations"
 
 export const metadata: Metadata = {
-  title: "Inserat kostenlos erstellen | RideDirect",
+  title: "Inserat kostenlos erstellen",
   description: "Verkaufe deine Attraktion schnell. Kostenlos inserieren und seriöse Käufer in ganz Europa erreichen. Keine Provision, keine Kreditkarte nötig.",
   alternates: funnelAlternates("de"),
   openGraph: {
     type: "website",
     url: "https://ridedirect.eu/de/inserat-erstellen",
-    title: "Inserat kostenlos erstellen | RideDirect",
+    title: "Inserat kostenlos erstellen",
     description: "Verkaufe deine Attraktion schnell. Kostenlos inserieren und seriöse Käufer in ganz Europa erreichen. Keine Provision, keine Kreditkarte nötig.",
     images: [{ url: "https://ridedirect.eu/de/inserat-erstellen/opengraph-image", width: 1200, height: 630 }],
   },

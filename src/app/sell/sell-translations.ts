@@ -24,7 +24,7 @@ interface SellStrings {
 
 export const SELL_T: Record<ListingLocale, SellStrings> = {
   en: {
-    metaTitle: "Sell Your Amusement Rides | RideDirect",
+    metaTitle: "Sell Your Amusement Rides",
     metaDescription: "List your amusement rides on RideDirect.eu and reach verified buyers across Europe.",
     badge: "Europe's dedicated amusement ride marketplace",
     heroTitle1: "Sell Your Amusement Rides", heroTitleHighlight: "Across Europe",
@@ -49,7 +49,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Post a Ride", createFreeAccount: "Create Free Account",
   },
   de: {
-    metaTitle: "Verkaufen Sie Ihre Fahrgeschäfte | RideDirect",
+    metaTitle: "Verkaufen Sie Ihre Fahrgeschäfte",
     metaDescription: "Listen Sie Ihre Fahrgeschäfte auf RideDirect.eu und erreichen Sie verifizierte Käufer in ganz Europa.",
     badge: "Europas dedizierter Marktplatz für Fahrgeschäfte",
     heroTitle1: "Verkaufen Sie Ihre Fahrgeschäfte", heroTitleHighlight: "In ganz Europa",
@@ -74,7 +74,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Fahrgeschäft einstellen", createFreeAccount: "Kostenloses Konto erstellen",
   },
   it: {
-    metaTitle: "Vendi le tue attrazioni | RideDirect",
+    metaTitle: "Vendi le tue attrazioni",
     metaDescription: "Metti in vendita le tue attrazioni su RideDirect.eu e raggiungi acquirenti verificati in tutta Europa.",
     badge: "Il marketplace europeo dedicato alle attrazioni",
     heroTitle1: "Vendi le Tue Attrazioni", heroTitleHighlight: "In Tutta Europa",
@@ -99,7 +99,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Pubblica un'Attrazione", createFreeAccount: "Crea Account Gratuito",
   },
   fr: {
-    metaTitle: "Vendez vos attractions | RideDirect",
+    metaTitle: "Vendez vos attractions",
     metaDescription: "Mettez en vente vos attractions sur RideDirect.eu et touchez des acheteurs vérifiés dans toute l'Europe.",
     badge: "Le marketplace européen dédié aux attractions",
     heroTitle1: "Vendez Vos Attractions", heroTitleHighlight: "Dans Toute l'Europe",
@@ -124,7 +124,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Publier une Attraction", createFreeAccount: "Créer un Compte Gratuit",
   },
   es: {
-    metaTitle: "Vende tus atracciones | RideDirect",
+    metaTitle: "Vende tus atracciones",
     metaDescription: "Publica tus atracciones en RideDirect.eu y llega a compradores verificados en toda Europa.",
     badge: "El marketplace europeo dedicado a las atracciones",
     heroTitle1: "Vende Tus Atracciones", heroTitleHighlight: "En Toda Europa",
@@ -149,7 +149,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Publicar una Atracción", createFreeAccount: "Crear Cuenta Gratuita",
   },
   nl: {
-    metaTitle: "Verkoop uw attracties | RideDirect",
+    metaTitle: "Verkoop uw attracties",
     metaDescription: "Plaats uw attracties op RideDirect.eu en bereik geverifieerde kopers in heel Europa.",
     badge: "De Europese marktplaats speciaal voor attracties",
     heroTitle1: "Verkoop Uw Attracties", heroTitleHighlight: "In Heel Europa",
@@ -174,7 +174,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Attractie Plaatsen", createFreeAccount: "Gratis Account Aanmaken",
   },
   pl: {
-    metaTitle: "Sprzedaj swoje atrakcje | RideDirect",
+    metaTitle: "Sprzedaj swoje atrakcje",
     metaDescription: "Wystaw swoje atrakcje na RideDirect.eu i dotrzyj do zweryfikowanych kupujących w całej Europie.",
     badge: "Europejski rynek dedykowany atrakcjom",
     heroTitle1: "Sprzedaj Swoje Atrakcje", heroTitleHighlight: "W Całej Europie",
@@ -199,7 +199,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     postARide: "Wystaw Atrakcję", createFreeAccount: "Utwórz Bezpłatne Konto",
   },
   pt: {
-    metaTitle: "Venda as suas atrações | RideDirect",
+    metaTitle: "Venda as suas atrações",
     metaDescription: "Publique as suas atrações no RideDirect.eu e chegue a compradores verificados em toda a Europa.",
     badge: "O marketplace europeu dedicado às atrações",
     heroTitle1: "Venda as Suas Atrações", heroTitleHighlight: "Em Toda a Europa",

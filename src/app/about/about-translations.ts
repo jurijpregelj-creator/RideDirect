@@ -20,7 +20,7 @@ interface AboutStrings {
 
 export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
   en: {
-    metaTitle: "About Us | RideDirect",
+    metaTitle: "About Us",
     metaDescription: "Learn about RideDirect.eu, Europe's dedicated B2B marketplace for buying and selling amusement rides and funfair equipment.",
     title: "About RideDirect",
     subtitle: "The first dedicated European marketplace for buying and selling amusement rides — built by operators, for operators.",
@@ -44,7 +44,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Browse Listings", getInTouch: "Get in Touch",
   },
   de: {
-    metaTitle: "Über uns | RideDirect",
+    metaTitle: "Über uns",
     metaDescription: "Erfahren Sie mehr über RideDirect.eu, Europas dedizierten B2B-Marktplatz für den Kauf und Verkauf von Fahrgeschäften und Kirmesausrüstung.",
     title: "Über RideDirect",
     subtitle: "Der erste dedizierte europäische Marktplatz für den Kauf und Verkauf von Fahrgeschäften — von Betreibern für Betreiber.",
@@ -68,7 +68,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Inserate durchsuchen", getInTouch: "Kontakt aufnehmen",
   },
   it: {
-    metaTitle: "Chi Siamo | RideDirect",
+    metaTitle: "Chi Siamo",
     metaDescription: "Scopri RideDirect.eu, il marketplace B2B europeo dedicato all'acquisto e alla vendita di attrazioni e attrezzature per luna park.",
     title: "Chi Siamo",
     subtitle: "Il primo marketplace europeo dedicato all'acquisto e alla vendita di attrazioni — costruito da operatori, per operatori.",
@@ -92,7 +92,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Sfoglia gli Annunci", getInTouch: "Contattaci",
   },
   fr: {
-    metaTitle: "À Propos | RideDirect",
+    metaTitle: "À Propos",
     metaDescription: "Découvrez RideDirect.eu, le marketplace B2B européen dédié à l'achat et la vente d'attractions et d'équipements forains.",
     title: "À Propos de RideDirect",
     subtitle: "Le premier marketplace européen dédié à l'achat et la vente d'attractions — conçu par des professionnels, pour des professionnels.",
@@ -116,7 +116,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Parcourir les Annonces", getInTouch: "Nous Contacter",
   },
   es: {
-    metaTitle: "Sobre Nosotros | RideDirect",
+    metaTitle: "Sobre Nosotros",
     metaDescription: "Conoce RideDirect.eu, el marketplace B2B europeo dedicado a la compra y venta de atracciones y equipos feriales.",
     title: "Sobre RideDirect",
     subtitle: "El primer marketplace europeo dedicado a la compra y venta de atracciones — creado por operadores, para operadores.",
@@ -140,7 +140,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Ver Anuncios", getInTouch: "Contáctanos",
   },
   nl: {
-    metaTitle: "Over Ons | RideDirect",
+    metaTitle: "Over Ons",
     metaDescription: "Ontdek RideDirect.eu, de Europese B2B-marktplaats speciaal voor het kopen en verkopen van attracties en kermisuitrusting.",
     title: "Over RideDirect",
     subtitle: "De eerste toegewijde Europese marktplaats voor het kopen en verkopen van attracties — gebouwd door exploitanten, voor exploitanten.",
@@ -164,7 +164,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Advertenties Bekijken", getInTouch: "Neem Contact Op",
   },
   pl: {
-    metaTitle: "O Nas | RideDirect",
+    metaTitle: "O Nas",
     metaDescription: "Poznaj RideDirect.eu, europejski rynek B2B dedykowany kupnu i sprzedaży atrakcji oraz wyposażenia wesołych miasteczek.",
     title: "O RideDirect",
     subtitle: "Pierwszy europejski rynek dedykowany kupnu i sprzedaży atrakcji — stworzony przez operatorów, dla operatorów.",
@@ -188,7 +188,7 @@ export const ABOUT_T: Record<ListingLocale, AboutStrings> = {
     browseListings: "Przeglądaj Ogłoszenia", getInTouch: "Skontaktuj Się",
   },
   pt: {
-    metaTitle: "Sobre Nós | RideDirect",
+    metaTitle: "Sobre Nós",
     metaDescription: "Conheça a RideDirect.eu, o marketplace B2B europeu dedicado à compra e venda de atrações e equipamento de feiras.",
     title: "Sobre a RideDirect",
     subtitle: "O primeiro marketplace europeu dedicado à compra e venda de atrações — criado por operadores, para operadores.",

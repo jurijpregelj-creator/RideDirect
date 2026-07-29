@@ -10,7 +10,7 @@ import { ScrollToBottom } from "@/components/inbox/scroll-to-bottom"
 import { SUPPORTED_LISTING_LOCALES, type ListingLocale } from "@/lib/locales"
 import type { Metadata } from "next"
 
-export const metadata: Metadata = { title: "Conversation — RideDirect" }
+export const metadata: Metadata = { title: "Conversation" }
 
 export default async function ConversationPage({ params }: { params: { id: string } }) {
   const supabase = createClient()

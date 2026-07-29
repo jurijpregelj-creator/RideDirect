@@ -3,13 +3,13 @@ import { ListingFunnel } from "@/components/funnel/listing-funnel"
 import { FUNNEL_T, funnelAlternates } from "@/components/funnel/funnel-translations"
 
 export const metadata: Metadata = {
-  title: "Plaats uw attractie gratis | RideDirect",
+  title: "Plaats uw attractie gratis",
   description: "Verkoop uw attractie snel. Plaats gratis en bereik serieuze kopers in heel Europa. Geen commissie, geen creditcard nodig.",
   alternates: funnelAlternates("nl"),
   openGraph: {
     type: "website",
     url: "https://ridedirect.eu/nl/list-your-ride",
-    title: "Plaats uw attractie gratis | RideDirect",
+    title: "Plaats uw attractie gratis",
     description: "Verkoop uw attractie snel. Plaats gratis en bereik serieuze kopers in heel Europa. Geen commissie, geen creditcard nodig.",
   },
 }

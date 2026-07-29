@@ -3,13 +3,13 @@ import { ListingFunnel } from "@/components/funnel/listing-funnel"
 import { FUNNEL_T, funnelAlternates } from "@/components/funnel/funnel-translations"
 
 export const metadata: Metadata = {
-  title: "List Your Amusement Ride for Free | RideDirect",
+  title: "List Your Amusement Ride for Free",
   description: "Sell your amusement ride fast. List for free and reach serious buyers across Europe. No commission, no credit card needed.",
   alternates: funnelAlternates("en"),
   openGraph: {
     type: "website",
     url: "https://ridedirect.eu/list-your-ride",
-    title: "List Your Amusement Ride for Free | RideDirect",
+    title: "List Your Amusement Ride for Free",
     description: "Sell your amusement ride fast. List for free and reach serious buyers across Europe. No commission, no credit card needed.",
     images: [{ url: "https://ridedirect.eu/list-your-ride/opengraph-image", width: 1200, height: 630 }],
   },
