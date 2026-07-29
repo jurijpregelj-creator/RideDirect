@@ -1,17 +1,11 @@
 import type { Metadata } from "next"
 import { ListingFunnel } from "@/components/funnel/listing-funnel"
-import { FUNNEL_T } from "@/components/funnel/funnel-translations"
+import { FUNNEL_T, funnelAlternates } from "@/components/funnel/funnel-translations"
 
 export const metadata: Metadata = {
   title: "Pubblica la tua attrazione gratis | RideDirect",
   description: "Vendi la tua attrazione rapidamente. Pubblica gratis e raggiungi acquirenti seri in tutta Europa. Nessuna commissione, nessuna carta richiesta.",
-  alternates: {
-    canonical: "https://ridedirect.eu/it/pubblica-il-tuo-annuncio",
-    languages: {
-      "en": "https://ridedirect.eu/list-your-ride",
-      "de": "https://ridedirect.eu/de/inserat-erstellen",
-    },
-  },
+  alternates: funnelAlternates("it"),
   openGraph: {
     type: "website",
     url: "https://ridedirect.eu/it/pubblica-il-tuo-annuncio",

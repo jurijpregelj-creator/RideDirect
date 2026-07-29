@@ -8,16 +8,40 @@ import { Label } from "@/components/ui/label"
 import { CheckCircle2, Loader2, MessageSquare } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { submitInquiry } from "@/app/listings/[id]/actions"
+import type { ListingLocale } from "@/lib/locales"
+import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
 
 interface InquiryFormProps {
   listingId: string
   sellerId: string
   listingTitle: string
   loggedInUser?: { name: string; email: string } | null
+  locale?: ListingLocale
 }
 
-export function InquiryForm({ listingId, sellerId, listingTitle, loggedInUser }: InquiryFormProps) {
-  const t = useTranslations("listing")
+const ERROR_SEND_FAILED: Record<ListingLocale, string> = {
+  en: "Failed to send inquiry.", de: "Anfrage konnte nicht gesendet werden.", it: "Impossibile inviare la richiesta.",
+  fr: "Échec de l'envoi de la demande.", es: "No se pudo enviar la consulta.", nl: "Aanvraag kon niet worden verzonden.",
+  pl: "Nie udało się wysłać zapytania.", pt: "Falha ao enviar o pedido.",
+}
+
+const GREETING_TEMPLATE: Record<ListingLocale, (title: string) => string> = {
+  en: (title) => `Hi, I'm interested in your listing "${title}..."`,
+  de: (title) => `Hallo, ich interessiere mich für Ihr Inserat „${title}...“`,
+  it: (title) => `Ciao, sono interessato/a al tuo annuncio "${title}..."`,
+  fr: (title) => `Bonjour, je suis intéressé(e) par votre annonce « ${title}... »`,
+  es: (title) => `Hola, estoy interesado/a en tu anuncio "${title}..."`,
+  nl: (title) => `Hallo, ik ben geïnteresseerd in uw advertentie "${title}..."`,
+  pl: (title) => `Dzień dobry, jestem zainteresowany/a Państwa ogłoszeniem "${title}..."`,
+  pt: (title) => `Olá, tenho interesse no seu anúncio "${title}..."`,
+}
+
+export function InquiryForm({ listingId, sellerId, listingTitle, loggedInUser, locale }: InquiryFormProps) {
+  const cookieT = useTranslations("listing")
+  const t = locale
+    ? (key: keyof (typeof LISTING_PAGE_T)["en"]) => LISTING_PAGE_T[locale][key] as string
+    : cookieT
+  const errorSendFailed = ERROR_SEND_FAILED[locale ?? "en"]
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -41,7 +65,7 @@ export function InquiryForm({ listingId, sellerId, listingTitle, loggedInUser }:
     })
 
     if (!result.success) {
-      setError(result.error || "Failed to send inquiry.")
+      setError(result.error || errorSendFailed)
       setLoading(false)
       return
     }
@@ -108,8 +132,8 @@ export function InquiryForm({ listingId, sellerId, listingTitle, loggedInUser }:
           <Textarea
             id="message"
             name="message"
-            placeholder={!loggedInUser ? `Hi, I'm interested in your listing "${listingTitle.slice(0, 40)}..."` : undefined}
-            defaultValue={loggedInUser ? `Hi, I'm interested in your listing "${listingTitle.slice(0, 40)}..."` : undefined}
+            placeholder={!loggedInUser ? GREETING_TEMPLATE[locale ?? "en"](listingTitle.slice(0, 40)) : undefined}
+            defaultValue={loggedInUser ? GREETING_TEMPLATE[locale ?? "en"](listingTitle.slice(0, 40)) : undefined}
             required
             rows={4}
             className={loggedInUser ? "" : "mt-1.5"}

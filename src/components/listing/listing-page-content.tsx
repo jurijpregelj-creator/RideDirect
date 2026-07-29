@@ -211,6 +211,7 @@ export async function ListingPageContent({ id, locale }: { id: string; locale: L
                 sellerId={listing.seller_id}
                 listingTitle={title}
                 loggedInUser={currentProfile ? { name: currentProfile.full_name, email: currentProfile.email || currentUser?.email || "" } : null}
+                locale={locale}
               />
             )}
 

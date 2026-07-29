@@ -12,15 +12,10 @@ import {
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import { saveLead, updateLeadImages } from "@/app/funnel/actions"
 import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
+import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
+import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
 
 const CURRENCIES = ["EUR", "GBP", "PLN", "CHF", "SEK", "DKK", "NOK"]
-const CONDITIONS = [
-  { value: "new", label: "New" },
-  { value: "like_new", label: "Like New" },
-  { value: "good", label: "Good" },
-  { value: "fair", label: "Fair" },
-  { value: "parts_only", label: "Parts Only" },
-]
 
 interface FunnelFormProps {
   t: typeof FUNNEL_T[FunnelLang]
@@ -30,6 +25,8 @@ interface FunnelFormProps {
 
 export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const ft = LISTING_FORM_T[lang]
+  const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[lang].conditions[value] }))
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,7 +40,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || [])
     if (imageFiles.length + files.length > 8) {
-      setError("Maximum 8 photos.")
+      setError(ft.errorMaxPhotos)
       return
     }
     setImageFiles(prev => [...prev, ...files])
@@ -60,7 +57,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!category || !country || !condition) {
-      setError("Please fill in all required fields.")
+      setError(ft.errorRequiredFields)
       return
     }
 
@@ -125,7 +122,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
 
       onSuccess(leadId, email)
     } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.")
+      setError(err.message || ft.errorGeneric)
       setLoading(false)
     }
   }
@@ -143,41 +140,41 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
         <h3 className="font-semibold text-[#0D2A5E]">{t.formTitle}</h3>
 
         <div>
-          <Label htmlFor="title">Title *</Label>
-          <Input id="title" name="title" placeholder="e.g. Zamperla Mini Jet — 12 Seats, Excellent Condition" required maxLength={120} className="mt-1.5" />
+          <Label htmlFor="title">{ft.titleLabel}</Label>
+          <Input id="title" name="title" placeholder={ft.titlePlaceholder} required maxLength={120} className="mt-1.5" />
         </div>
 
         <div>
-          <Label htmlFor="description">Description *</Label>
-          <Textarea id="description" name="description" placeholder="Describe the ride: capacity, specs, history, condition…" required rows={5} className="mt-1.5" />
+          <Label htmlFor="description">{ft.descriptionLabel}</Label>
+          <Textarea id="description" name="description" placeholder={ft.descriptionPlaceholder} required rows={5} className="mt-1.5" />
         </div>
 
         <div>
-          <Label htmlFor="email">Your email *</Label>
-          <Input id="email" name="email" type="email" placeholder="you@company.com" required className="mt-1.5" />
-          <p className="text-xs text-gray-400 mt-1">So we can notify you when your listing goes live.</p>
+          <Label htmlFor="email">{ft.yourEmail}</Label>
+          <Input id="email" name="email" type="email" placeholder={ft.emailPlaceholder} required className="mt-1.5" />
+          <p className="text-xs text-gray-400 mt-1">{ft.emailHint}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label>Category *</Label>
+            <Label>{ft.categoryLabel}</Label>
             <Select onValueChange={setCategory}>
-              <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select…" /></SelectTrigger>
+              <SelectTrigger className="mt-1.5"><SelectValue placeholder={ft.categoryPlaceholder} /></SelectTrigger>
               <SelectContent>
                 {CATEGORIES.map(cat => (
                   <SelectItem key={cat.slug} value={cat.name}>
-                    <cat.icon size={13} className="inline-block shrink-0 mr-1" />{cat.name}
+                    <cat.icon size={13} className="inline-block shrink-0 mr-1" />{LISTING_PAGE_T[lang].categories[cat.slug as keyof typeof LISTING_PAGE_T["en"]["categories"]] ?? cat.name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label>Country *</Label>
+            <Label>{ft.countryLabel}</Label>
             <Select onValueChange={setCountry}>
-              <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select…" /></SelectTrigger>
+              <SelectTrigger className="mt-1.5"><SelectValue placeholder={ft.countryPlaceholder} /></SelectTrigger>
               <SelectContent>
-                {EUROPEAN_COUNTRIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}
+                {EUROPEAN_COUNTRIES.map(c => <SelectItem key={c} value={c}>{COUNTRY_NAMES[lang][c] ?? c}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -186,14 +183,14 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
 
       {/* Pricing */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5 space-y-4 shadow-sm">
-        <h3 className="font-semibold text-[#0D2A5E]">Pricing</h3>
+        <h3 className="font-semibold text-[#0D2A5E]">{ft.sectionPricing}</h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label htmlFor="price">Asking Price *</Label>
-            <Input id="price" name="price" type="number" min="1" placeholder="e.g. 25000" required className="mt-1.5" />
+            <Label htmlFor="price">{ft.priceLabel}</Label>
+            <Input id="price" name="price" type="number" min="1" placeholder={ft.pricePlaceholder} required className="mt-1.5" />
           </div>
           <div>
-            <Label>Currency</Label>
+            <Label>{ft.currencyLabel}</Label>
             <Select defaultValue="EUR" onValueChange={setCurrency}>
               <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
               <SelectContent>{CURRENCIES.map(c => <SelectItem key={c} value={c}>{c}</SelectItem>)}</SelectContent>
@@ -204,22 +201,22 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
 
       {/* Ride details */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5 space-y-4 shadow-sm">
-        <h3 className="font-semibold text-[#0D2A5E]">Ride Details</h3>
+        <h3 className="font-semibold text-[#0D2A5E]">{ft.sectionRideDetails}</h3>
         <div>
-          <Label>Condition *</Label>
+          <Label>{ft.conditionLabel}</Label>
           <Select onValueChange={setCondition}>
-            <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select condition…" /></SelectTrigger>
+            <SelectTrigger className="mt-1.5"><SelectValue placeholder={ft.conditionPlaceholder} /></SelectTrigger>
             <SelectContent>{CONDITIONS.map(c => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}</SelectContent>
           </Select>
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <Label htmlFor="manufacturer">Manufacturer</Label>
-            <Input id="manufacturer" name="manufacturer" placeholder="e.g. Zamperla" className="mt-1.5" />
+            <Label htmlFor="manufacturer">{ft.manufacturerLabel}</Label>
+            <Input id="manufacturer" name="manufacturer" placeholder={ft.manufacturerPlaceholder} className="mt-1.5" />
           </div>
           <div>
-            <Label htmlFor="year">Year</Label>
-            <Input id="year" name="year" type="number" min="1950" max={new Date().getFullYear()} placeholder="e.g. 2015" className="mt-1.5" />
+            <Label htmlFor="year">{ft.yearLabel}</Label>
+            <Input id="year" name="year" type="number" min="1950" max={new Date().getFullYear()} placeholder={ft.yearPlaceholder} className="mt-1.5" />
           </div>
         </div>
       </div>
@@ -227,8 +224,8 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
       {/* Photos */}
       <div className="bg-white rounded-2xl border border-gray-100 p-5 space-y-4 shadow-sm">
         <div>
-          <h3 className="font-semibold text-[#0D2A5E]">Photos</h3>
-          <p className="text-xs text-gray-400 mt-0.5">Up to 8 photos. High-quality images attract more buyers.</p>
+          <h3 className="font-semibold text-[#0D2A5E]">{ft.sectionPhotos}</h3>
+          <p className="text-xs text-gray-400 mt-0.5">{ft.photosHint}</p>
         </div>
 
         {imagePreviews.length > 0 ? (
@@ -237,7 +234,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
               <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 group">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                {i === 0 && <div className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">Cover</div>}
+                {i === 0 && <div className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">{ft.coverBadge}</div>}
                 <button type="button" onClick={() => removeImage(i)} className="absolute top-1 right-1 w-6 h-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <X size={12} />
                 </button>
@@ -245,15 +242,15 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
             ))}
             {imagePreviews.length < 8 && (
               <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors">
-                <Upload size={16} /><span className="text-xs mt-1">Add</span>
+                <Upload size={16} /><span className="text-xs mt-1">{ft.addPhoto}</span>
               </button>
             )}
           </div>
         ) : (
           <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full h-28 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2">
             <Upload size={22} />
-            <span className="text-sm font-medium">Click to upload photos</span>
-            <span className="text-xs">JPG, PNG, WebP — up to 8</span>
+            <span className="text-sm font-medium">{ft.clickToUpload}</span>
+            <span className="text-xs">{ft.fileTypesHint}</span>
           </button>
         )}
         <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageSelect} />
@@ -268,7 +265,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
       </Button>
 
       <p className="text-xs text-center text-gray-400">
-        No account needed to submit. Your listing is saved before registration.
+        {ft.noAccountNote}
       </p>
     </form>
   )

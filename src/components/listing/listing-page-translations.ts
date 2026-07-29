@@ -13,6 +13,17 @@ interface ListingPageStrings {
   ceDocsAvailable: string
   inspectionAvailable: string
   yourListingNotice: string
+  contactSeller: string
+  yourName: string
+  emailAddress: string
+  phone: string
+  phoneOptional: string
+  message: string
+  sendInquiry: string
+  sending: string
+  inquirySent: string
+  inquirySentDesc: string
+  privacyNote: string
   conditions: Record<"new" | "like_new" | "good" | "fair" | "parts_only", string>
   categories: Record<
     | "major-rides"
@@ -48,6 +59,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "CE Documentation Available",
     inspectionAvailable: "Pre-purchase inspection possible",
     yourListingNotice: "This is your listing. Buyers will see a contact form here.",
+    contactSeller: "Contact the Seller", yourName: "Your Name", emailAddress: "Email Address",
+    phone: "Phone / WhatsApp", phoneOptional: "(optional)", message: "Message",
+    sendInquiry: "Send Inquiry", sending: "Sending...", inquirySent: "Inquiry Sent!",
+    inquirySentDesc: "The seller will be in touch with you shortly.",
+    privacyNote: "Your details will only be shared with the seller of this listing.",
     conditions: { new: "New", like_new: "Like New", good: "Good", fair: "Fair", parts_only: "Parts Only" },
     categories: {
       "major-rides": "Major Rides",
@@ -75,6 +91,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "CE-Dokumentation verfügbar",
     inspectionAvailable: "Vorbesichtigung möglich",
     yourListingNotice: "Dies ist Ihr Inserat. Käufer sehen hier ein Kontaktformular.",
+    contactSeller: "Verkäufer kontaktieren", yourName: "Ihr Name", emailAddress: "E-Mail-Adresse",
+    phone: "Telefon / WhatsApp", phoneOptional: "(optional)", message: "Nachricht",
+    sendInquiry: "Anfrage senden", sending: "Wird gesendet...", inquirySent: "Anfrage gesendet!",
+    inquirySentDesc: "Der Verkäufer wird sich in Kürze bei Ihnen melden.",
+    privacyNote: "Ihre Daten werden nur mit dem Verkäufer dieses Inserats geteilt.",
     conditions: { new: "Neu", like_new: "Wie neu", good: "Gut", fair: "Akzeptabel", parts_only: "Nur Ersatzteile" },
     categories: {
       "major-rides": "Große Fahrgeschäfte",
@@ -102,6 +123,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "Documentazione CE disponibile",
     inspectionAvailable: "Ispezione pre-acquisto possibile",
     yourListingNotice: "Questo è il tuo annuncio. Gli acquirenti vedranno qui un modulo di contatto.",
+    contactSeller: "Contatta il venditore", yourName: "Il tuo nome", emailAddress: "Indirizzo email",
+    phone: "Telefono / WhatsApp", phoneOptional: "(opzionale)", message: "Messaggio",
+    sendInquiry: "Invia richiesta", sending: "Invio in corso...", inquirySent: "Richiesta inviata!",
+    inquirySentDesc: "Il venditore ti contatterà a breve.",
+    privacyNote: "I tuoi dati saranno condivisi solo con il venditore di questo annuncio.",
     conditions: { new: "Nuovo", like_new: "Come nuovo", good: "Buono", fair: "Discreto", parts_only: "Solo per pezzi" },
     categories: {
       "major-rides": "Grandi Attrazioni",
@@ -129,6 +155,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "Documentation CE disponible",
     inspectionAvailable: "Inspection avant achat possible",
     yourListingNotice: "Ceci est votre annonce. Les acheteurs verront un formulaire de contact ici.",
+    contactSeller: "Contacter le vendeur", yourName: "Votre nom", emailAddress: "Adresse email",
+    phone: "Téléphone / WhatsApp", phoneOptional: "(facultatif)", message: "Message",
+    sendInquiry: "Envoyer la demande", sending: "Envoi en cours...", inquirySent: "Demande envoyée !",
+    inquirySentDesc: "Le vendeur vous contactera prochainement.",
+    privacyNote: "Vos coordonnées ne seront partagées qu'avec le vendeur de cette annonce.",
     conditions: { new: "Neuf", like_new: "Comme neuf", good: "Bon état", fair: "État correct", parts_only: "Pour pièces" },
     categories: {
       "major-rides": "Grandes Attractions",
@@ -156,6 +187,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "Documentación CE disponible",
     inspectionAvailable: "Inspección previa a la compra posible",
     yourListingNotice: "Este es tu anuncio. Los compradores verán aquí un formulario de contacto.",
+    contactSeller: "Contactar al vendedor", yourName: "Tu nombre", emailAddress: "Correo electrónico",
+    phone: "Teléfono / WhatsApp", phoneOptional: "(opcional)", message: "Mensaje",
+    sendInquiry: "Enviar consulta", sending: "Enviando...", inquirySent: "¡Consulta enviada!",
+    inquirySentDesc: "El vendedor se pondrá en contacto contigo en breve.",
+    privacyNote: "Tus datos solo se compartirán con el vendedor de este anuncio.",
     conditions: { new: "Nuevo", like_new: "Como nuevo", good: "Bueno", fair: "Aceptable", parts_only: "Solo piezas" },
     categories: {
       "major-rides": "Atracciones Principales",
@@ -183,6 +219,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "CE-documentatie beschikbaar",
     inspectionAvailable: "Inspectie voor aankoop mogelijk",
     yourListingNotice: "Dit is uw advertentie. Kopers zien hier een contactformulier.",
+    contactSeller: "Contact opnemen met verkoper", yourName: "Uw naam", emailAddress: "E-mailadres",
+    phone: "Telefoon / WhatsApp", phoneOptional: "(optioneel)", message: "Bericht",
+    sendInquiry: "Verstuur aanvraag", sending: "Versturen...", inquirySent: "Aanvraag verzonden!",
+    inquirySentDesc: "De verkoper neemt binnenkort contact met u op.",
+    privacyNote: "Uw gegevens worden alleen gedeeld met de verkoper van deze advertentie.",
     conditions: { new: "Nieuw", like_new: "Zo goed als nieuw", good: "Goed", fair: "Redelijk", parts_only: "Alleen onderdelen" },
     categories: {
       "major-rides": "Grote Attracties",
@@ -210,6 +251,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "Dostępna dokumentacja CE",
     inspectionAvailable: "Możliwa inspekcja przed zakupem",
     yourListingNotice: "To jest Twoje ogłoszenie. Kupujący zobaczą tutaj formularz kontaktowy.",
+    contactSeller: "Skontaktuj się ze sprzedawcą", yourName: "Twoje imię", emailAddress: "Adres e-mail",
+    phone: "Telefon / WhatsApp", phoneOptional: "(opcjonalnie)", message: "Wiadomość",
+    sendInquiry: "Wyślij zapytanie", sending: "Wysyłanie...", inquirySent: "Zapytanie wysłane!",
+    inquirySentDesc: "Sprzedawca wkrótce się z Tobą skontaktuje.",
+    privacyNote: "Twoje dane zostaną udostępnione wyłącznie sprzedawcy tego ogłoszenia.",
     conditions: { new: "Nowy", like_new: "Jak nowy", good: "Dobry", fair: "Zadowalający", parts_only: "Tylko na części" },
     categories: {
       "major-rides": "Duże Atrakcje",
@@ -237,6 +283,11 @@ export const LISTING_PAGE_T: Record<ListingLocale, ListingPageStrings> = {
     ceDocsAvailable: "Documentação CE disponível",
     inspectionAvailable: "Inspeção antes da compra possível",
     yourListingNotice: "Este é o seu anúncio. Os compradores verão aqui um formulário de contacto.",
+    contactSeller: "Contactar o vendedor", yourName: "O seu nome", emailAddress: "Endereço de email",
+    phone: "Telefone / WhatsApp", phoneOptional: "(opcional)", message: "Mensagem",
+    sendInquiry: "Enviar pedido", sending: "A enviar...", inquirySent: "Pedido enviado!",
+    inquirySentDesc: "O vendedor entrará em contacto consigo em breve.",
+    privacyNote: "Os seus dados serão partilhados apenas com o vendedor deste anúncio.",
     conditions: { new: "Novo", like_new: "Como novo", good: "Bom", fair: "Aceitável", parts_only: "Apenas peças" },
     categories: {
       "major-rides": "Grandes Atrações",

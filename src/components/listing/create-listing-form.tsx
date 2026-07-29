@@ -16,24 +16,22 @@ import {
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
+import type { ListingLocale } from "@/lib/locales"
+import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
+import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
 
 const CURRENCIES = ["EUR", "GBP", "PLN", "CHF", "SEK", "DKK", "NOK"]
 
-const CONDITIONS = [
-  { value: "new", label: "New" },
-  { value: "like_new", label: "Like New" },
-  { value: "good", label: "Good" },
-  { value: "fair", label: "Fair" },
-  { value: "parts_only", label: "Parts Only" },
-]
-
 interface CreateListingFormProps {
   userId: string
+  locale?: ListingLocale
 }
 
-export function CreateListingForm({ userId }: CreateListingFormProps) {
+export function CreateListingForm({ userId, locale = "en" }: CreateListingFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const t = LISTING_FORM_T[locale]
+  const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[locale].conditions[value] }))
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -49,7 +47,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
   function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || [])
     if (imageFiles.length + files.length > 8) {
-      setError("You can upload up to 8 images.")
+      setError(t.errorMaxImages)
       return
     }
     const newPreviews = files.map((f) => URL.createObjectURL(f))
@@ -69,7 +67,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
     setError(null)
 
     if (!category || !country || !condition) {
-      setError("Please fill in all required fields.")
+      setError(t.errorRequiredFields)
       return
     }
 
@@ -108,7 +106,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
         .single()
 
       if (listingError || !listing) {
-        throw new Error(listingError?.message || "Failed to create listing")
+        throw new Error(listingError?.message || t.errorCreateFailed)
       }
 
       // 2. Upload images if any
@@ -142,7 +140,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       router.push(`/dashboard/create/success?id=${listing.id}`)
     } catch (err: any) {
-      setError(err.message || "Something went wrong. Please try again.")
+      setError(err.message || t.errorGeneric)
       setLoading(false)
     }
   }
@@ -157,14 +155,14 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Basic info */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-semibold text-[#0D2A5E] text-lg">Basic Information</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">{t.sectionBasicInfo}</h2>
 
         <div>
-          <Label htmlFor="title">Listing Title *</Label>
+          <Label htmlFor="title">{t.titleLabel}</Label>
           <Input
             id="title"
             name="title"
-            placeholder="e.g. Zamperla Mini Jet — 12 Seats, Excellent Condition"
+            placeholder={t.titlePlaceholder}
             required
             maxLength={120}
             className="mt-1.5"
@@ -172,11 +170,11 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="description">Description *</Label>
+          <Label htmlFor="description">{t.descriptionLabel}</Label>
           <Textarea
             id="description"
             name="description"
-            placeholder="Describe the ride in detail: capacity, technical specs, history, condition notes, what's included in the sale..."
+            placeholder={t.descriptionPlaceholder}
             required
             rows={6}
             className="mt-1.5"
@@ -185,16 +183,16 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <Label>Category *</Label>
+            <Label>{t.categoryLabel}</Label>
             <Select onValueChange={setCategory} required>
               <SelectTrigger className="mt-1.5">
-                <SelectValue placeholder="Select category" />
+                <SelectValue placeholder={t.categoryPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {CATEGORIES.map((cat) => (
                   <SelectItem key={cat.slug} value={cat.name}>
                     <cat.icon size={14} className="inline-block shrink-0 mr-1" />
-                    {cat.name}
+                    {LISTING_PAGE_T[locale].categories[cat.slug as keyof typeof LISTING_PAGE_T["en"]["categories"]] ?? cat.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -202,14 +200,14 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           </div>
 
           <div>
-            <Label>Country *</Label>
+            <Label>{t.countryLabel}</Label>
             <Select onValueChange={setCountry} required>
               <SelectTrigger className="mt-1.5">
-                <SelectValue placeholder="Select country" />
+                <SelectValue placeholder={t.countryPlaceholder} />
               </SelectTrigger>
               <SelectContent>
                 {EUROPEAN_COUNTRIES.map((c) => (
-                  <SelectItem key={c} value={c}>{c}</SelectItem>
+                  <SelectItem key={c} value={c}>{COUNTRY_NAMES[locale][c] ?? c}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -219,24 +217,24 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Pricing */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-semibold text-[#0D2A5E] text-lg">Pricing</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">{t.sectionPricing}</h2>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="price">Asking Price *</Label>
+            <Label htmlFor="price">{t.priceLabel}</Label>
             <Input
               id="price"
               name="price"
               type="number"
               min="1"
               step="1"
-              placeholder="e.g. 25000"
+              placeholder={t.pricePlaceholder}
               required
               className="mt-1.5"
             />
           </div>
           <div>
-            <Label>Currency *</Label>
+            <Label>{t.currencyLabel}</Label>
             <Select defaultValue="EUR" onValueChange={setCurrency}>
               <SelectTrigger className="mt-1.5">
                 <SelectValue />
@@ -253,13 +251,13 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Ride details */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-        <h2 className="font-semibold text-[#0D2A5E] text-lg">Ride Details</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">{t.sectionRideDetails}</h2>
 
         <div>
-          <Label>Condition *</Label>
+          <Label>{t.conditionLabel}</Label>
           <Select onValueChange={setCondition} required>
             <SelectTrigger className="mt-1.5">
-              <SelectValue placeholder="Select condition" />
+              <SelectValue placeholder={t.conditionPlaceholder} />
             </SelectTrigger>
             <SelectContent>
               {CONDITIONS.map((c) => (
@@ -271,23 +269,23 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <Label htmlFor="manufacturer">Manufacturer</Label>
+            <Label htmlFor="manufacturer">{t.manufacturerLabel}</Label>
             <Input
               id="manufacturer"
               name="manufacturer"
-              placeholder="e.g. Zamperla, Huss, Bertazzon"
+              placeholder={t.manufacturerPlaceholder}
               className="mt-1.5"
             />
           </div>
           <div>
-            <Label htmlFor="year">Year of Manufacture</Label>
+            <Label htmlFor="year">{t.yearLabel}</Label>
             <Input
               id="year"
               name="year"
               type="number"
               min="1950"
               max={new Date().getFullYear()}
-              placeholder="e.g. 2015"
+              placeholder={t.yearPlaceholder}
               className="mt-1.5"
             />
           </div>
@@ -296,9 +294,9 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
 
       {/* Images */}
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
-        <h2 className="font-semibold text-[#0D2A5E] text-lg">Photos</h2>
+        <h2 className="font-semibold text-[#0D2A5E] text-lg">{t.sectionPhotos}</h2>
         <p className="text-sm text-gray-500">
-          Upload up to 8 photos. High-quality images significantly increase buyer interest.
+          {t.photosHint}
         </p>
 
         {/* Previews */}
@@ -321,7 +319,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
                 </button>
                 {i === 0 && (
                   <div className="absolute bottom-1 left-1 bg-black/60 text-white text-[10px] px-1.5 py-0.5 rounded">
-                    Cover
+                    {t.coverBadge}
                   </div>
                 )}
               </div>
@@ -333,7 +331,7 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
                 className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors"
               >
                 <Upload size={18} />
-                <span className="text-xs mt-1">Add</span>
+                <span className="text-xs mt-1">{t.addPhoto}</span>
               </button>
             )}
           </div>
@@ -347,8 +345,8 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
             className="w-full h-32 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2"
           >
             <Upload size={24} />
-            <span className="text-sm font-medium">Click to upload photos</span>
-            <span className="text-xs">JPG, PNG, WebP — max 8 files</span>
+            <span className="text-sm font-medium">{t.clickToUpload}</span>
+            <span className="text-xs">{t.fileTypesHint}</span>
           </button>
         )}
 
@@ -374,12 +372,12 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           {loading ? (
             <>
               <Loader2 size={18} className="animate-spin" />
-              Submitting listing...
+              {t.submitting}
             </>
           ) : (
             <>
               <CheckCircle2 size={18} />
-              Submit for Review
+              {t.submit}
             </>
           )}
         </Button>
@@ -390,12 +388,12 @@ export function CreateListingForm({ userId }: CreateListingFormProps) {
           onClick={() => router.back()}
           disabled={loading}
         >
-          Cancel
+          {t.cancel}
         </Button>
       </div>
 
       <p className="text-xs text-gray-400 text-center">
-        Your listing will be reviewed by our team and published within 24 hours.
+        {t.reviewNote}
       </p>
     </form>
   )

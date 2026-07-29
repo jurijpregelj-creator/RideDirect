@@ -17,21 +17,26 @@ import {
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
+import type { ListingLocale } from "@/lib/locales"
+import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
+import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
 
 const CURRENCIES = ["EUR", "GBP", "PLN", "CHF", "SEK", "DKK", "NOK"]
-const CONDITIONS = [
-  { value: "new", label: "New" },
-  { value: "like_new", label: "Like New" },
-  { value: "good", label: "Good" },
-  { value: "fair", label: "Fair" },
-  { value: "parts_only", label: "Parts Only" },
-]
 
 export default function EditListingPage() {
   const router = useRouter()
   const params = useParams()
   const listingId = params.id as string
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const [locale, setLocale] = useState<ListingLocale>("en")
+  useEffect(() => {
+    const match = document.cookie.match(/NEXT_LOCALE=([^;]+)/)
+    const SUPPORTED = ["en", "de", "it", "fr", "es", "nl", "pl", "pt"]
+    if (match && SUPPORTED.includes(match[1])) setLocale(match[1] as ListingLocale)
+  }, [])
+  const t = LISTING_FORM_T[locale]
+  const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[locale].conditions[value] }))
 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -94,7 +99,7 @@ export default function EditListingPage() {
   function handleNewImages(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || [])
     const total = existingImages.length - deletedImageIds.length + newFiles.length + files.length
-    if (total > 8) { setError("Maximum 8 images total."); return }
+    if (total > 8) { setError(t.maxImagesTotal); return }
     const previews = files.map((f) => URL.createObjectURL(f))
     setNewFiles((prev) => [...prev, ...files])
     setNewPreviews((prev) => [...prev, ...previews])
@@ -118,7 +123,7 @@ export default function EditListingPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!category || !country || !condition) { setError("Please fill in all required fields."); return }
+    if (!category || !country || !condition) { setError(t.errorRequiredFields); return }
     setSaving(true)
     setError(null)
 
@@ -144,7 +149,7 @@ export default function EditListingPage() {
       .eq("id", listingId)
       .eq("seller_id", user.id)
 
-    if (updateError) { setError("Failed to save. Please try again."); setSaving(false); return }
+    if (updateError) { setError(t.saveFailed); setSaving(false); return }
 
     // 2. Delete removed images
     for (const imgId of deletedImageIds) {
@@ -200,46 +205,46 @@ export default function EditListingPage() {
       <div className="container mx-auto px-4 max-w-2xl">
         <Link href="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-[#1E88E5] transition-colors mb-6">
           <ArrowLeft size={16} />
-          Back to Dashboard
+          {t.backToDashboard}
         </Link>
 
-        <h1 className="text-2xl font-bold text-[#0D2A5E] mb-1">Edit Listing</h1>
-        <p className="text-sm text-gray-400 mb-8">Changes will be re-submitted for review before going live.</p>
+        <h1 className="text-2xl font-bold text-[#0D2A5E] mb-1">{t.editTitle}</h1>
+        <p className="text-sm text-gray-400 mb-8">{t.editSubtitle}</p>
 
         {error && <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl mb-6">{error}</div>}
-        {success && <div className="bg-green-50 border border-green-100 text-green-600 text-sm px-4 py-3 rounded-xl mb-6">✓ Saved! Redirecting to dashboard...</div>}
+        {success && <div className="bg-green-50 border border-green-100 text-green-600 text-sm px-4 py-3 rounded-xl mb-6">{t.savedRedirect}</div>}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic info */}
           <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-            <h2 className="font-semibold text-[#0D2A5E]">Basic Information</h2>
+            <h2 className="font-semibold text-[#0D2A5E]">{t.sectionBasicInfo}</h2>
             <div>
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title">{t.titleLabelShort}</Label>
               <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} required maxLength={120} className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="description">Description *</Label>
+              <Label htmlFor="description">{t.descriptionLabel}</Label>
               <Textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} required rows={6} className="mt-1.5" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
-                <Label>Category *</Label>
+                <Label>{t.categoryLabel}</Label>
                 <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select category" /></SelectTrigger>
+                  <SelectTrigger className="mt-1.5"><SelectValue placeholder={t.categoryPlaceholder} /></SelectTrigger>
                   <SelectContent>
                     {CATEGORIES.map((cat) => (
-                      <SelectItem key={cat.slug} value={cat.name}><cat.icon size={14} className="inline-block shrink-0 mr-1" />{cat.name}</SelectItem>
+                      <SelectItem key={cat.slug} value={cat.name}><cat.icon size={14} className="inline-block shrink-0 mr-1" />{LISTING_PAGE_T[locale].categories[cat.slug as keyof typeof LISTING_PAGE_T["en"]["categories"]] ?? cat.name}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
               <div>
-                <Label>Country *</Label>
+                <Label>{t.countryLabel}</Label>
                 <Select value={country} onValueChange={setCountry}>
-                  <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select country" /></SelectTrigger>
+                  <SelectTrigger className="mt-1.5"><SelectValue placeholder={t.countryPlaceholder} /></SelectTrigger>
                   <SelectContent>
                     {EUROPEAN_COUNTRIES.map((c) => (
-                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                      <SelectItem key={c} value={c}>{COUNTRY_NAMES[locale][c] ?? c}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -249,14 +254,14 @@ export default function EditListingPage() {
 
           {/* Pricing */}
           <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-            <h2 className="font-semibold text-[#0D2A5E]">Pricing</h2>
+            <h2 className="font-semibold text-[#0D2A5E]">{t.sectionPricing}</h2>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="price">Price *</Label>
+                <Label htmlFor="price">{t.priceLabelShort}</Label>
                 <Input id="price" type="number" min="1" value={price} onChange={(e) => setPrice(e.target.value)} required className="mt-1.5" />
               </div>
               <div>
-                <Label>Currency</Label>
+                <Label>{t.currencyLabel}</Label>
                 <Select value={currency} onValueChange={setCurrency}>
                   <SelectTrigger className="mt-1.5"><SelectValue /></SelectTrigger>
                   <SelectContent>
@@ -269,11 +274,11 @@ export default function EditListingPage() {
 
           {/* Details */}
           <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
-            <h2 className="font-semibold text-[#0D2A5E]">Ride Details</h2>
+            <h2 className="font-semibold text-[#0D2A5E]">{t.sectionRideDetails}</h2>
             <div>
-              <Label>Condition *</Label>
+              <Label>{t.conditionLabel}</Label>
               <Select value={condition} onValueChange={setCondition}>
-                <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select condition" /></SelectTrigger>
+                <SelectTrigger className="mt-1.5"><SelectValue placeholder={t.conditionPlaceholder} /></SelectTrigger>
                 <SelectContent>
                   {CONDITIONS.map((c) => <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>)}
                 </SelectContent>
@@ -281,12 +286,12 @@ export default function EditListingPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="manufacturer">Manufacturer</Label>
-                <Input id="manufacturer" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} placeholder="e.g. Zamperla" className="mt-1.5" />
+                <Label htmlFor="manufacturer">{t.manufacturerLabel}</Label>
+                <Input id="manufacturer" value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} placeholder={t.manufacturerPlaceholder} className="mt-1.5" />
               </div>
               <div>
-                <Label htmlFor="year">Year</Label>
-                <Input id="year" type="number" min="1950" max={new Date().getFullYear()} value={year} onChange={(e) => setYear(e.target.value)} placeholder="e.g. 2015" className="mt-1.5" />
+                <Label htmlFor="year">{t.yearLabel}</Label>
+                <Input id="year" type="number" min="1950" max={new Date().getFullYear()} value={year} onChange={(e) => setYear(e.target.value)} placeholder={t.yearPlaceholder} className="mt-1.5" />
               </div>
             </div>
           </div>
@@ -294,8 +299,8 @@ export default function EditListingPage() {
           {/* Images */}
           <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
             <div>
-              <h2 className="font-semibold text-[#0D2A5E]">Photos</h2>
-              <p className="text-xs text-gray-400 mt-0.5">Click an image to set it as the cover photo.</p>
+              <h2 className="font-semibold text-[#0D2A5E]">{t.sectionPhotos}</h2>
+              <p className="text-xs text-gray-400 mt-0.5">{t.setCoverHint}</p>
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
               {visibleExisting.map((img) => {
@@ -310,11 +315,11 @@ export default function EditListingPage() {
                     <img src={img.image_url} alt="" className="absolute inset-0 w-full h-full object-cover" />
                     {isCover ? (
                       <div className="absolute bottom-1 left-1 bg-[#1E88E5] text-white text-[10px] px-1.5 py-0.5 rounded flex items-center gap-0.5">
-                        <Star size={8} className="fill-white" />Cover
+                        <Star size={8} className="fill-white" />{t.coverBadge}
                       </div>
                     ) : (
                       <div className="absolute bottom-1 left-1 bg-black/50 text-white text-[10px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                        Set cover
+                        {t.setCover}
                       </div>
                     )}
                     <button
@@ -331,7 +336,7 @@ export default function EditListingPage() {
                 <div key={`new-${i}`} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={src} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute bottom-1 left-1 bg-blue-600/80 text-white text-[10px] px-1.5 py-0.5 rounded">New</div>
+                  <div className="absolute bottom-1 left-1 bg-blue-600/80 text-white text-[10px] px-1.5 py-0.5 rounded">{t.newBadge}</div>
                   <button type="button" onClick={() => removeNew(i)} className="absolute top-1 right-1 w-6 h-6 bg-black/60 hover:bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <X size={12} />
                   </button>
@@ -340,7 +345,7 @@ export default function EditListingPage() {
               {totalImages < 8 && (
                 <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors">
                   <Upload size={18} />
-                  <span className="text-xs mt-1">Add</span>
+                  <span className="text-xs mt-1">{t.addPhoto}</span>
                 </button>
               )}
             </div>
@@ -349,9 +354,9 @@ export default function EditListingPage() {
 
           <div className="flex gap-3">
             <Button type="submit" variant="brand" size="lg" className="flex-1" disabled={saving}>
-              {saving ? <><Loader2 size={16} className="animate-spin" /> Saving...</> : <><Save size={16} /> Save Changes</>}
+              {saving ? <><Loader2 size={16} className="animate-spin" /> {t.saving}</> : <><Save size={16} /> {t.saveChanges}</>}
             </Button>
-            <Button type="button" variant="outline" size="lg" onClick={() => router.push("/dashboard")} disabled={saving}>Cancel</Button>
+            <Button type="button" variant="outline" size="lg" onClick={() => router.push("/dashboard")} disabled={saving}>{t.cancel}</Button>
           </div>
         </form>
       </div>
