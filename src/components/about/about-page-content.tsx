@@ -6,6 +6,7 @@ import { ABOUT_T } from "@/app/about/about-translations"
 export function AboutPageContent({ locale }: { locale: ListingLocale }) {
   const t = ABOUT_T[locale]
   const marketplaceHref = buildPageUrl("/marketplace", locale)
+  const contactHref = buildPageUrl("/contact", locale)
 
   return (
     <div className="bg-gray-50 min-h-screen py-12">
@@ -63,7 +64,7 @@ export function AboutPageContent({ locale }: { locale: ListingLocale }) {
               {t.browseListings}
             </Link>
             <Link
-              href="/contact"
+              href={contactHref}
               className="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-[#0D2A5E] text-[#0D2A5E] font-semibold text-sm hover:bg-gray-50 transition-colors"
             >
               {t.getInTouch}

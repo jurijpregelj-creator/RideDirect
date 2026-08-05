@@ -22,6 +22,7 @@ import type { Listing } from "@/types"
 import type { ListingLocale } from "@/lib/translate-listing"
 import { getListingTranslation } from "@/lib/translate-listing"
 import { LISTING_PAGE_T, categorySlugFromName } from "@/components/listing/listing-page-translations"
+import { buildPageUrl } from "@/lib/site-locale-urls"
 
 async function getListing(id: string): Promise<Listing | null> {
   const supabase = createClient()
@@ -112,7 +113,7 @@ export async function ListingPageContent({ id, locale }: { id: string; locale: L
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 mb-6">
           <Link
-            href="/marketplace"
+            href={buildPageUrl("/marketplace", locale)}
             className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#1E88E5] transition-colors"
           >
             <ChevronLeft size={16} />

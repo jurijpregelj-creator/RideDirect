@@ -4,11 +4,14 @@ import { ArrowRight, ShieldCheck, Globe2, TrendingUp } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import type { ListingLocale } from "@/lib/translate-listing"
 import { SITE_T } from "@/components/home/site-content-translations"
+import { buildPageUrl } from "@/lib/site-locale-urls"
 
 export async function Hero({ locale }: { locale?: ListingLocale } = {}) {
   const t = locale
     ? (key: keyof (typeof SITE_T)["en"]["hero"]) => SITE_T[locale].hero[key]
     : await getTranslations("hero")
+  const marketplaceHref = locale ? buildPageUrl("/marketplace", locale) : "/marketplace"
+  const sellHref = locale ? buildPageUrl("/sell", locale) : "/sell"
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-[#0D2A5E] via-[#1a2d5a] to-[#1E88E5]">
@@ -36,13 +39,13 @@ export async function Hero({ locale }: { locale?: ListingLocale } = {}) {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild variant="brand-orange" size="xl" className="w-full sm:w-auto shadow-lg shadow-orange-500/25">
-              <Link href="/marketplace">
+              <Link href={marketplaceHref}>
                 {t("viewListings")}
                 <ArrowRight size={18} />
               </Link>
             </Button>
             <Button asChild size="xl" className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur">
-              <Link href="/sell">
+              <Link href={sellHref}>
                 {t("sellWithUs")}
               </Link>
             </Button>

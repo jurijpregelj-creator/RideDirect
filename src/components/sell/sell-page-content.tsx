@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { createClient } from "@/lib/supabase/server"
 import type { ListingLocale } from "@/lib/locales"
+import { buildPageUrl } from "@/lib/site-locale-urls"
 import { SELL_T } from "@/app/sell/sell-translations"
 import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
 
@@ -38,7 +39,7 @@ export async function SellPageContent({ locale }: { locale: ListingLocale }) {
   // Auth pages are cookie-driven (not URL-prefixed); the middleware syncs
   // NEXT_LOCALE from the URL prefix so this still lands in the right language.
   const sellHref = user ? "/dashboard/create" : "/auth/signup"
-  const contactHref = "/contact"
+  const contactHref = buildPageUrl("/contact", locale)
 
   return (
     <div className="min-h-screen">

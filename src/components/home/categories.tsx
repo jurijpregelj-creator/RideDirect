@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server"
 import { CATEGORIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/translate-listing"
 import { SITE_T } from "@/components/home/site-content-translations"
+import { buildPageUrl } from "@/lib/site-locale-urls"
 
 export async function Categories({ locale }: { locale?: ListingLocale } = {}) {
   const t = locale
@@ -22,7 +23,7 @@ export async function Categories({ locale }: { locale?: ListingLocale } = {}) {
           {CATEGORIES.map((category) => (
             <Link
               key={category.slug}
-              href={`/marketplace?category=${category.slug}`}
+              href={locale ? buildPageUrl(`/marketplace?category=${category.slug}`, locale) : `/marketplace?category=${category.slug}`}
               className="group relative bg-gray-50 hover:bg-[#1E88E5] rounded-xl p-6 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 border border-gray-100 hover:border-[#1E88E5]"
             >
               <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center mb-3 group-hover:bg-white/20 transition-colors" aria-hidden="true">
