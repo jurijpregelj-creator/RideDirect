@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
+import { notifyNewListingSubmitted } from "@/app/dashboard/create/actions"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -108,6 +109,15 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
       if (listingError || !listing) {
         throw new Error(listingError?.message || t.errorCreateFailed)
       }
+
+      notifyNewListingSubmitted({
+        id: listing.id,
+        title,
+        category,
+        country,
+        price,
+        currency,
+      }).catch(() => {})
 
       // 2. Upload images if any
       if (imageFiles.length > 0) {

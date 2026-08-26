@@ -2,6 +2,7 @@
 
 import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
+import { notifyAdminNewLead, notifyAdminNewListing } from "@/lib/admin-notify"
 
 export async function saveLead(data: {
   title: string
@@ -25,6 +26,15 @@ export async function saveLead(data: {
     .single()
 
   if (error || !lead) throw new Error(error?.message || "Failed to save lead")
+
+  await notifyAdminNewLead({
+    title: data.title,
+    category: data.category,
+    country: data.country,
+    price: data.price,
+    currency: data.currency,
+    email: data.email,
+  })
 
   return { leadId: lead.id, claimToken: lead.claim_token }
 }
@@ -86,6 +96,23 @@ export async function claimLead(
   if (listingError || !listing) {
     return { error: listingError?.message || "Failed to create listing" }
   }
+
+  const { data: sellerProfile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", user.id)
+    .single()
+
+  await notifyAdminNewListing({
+    id: listing.id,
+    title: lead.title,
+    category: lead.category,
+    country: lead.country,
+    price: lead.price,
+    currency: lead.currency,
+    sellerEmail: user.email,
+    sellerName: sellerProfile?.full_name,
+  })
 
   // Attach images
   if (lead.image_urls?.length) {
