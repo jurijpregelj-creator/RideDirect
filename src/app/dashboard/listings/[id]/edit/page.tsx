@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
+import { normalizeImageFiles } from "@/lib/image-upload"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -40,6 +41,7 @@ export default function EditListingPage() {
 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [converting, setConverting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -96,14 +98,17 @@ export default function EditListingPage() {
     load()
   }, [listingId, router])
 
-  function handleNewImages(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files || [])
-    const total = existingImages.length - deletedImageIds.length + newFiles.length + files.length
+  async function handleNewImages(e: React.ChangeEvent<HTMLInputElement>) {
+    const rawFiles = Array.from(e.target.files || [])
+    const total = existingImages.length - deletedImageIds.length + newFiles.length + rawFiles.length
     if (total > 8) { setError(t.maxImagesTotal); return }
+    setConverting(true)
+    const files = await normalizeImageFiles(rawFiles)
     const previews = files.map((f) => URL.createObjectURL(f))
     setNewFiles((prev) => [...prev, ...files])
     setNewPreviews((prev) => [...prev, ...previews])
     setError(null)
+    setConverting(false)
   }
 
   function removeExisting(id: string) {
@@ -343,8 +348,8 @@ export default function EditListingPage() {
                 </div>
               ))}
               {totalImages < 8 && (
-                <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors">
-                  <Upload size={18} />
+                <button type="button" onClick={() => fileInputRef.current?.click()} disabled={converting} className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors disabled:opacity-50">
+                  {converting ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
                   <span className="text-xs mt-1">{t.addPhoto}</span>
                 </button>
               )}

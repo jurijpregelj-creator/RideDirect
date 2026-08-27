@@ -4,7 +4,7 @@ import { cookies } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdminClient } from "@supabase/supabase-js"
-import { translateListingToAllLocales } from "@/lib/translate-listing"
+import { translateListingToAllLocales, SUPPORTED_LISTING_LOCALES } from "@/lib/translate-listing"
 
 async function requireAdmin() {
   // Accept backdoor cookie OR Supabase admin session
@@ -106,8 +106,19 @@ export async function backfillMissingTranslations() {
     .select("id, title, description")
     .eq("status", "approved")
 
+  // Skip listings that already have every locale translated — re-running
+  // this repeatedly shouldn't burn DeepL quota on listings that don't need it.
+  const { data: existing } = await supabase.from("listing_translations").select("listing_id, locale")
+  const localeCountByListing = new Map<string, number>()
+  for (const row of existing || []) {
+    localeCountByListing.set(row.listing_id, (localeCountByListing.get(row.listing_id) ?? 0) + 1)
+  }
+  const needsTranslation = (listings || []).filter(
+    (l) => (localeCountByListing.get(l.id) ?? 0) < SUPPORTED_LISTING_LOCALES.length
+  )
+
   let translated = 0
-  for (const listing of listings || []) {
+  for (const listing of needsTranslation) {
     try {
       await translateListingToAllLocales(listing.id, listing.title, listing.description)
       translated++
@@ -116,7 +127,7 @@ export async function backfillMissingTranslations() {
     }
   }
   revalidatePath("/admin/listings")
-  return { translated, total: listings?.length ?? 0 }
+  return { translated, total: needsTranslation.length }
 }
 
 export async function adminUpdateListing(

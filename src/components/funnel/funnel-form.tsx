@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import { saveLead, updateLeadImages } from "@/app/funnel/actions"
+import { normalizeImageFiles } from "@/lib/image-upload"
 import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
 import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
@@ -28,6 +29,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   const ft = LISTING_FORM_T[lang]
   const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[lang].conditions[value] }))
   const [loading, setLoading] = useState(false)
+  const [converting, setConverting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const [category, setCategory] = useState("")
@@ -37,15 +39,18 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
 
-  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files || [])
-    if (imageFiles.length + files.length > 8) {
+  async function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const rawFiles = Array.from(e.target.files || [])
+    if (imageFiles.length + rawFiles.length > 8) {
       setError(ft.errorMaxPhotos)
       return
     }
+    setConverting(true)
+    const files = await normalizeImageFiles(rawFiles)
     setImageFiles(prev => [...prev, ...files])
     setImagePreviews(prev => [...prev, ...files.map(f => URL.createObjectURL(f))])
     setError(null)
+    setConverting(false)
   }
 
   function removeImage(index: number) {
@@ -241,14 +246,14 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
               </div>
             ))}
             {imagePreviews.length < 8 && (
-              <button type="button" onClick={() => fileInputRef.current?.click()} className="aspect-square rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors">
-                <Upload size={16} /><span className="text-xs mt-1">{ft.addPhoto}</span>
+              <button type="button" onClick={() => fileInputRef.current?.click()} disabled={converting} className="aspect-square rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors disabled:opacity-50">
+                {converting ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}<span className="text-xs mt-1">{ft.addPhoto}</span>
               </button>
             )}
           </div>
         ) : (
-          <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full h-28 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2">
-            <Upload size={22} />
+          <button type="button" onClick={() => fileInputRef.current?.click()} disabled={converting} className="w-full h-28 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2 disabled:opacity-50">
+            {converting ? <Loader2 size={22} className="animate-spin" /> : <Upload size={22} />}
             <span className="text-sm font-medium">{ft.clickToUpload}</span>
             <span className="text-xs">{ft.fileTypesHint}</span>
           </button>

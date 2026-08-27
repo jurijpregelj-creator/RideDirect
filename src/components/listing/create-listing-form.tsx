@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
 import { notifyNewListingSubmitted } from "@/app/dashboard/create/actions"
+import { normalizeImageFiles } from "@/lib/image-upload"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -35,6 +36,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
   const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[locale].conditions[value] }))
 
   const [loading, setLoading] = useState(false)
+  const [converting, setConverting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
@@ -45,16 +47,19 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
   const [condition, setCondition] = useState("")
   const [currency, setCurrency] = useState("EUR")
 
-  function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files || [])
-    if (imageFiles.length + files.length > 8) {
+  async function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const rawFiles = Array.from(e.target.files || [])
+    if (imageFiles.length + rawFiles.length > 8) {
       setError(t.errorMaxImages)
       return
     }
+    setConverting(true)
+    const files = await normalizeImageFiles(rawFiles)
     const newPreviews = files.map((f) => URL.createObjectURL(f))
     setImageFiles((prev) => [...prev, ...files])
     setImagePreviews((prev) => [...prev, ...newPreviews])
     setError(null)
+    setConverting(false)
   }
 
   function removeImage(index: number) {
@@ -338,9 +343,10 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors"
+                disabled={converting}
+                className="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors disabled:opacity-50"
               >
-                <Upload size={18} />
+                {converting ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
                 <span className="text-xs mt-1">{t.addPhoto}</span>
               </button>
             )}
@@ -352,9 +358,10 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="w-full h-32 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2"
+            disabled={converting}
+            className="w-full h-32 rounded-xl border-2 border-dashed border-gray-200 hover:border-[#1E88E5] flex flex-col items-center justify-center text-gray-400 hover:text-[#1E88E5] transition-colors gap-2 disabled:opacity-50"
           >
-            <Upload size={24} />
+            {converting ? <Loader2 size={24} className="animate-spin" /> : <Upload size={24} />}
             <span className="text-sm font-medium">{t.clickToUpload}</span>
             <span className="text-xs">{t.fileTypesHint}</span>
           </button>
