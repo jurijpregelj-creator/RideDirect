@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { translateListingToAllLocales, SUPPORTED_LISTING_LOCALES } from "@/lib/translate-listing"
+import { approveListingCore } from "@/lib/approve-listing"
 
 async function requireAdmin() {
   // Accept backdoor cookie OR Supabase admin session
@@ -26,27 +27,9 @@ async function requireAdmin() {
 
 export async function approveListing(listingId: string) {
   const supabase = await requireAdmin()
-  const expiresAt = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString()
-  await supabase
-    .from("listings")
-    .update({ status: "approved", expires_at: expiresAt })
-    .eq("id", listingId)
+  await approveListingCore(supabase, listingId)
   revalidatePath("/admin/listings")
   revalidatePath("/marketplace")
-
-  // Fire-and-catch: translation into all supported locales must never block approval.
-  try {
-    const { data: listing } = await supabase
-      .from("listings")
-      .select("title, description")
-      .eq("id", listingId)
-      .single()
-    if (listing) {
-      await translateListingToAllLocales(listingId, listing.title, listing.description)
-    }
-  } catch (e) {
-    console.error("Listing translation failed for", listingId, e)
-  }
 }
 
 export async function rejectListing(listingId: string) {

@@ -2,7 +2,8 @@
 
 import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
-import { notifyAdminNewLead, notifyAdminNewListing } from "@/lib/admin-notify"
+import { notifyAdminNewLead } from "@/lib/admin-notify"
+import { runListingModeration } from "@/lib/moderation-pipeline"
 
 export async function saveLead(data: {
   title: string
@@ -97,24 +98,8 @@ export async function claimLead(
     return { error: listingError?.message || "Failed to create listing" }
   }
 
-  const { data: sellerProfile } = await supabase
-    .from("profiles")
-    .select("full_name")
-    .eq("id", user.id)
-    .single()
-
-  await notifyAdminNewListing({
-    id: listing.id,
-    title: lead.title,
-    category: lead.category,
-    country: lead.country,
-    price: lead.price,
-    currency: lead.currency,
-    sellerEmail: user.email,
-    sellerName: sellerProfile?.full_name,
-  })
-
-  // Attach images
+  // Attach images before moderation runs, so an auto-approved listing
+  // never goes live with zero photos.
   if (lead.image_urls?.length) {
     await supabase.from("listing_images").insert(
       lead.image_urls.map((url: string, i: number) => ({
@@ -127,6 +112,8 @@ export async function claimLead(
 
   // Delete the claimed lead so it can't be claimed twice
   await supabase.from("leads").delete().eq("id", lead.id)
+
+  await runListingModeration(listing.id)
 
   return { listingId: listing.id }
 }
