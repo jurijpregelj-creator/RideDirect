@@ -3,6 +3,7 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 import { notifyAdminNewLead } from "@/lib/admin-notify"
+import { notifySellerListingSubmitted } from "@/lib/seller-notify"
 import { runListingModeration } from "@/lib/moderation-pipeline"
 
 export async function saveLead(data: {
@@ -113,6 +114,7 @@ export async function claimLead(
   // Delete the claimed lead so it can't be claimed twice
   await supabase.from("leads").delete().eq("id", lead.id)
 
+  await notifySellerListingSubmitted(listing.id)
   await runListingModeration(listing.id)
 
   return { listingId: listing.id }

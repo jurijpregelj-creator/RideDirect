@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
-import { moderateNewListing } from "@/app/dashboard/create/actions"
+import { onListingSubmitted } from "@/app/dashboard/create/actions"
 import { normalizeImageFiles } from "@/lib/image-upload"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
@@ -146,7 +146,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
 
       // Runs after images finish uploading, so an auto-approved listing
       // never goes live with zero photos.
-      moderateNewListing(listing.id).catch(() => {})
+      onListingSubmitted(listing.id).catch(() => {})
 
       router.push(`/dashboard/create/success?id=${listing.id}`)
     } catch (err: any) {
