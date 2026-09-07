@@ -32,9 +32,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   // Fetch notification counts
   const admin = createAdminClient()
-  const [{ count: pendingListings }, { count: pendingLeads }] = await Promise.all([
+  const [{ count: pendingListings }, { count: pendingLeads }, { count: bugReports }] = await Promise.all([
     admin.from("listings").select("id", { count: "exact", head: true }).eq("status", "pending"),
     admin.from("leads").select("id", { count: "exact", head: true }),
+    admin.from("bug_reports").select("id", { count: "exact", head: true }),
   ])
 
   return (
@@ -58,6 +59,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <Link href="/admin/leads" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
             <span className="text-base">📥</span> Leads
             <Badge count={pendingLeads ?? 0} />
+          </Link>
+          <Link href="/admin/bug-reports" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+            <span className="text-base">🐞</span> Bug Reports
+            <Badge count={bugReports ?? 0} />
           </Link>
         </nav>
         <div className="p-4 border-t border-white/10 space-y-2">
