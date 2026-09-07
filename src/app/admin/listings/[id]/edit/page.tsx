@@ -41,23 +41,32 @@ export default function AdminEditListingPage() {
   const [condition, setCondition] = useState("")
   const [manufacturer, setManufacturer] = useState("")
   const [year, setYear] = useState("")
+  const [images, setImages] = useState<{ id: string; image_url: string }[]>([])
 
   useEffect(() => {
     const supabase = createClient()
-    supabase.from("listings").select("*").eq("id", listingId).single().then(({ data }) => {
-      if (data) {
-        setTitle(data.title || "")
-        setDescription(data.description || "")
-        setPrice(String(data.price || ""))
-        setCurrency(data.currency || "EUR")
-        setCategory(data.category || "")
-        setCountry(data.country || "")
-        setCondition(data.condition || "")
-        setManufacturer(data.manufacturer || "")
-        setYear(data.year ? String(data.year) : "")
-      }
-      setLoading(false)
-    })
+    supabase
+      .from("listings")
+      .select("*, listing_images(id, image_url, sort_order)")
+      .eq("id", listingId)
+      .single()
+      .then(({ data }) => {
+        if (data) {
+          setTitle(data.title || "")
+          setDescription(data.description || "")
+          setPrice(String(data.price || ""))
+          setCurrency(data.currency || "EUR")
+          setCategory(data.category || "")
+          setCountry(data.country || "")
+          setCondition(data.condition || "")
+          setManufacturer(data.manufacturer || "")
+          setYear(data.year ? String(data.year) : "")
+          setImages(
+            (data.listing_images || []).sort((a: any, b: any) => a.sort_order - b.sort_order)
+          )
+        }
+        setLoading(false)
+      })
   }, [listingId])
 
   function handleSave() {
@@ -98,6 +107,25 @@ export default function AdminEditListingPage() {
       </div>
 
       <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
+        <div className="space-y-1.5">
+          <Label>Photos ({images.length})</Label>
+          {images.length === 0 ? (
+            <p className="text-sm text-gray-400">No photos uploaded.</p>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+              {images.map((img) => (
+                <a key={img.id} href={img.image_url} target="_blank" rel="noopener noreferrer">
+                  <img
+                    src={img.image_url}
+                    alt=""
+                    className="w-full aspect-square object-cover rounded-lg border border-gray-100 hover:opacity-80 transition-opacity"
+                  />
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="space-y-1.5">
           <Label>Title</Label>
           <Input value={title} onChange={e => setTitle(e.target.value)} />
