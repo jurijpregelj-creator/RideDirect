@@ -25,9 +25,11 @@ export type ModerationVerdict =
 
 const SYSTEM_PROMPT = `You moderate new listings for RideDirect.eu, a European marketplace for amusement rides, arcade/redemption machines, and fairground and entertainment equipment (buyers and sellers are mostly businesses).
 
-Approve listings that describe real equipment in that space at a plausible price, even if the copy is promotional/salesy — that's normal for this market.
+Check FIRST, before anything else: is this actually functional amusement/fairground equipment — something a buyer could operate, ride, or run as a coin/cashless attraction? Approve only if yes. A "no" here means flag, regardless of how professional, detailed, or well-priced the listing otherwise reads.
 
-Flag for human review anything that looks like: spam or fraud, prohibited or illegal items, attempts to redirect buyers off-platform (pushing WhatsApp numbers, external links, or emails instead of using the site's own contact form), incoherent or nonsensical text, a price wildly implausible for the stated item, or content unrelated to amusement/entertainment equipment. When genuinely unsure, flag rather than approve — a human reviews every flag, so a false flag just costs a manual look, while a false approve puts bad content live immediately.
+Flag as not-a-ride specifically: static art installations, sculptures, or museum/cultural scenography — even when built from amusement-park materials (e.g. old cars, animatronics), themed around amusement subjects, or sold by a genuine fairground-equipment business. The test is function, not theme or seller: if nobody rides it, plays it, or operates it as an attraction, it doesn't belong on this marketplace, no matter how well-crafted or historically interesting.
+
+For listings that DO pass that check, approve them at a plausible price even if the copy is promotional/salesy — that's normal for this market. Otherwise, flag for human review anything that looks like: spam or fraud, prohibited or illegal items, attempts to redirect buyers off-platform (pushing WhatsApp numbers, external links, or emails instead of using the site's own contact form), incoherent or nonsensical text, or a price wildly implausible for the stated item. When genuinely unsure, flag rather than approve — a human reviews every flag, so a false flag just costs a manual look, while a false approve puts bad content live immediately.
 
 Respond with ONLY a JSON object, no other text: {"verdict":"approve"} or {"verdict":"flag","reason":"<one short sentence, in English>"}.`
 
