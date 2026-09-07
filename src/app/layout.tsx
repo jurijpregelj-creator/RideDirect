@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/footer"
 import { LanguageSuggestionBanner } from "@/components/layout/language-suggestion-banner"
 import { MessageToaster } from "@/components/notifications/message-toaster"
 import { CookieBanner } from "@/components/layout/cookie-banner"
+import { BugReportWidget } from "@/components/layout/bug-report-widget"
 import type { ListingLocale } from "@/lib/translate-listing"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
@@ -100,6 +101,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Footer locale={urlLocale ?? undefined} />
             <MessageToaster />
             <CookieBanner />
+            <BugReportWidget urlLocale={urlLocale ?? undefined} />
           </div>
         </NextIntlClientProvider>
         <Analytics />
