@@ -7,7 +7,7 @@ import { createClient as createAdminClient } from "@supabase/supabase-js"
 import { translateListingToAllLocales, SUPPORTED_LISTING_LOCALES } from "@/lib/translate-listing"
 import { approveListingCore } from "@/lib/approve-listing"
 
-async function requireAdmin() {
+export async function requireAdmin() {
   // Accept backdoor cookie OR Supabase admin session
   const adminPass = cookies().get("admin_pass")?.value
   if (adminPass === "1") {
@@ -23,6 +23,21 @@ async function requireAdmin() {
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single()
   if (profile?.role !== "admin") throw new Error("Forbidden")
   return supabase
+}
+
+// Reads via requireAdmin()'s client, not the plain browser client — the
+// admin_pass backdoor has no real auth.uid(), so RLS's is_admin() check
+// (and "public can view approved listings") would otherwise hide any
+// listing that isn't already approved, which is exactly the case that
+// matters when reviewing something AI moderation flagged.
+export async function getAdminListingDetail(listingId: string) {
+  const supabase = await requireAdmin()
+  const { data } = await supabase
+    .from("listings")
+    .select("*, listing_images(id, image_url, sort_order)")
+    .eq("id", listingId)
+    .single()
+  return data
 }
 
 export async function approveListing(listingId: string) {

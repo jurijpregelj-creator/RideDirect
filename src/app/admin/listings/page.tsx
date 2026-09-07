@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/server"
 import { expireStaleListings } from "@/lib/supabase/admin"
+import { requireAdmin } from "../actions"
 import { ListingActions } from "./_components/listing-actions"
 import { BackfillTranslationsButton } from "./_components/backfill-translations-button"
 import type { Metadata } from "next"
@@ -27,7 +27,7 @@ interface PageProps {
 }
 
 export default async function AdminListingsPage({ searchParams }: PageProps) {
-  const supabase = createClient()
+  const supabase = await requireAdmin()
   const statusFilter = searchParams.status || "all"
 
   await expireStaleListings()

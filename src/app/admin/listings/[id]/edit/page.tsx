@@ -9,8 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { createClient } from "@/lib/supabase/client"
-import { adminUpdateListing } from "../../../actions"
+import { adminUpdateListing, getAdminListingDetail } from "../../../actions"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 
 const CURRENCIES = ["EUR", "GBP", "PLN", "CHF", "SEK", "DKK", "NOK"]
@@ -44,13 +43,8 @@ export default function AdminEditListingPage() {
   const [images, setImages] = useState<{ id: string; image_url: string }[]>([])
 
   useEffect(() => {
-    const supabase = createClient()
-    supabase
-      .from("listings")
-      .select("*, listing_images(id, image_url, sort_order)")
-      .eq("id", listingId)
-      .single()
-      .then(({ data }) => {
+    getAdminListingDetail(listingId)
+      .then((data) => {
         if (data) {
           setTitle(data.title || "")
           setDescription(data.description || "")
