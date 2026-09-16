@@ -3,7 +3,13 @@ import { createAdminClient } from "@/lib/supabase/admin"
 import { SUPPORTED_LISTING_LOCALES, type ListingLocale, buildListingUrl } from "@/lib/locales"
 import { EMAIL_T } from "@/lib/email-translations"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resendClient: Resend | null = null
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return null
+  if (!resendClient) resendClient = new Resend(apiKey)
+  return resendClient
+}
 
 function resolveLocale(value: string | null | undefined): ListingLocale {
   return (SUPPORTED_LISTING_LOCALES as readonly string[]).includes(value ?? "")
@@ -27,7 +33,8 @@ async function getSellerContact(sellerId: string) {
 // moderation runs — the seller hears back immediately, independent of
 // whether the listing ends up auto-approved or flagged for review.
 export async function notifySellerListingSubmitted(listingId: string) {
-  if (!process.env.RESEND_API_KEY) return
+  const resend = getResend()
+  if (!resend) return
   try {
     const admin = createAdminClient()
     const { data: listing } = await admin
@@ -62,7 +69,8 @@ export async function notifySellerListingSubmitted(listingId: string) {
 // Fired from approveListingCore — covers both the admin "Approve" button
 // and AI auto-approval, since both call that same function.
 export async function notifySellerListingApproved(listingId: string, sellerId: string, title: string) {
-  if (!process.env.RESEND_API_KEY) return
+  const resend = getResend()
+  if (!resend) return
   try {
     const { email, locale } = await getSellerContact(sellerId)
     if (!email) return

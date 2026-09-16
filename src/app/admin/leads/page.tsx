@@ -58,11 +58,26 @@ export default async function AdminLeadsPage() {
               <div key={lead.id} className="px-6 py-4 flex items-start gap-4">
                 {/* Main info */}
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-[#0D2A5E] truncate">{lead.title || "—"}</div>
+                  <div className="flex items-center gap-2">
+                    {lead.source === "outreach" && (
+                      <span className="shrink-0 text-[10px] font-bold uppercase bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded">
+                        Outreach
+                      </span>
+                    )}
+                    <div className="font-medium text-[#0D2A5E] truncate">{lead.title || "—"}</div>
+                  </div>
                   <div className="text-xs text-gray-400 mt-0.5">
-                    {lead.category} · {lead.country} · {lead.condition}
-                    {lead.manufacturer ? ` · ${lead.manufacturer}` : ""}
-                    {lead.year ? ` · ${lead.year}` : ""}
+                    {lead.source === "outreach" ? (
+                      <a href={lead.description?.replace("Existing listing: ", "")} target="_blank" rel="noopener noreferrer" className="text-[#1E88E5] hover:underline">
+                        {lead.description}
+                      </a>
+                    ) : (
+                      <>
+                        {lead.category} · {lead.country} · {lead.condition}
+                        {lead.manufacturer ? ` · ${lead.manufacturer}` : ""}
+                        {lead.year ? ` · ${lead.year}` : ""}
+                      </>
+                    )}
                   </div>
                 </div>
 
@@ -71,17 +86,22 @@ export default async function AdminLeadsPage() {
                   {lead.price ? formatPrice(lead.price, lead.currency || "EUR") : "—"}
                 </div>
 
-                {/* Email */}
-                <div className="shrink-0 min-w-[180px]">
+                {/* Contact */}
+                <div className="shrink-0 min-w-[180px] text-right sm:text-left">
                   {lead.email ? (
                     <a
                       href={`mailto:${lead.email}`}
-                      className="text-sm text-[#1E88E5] hover:underline font-medium"
+                      className="text-sm text-[#1E88E5] hover:underline font-medium block"
                     >
                       {lead.email}
                     </a>
                   ) : (
-                    <span className="text-xs text-gray-300 italic">no email</span>
+                    <span className="text-xs text-gray-300 italic block">no email</span>
+                  )}
+                  {lead.phone && (
+                    <a href={`tel:${lead.phone}`} className="text-xs text-gray-500 hover:underline block">
+                      {lead.phone}
+                    </a>
                   )}
                 </div>
 

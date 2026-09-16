@@ -18,7 +18,13 @@ function getAdminClient() {
   )
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resendClient: Resend | null = null
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return null
+  if (!resendClient) resendClient = new Resend(apiKey)
+  return resendClient
+}
 
 export async function sendReply(formData: FormData) {
   const supabase = createClient()
@@ -98,7 +104,8 @@ export async function sendReply(formData: FormData) {
     recipientLocale = sellerProfile?.preferred_language ?? null
   }
 
-  if (!process.env.RESEND_API_KEY) {
+  const resend = getResend()
+  if (!resend) {
     console.error("[Email] RESEND_API_KEY is not set")
   } else if (!recipientEmail) {
     console.error("[Email] Recipient email not found for inquiry:", inquiryId)

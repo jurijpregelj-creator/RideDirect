@@ -17,7 +17,13 @@ function getAdminClient() {
   )
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resendClient: Resend | null = null
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return null
+  if (!resendClient) resendClient = new Resend(apiKey)
+  return resendClient
+}
 
 export async function submitInquiry(formData: {
   listingId: string
@@ -61,7 +67,8 @@ export async function submitInquiry(formData: {
 
   const sellerEmail = sellerAuth?.user?.email || seller?.email
 
-  if (!process.env.RESEND_API_KEY) {
+  const resend = getResend()
+  if (!resend) {
     console.error("[Email] RESEND_API_KEY is not set")
     return { success: true }
   }
@@ -124,6 +131,8 @@ export async function reportListing(formData: {
     other: "Other",
   }
 
+  const resend = getResend()
+  if (!resend) return { success: true }
   try {
     await resend.emails.send({
       from: "RideDirect <noreply@ridedirect.eu>",

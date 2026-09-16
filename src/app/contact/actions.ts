@@ -2,7 +2,13 @@
 
 import { Resend } from "resend"
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+let resendClient: Resend | null = null
+function getResend(): Resend | null {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) return null
+  if (!resendClient) resendClient = new Resend(apiKey)
+  return resendClient
+}
 
 const SUBJECT_LABELS: Record<string, string> = {
   buying: "Buying a ride",
@@ -20,6 +26,8 @@ export async function sendContactMessage(formData: {
   subject: string
   message: string
 }) {
+  const resend = getResend()
+  if (!resend) return { success: false }
   try {
     console.log("[Contact] Sending email from:", formData.email, "subject:", formData.subject)
     const result = await resend.emails.send({
