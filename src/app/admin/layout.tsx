@@ -23,10 +23,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   // Fetch notification counts
   const admin = createAdminClient()
-  const [{ count: pendingListings }, { count: pendingLeads }, { count: bugReports }] = await Promise.all([
+  const [{ count: pendingListings }, { count: pendingLeads }, { count: bugReports }, { count: outreachContacts }] = await Promise.all([
     admin.from("listings").select("id", { count: "exact", head: true }).eq("status", "pending"),
     admin.from("leads").select("id", { count: "exact", head: true }),
     admin.from("bug_reports").select("id", { count: "exact", head: true }),
+    admin.from("outreach_contacts").select("id", { count: "exact", head: true }).eq("status", "drafted"),
   ])
 
   return (
@@ -35,6 +36,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         pendingListings={pendingListings ?? 0}
         pendingLeads={pendingLeads ?? 0}
         bugReports={bugReports ?? 0}
+        outreachContacts={outreachContacts ?? 0}
       />
       <main className="flex-1 md:ml-56 min-h-screen">{children}</main>
     </div>

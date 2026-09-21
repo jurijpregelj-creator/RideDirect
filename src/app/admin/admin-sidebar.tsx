@@ -19,6 +19,7 @@ const NAV_LINKS = [
   { href: "/admin/listings", icon: "📋", label: "Listings", countKey: "pendingListings" },
   { href: "/admin/users", icon: "👥", label: "Users" },
   { href: "/admin/leads", icon: "📥", label: "Leads", countKey: "pendingLeads" },
+  { href: "/admin/outreach", icon: "📣", label: "Outreach", countKey: "outreachContacts" },
   { href: "/admin/bug-reports", icon: "🐞", label: "Bug Reports", countKey: "bugReports" },
 ] as const
 
@@ -26,12 +27,13 @@ interface AdminSidebarProps {
   pendingListings: number
   pendingLeads: number
   bugReports: number
+  outreachContacts: number
 }
 
-export function AdminSidebar({ pendingListings, pendingLeads, bugReports }: AdminSidebarProps) {
+export function AdminSidebar({ pendingListings, pendingLeads, bugReports, outreachContacts }: AdminSidebarProps) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
-  const counts: Record<string, number> = { pendingListings, pendingLeads, bugReports }
+  const counts: Record<string, number> = { pendingListings, pendingLeads, bugReports, outreachContacts }
 
   // Close the mobile dropdown on route change (matches the site header's mobile nav).
   useEffect(() => {
