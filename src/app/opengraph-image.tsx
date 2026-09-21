@@ -20,7 +20,7 @@ export default function OGImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ fontSize: 64, fontWeight: 800, color: "white", marginBottom: 16, letterSpacing: -2 }}>
+        <div style={{ display: "flex", fontSize: 64, fontWeight: 800, color: "white", marginBottom: 16, letterSpacing: -2 }}>
           RideDirect<span style={{ color: "#FF6D00" }}>.eu</span>
         </div>
         <div style={{ fontSize: 28, color: "rgba(255,255,255,0.85)", marginBottom: 40, textAlign: "center", maxWidth: 800 }}>
