@@ -100,6 +100,11 @@ export default async function AdminOutreachPage() {
                   >
                     {g.name}
                   </span>
+                  {g.category && (
+                    <span className="shrink-0 text-[10px] font-semibold uppercase bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">
+                      {g.category}
+                    </span>
+                  )}
                   {g.url && (
                     <a
                       href={g.url}
