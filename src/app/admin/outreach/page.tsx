@@ -14,8 +14,17 @@ export default async function AdminOutreachPage() {
   ])
 
   const rows = contacts ?? []
-  const pendingGroups = (targetGroups ?? []).filter((g) => g.status === "pending")
+  const pendingGroups = (targetGroups ?? [])
+    .filter((g) => g.status === "pending")
+    .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0))
   const doneGroups = (targetGroups ?? []).filter((g) => g.status === "done")
+
+  const PRIORITY_LABEL: Record<number, string> = { 3: "High", 2: "Medium", 1: "Low" }
+  const PRIORITY_COLOR: Record<number, string> = {
+    3: "bg-red-50 text-red-600",
+    2: "bg-amber-50 text-amber-600",
+    1: "bg-gray-100 text-gray-500",
+  }
   const total = rows.length
   const sent = rows.filter((c) => c.status === "sent").length
   const converted = rows.filter((c) => c.converted_at).length
@@ -74,6 +83,15 @@ export default async function AdminOutreachPage() {
           <div className="divide-y divide-gray-50">
             {[...pendingGroups, ...doneGroups].map((g) => (
               <div key={g.id} className="px-6 py-3 flex items-center gap-4">
+                {g.priority ? (
+                  <span
+                    className={`shrink-0 text-[10px] font-bold uppercase px-1.5 py-0.5 rounded ${PRIORITY_COLOR[g.priority]}`}
+                  >
+                    {PRIORITY_LABEL[g.priority]}
+                  </span>
+                ) : (
+                  <span className="shrink-0 w-[54px]" />
+                )}
                 <div className="flex-1 min-w-0 flex items-center gap-2">
                   <span
                     className={`text-sm font-medium truncate ${
