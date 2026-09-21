@@ -17,11 +17,21 @@ export default async function AdminOutreachPage() {
   const sent = rows.filter((c) => c.status === "sent").length
   const converted = rows.filter((c) => c.converted_at).length
 
-  const groupCounts = rows.reduce((acc: Record<string, number>, c) => {
-    if (c.source_group) acc[c.source_group] = (acc[c.source_group] || 0) + 1
+  type GroupSummary = { count: number; first: string; last: string }
+  const groupSummary = rows.reduce((acc: Record<string, GroupSummary>, c) => {
+    if (!c.source_group) return acc
+    const g = acc[c.source_group] ?? { count: 0, first: c.contacted_at, last: c.contacted_at }
+    g.count += 1
+    if (c.contacted_at < g.first) g.first = c.contacted_at
+    if (c.contacted_at > g.last) g.last = c.contacted_at
+    acc[c.source_group] = g
     return acc
   }, {})
-  const groups = Object.entries(groupCounts).sort((a, b) => b[1] - a[1])
+  const groups = Object.entries(groupSummary).sort((a, b) => b[1].last.localeCompare(a[1].last))
+
+  function fmtDate(d: string) {
+    return new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })
+  }
 
   return (
     <div className="p-8 max-w-6xl">
@@ -50,18 +60,35 @@ export default async function AdminOutreachPage() {
 
       {/* Groups already covered */}
       {groups.length > 0 && (
-        <div className="mb-6 bg-white rounded-2xl border border-gray-100 p-4">
-          <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
-            Facebook groups already worked
+        <div className="mb-6 bg-white rounded-2xl border border-gray-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-50">
+            <h2 className="font-semibold text-[#0D2A5E]">Facebook groups already worked</h2>
+            <p className="text-xs text-gray-400 mt-0.5">So you know which group to pick up next.</p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {groups.map(([group, count]) => (
-              <span
-                key={group}
-                className="text-xs bg-gray-50 border border-gray-100 text-gray-600 px-2.5 py-1 rounded-full"
-              >
-                {group} <span className="text-gray-400">({count})</span>
-              </span>
+          <div className="divide-y divide-gray-50">
+            {groups.map(([group, s]) => (
+              <div key={group} className="px-6 py-3 flex items-center gap-4">
+                <div className="flex-1 min-w-0">
+                  {/^https?:\/\//.test(group) ? (
+                    <a
+                      href={group}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-[#1E88E5] hover:underline font-medium truncate block"
+                    >
+                      {group}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-gray-700 font-medium truncate block">{group}</span>
+                  )}
+                </div>
+                <div className="shrink-0 text-xs text-gray-400">
+                  {s.first === s.last ? fmtDate(s.first) : `${fmtDate(s.first)} – ${fmtDate(s.last)}`}
+                </div>
+                <div className="shrink-0 text-xs font-semibold text-gray-500 bg-gray-50 px-2 py-0.5 rounded-full min-w-[70px] text-center">
+                  {s.count} contacted
+                </div>
+              </div>
             ))}
           </div>
         </div>
