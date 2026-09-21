@@ -17,13 +17,14 @@ export default async function AdminOutreachPage() {
   const sent = rows.filter((c) => c.status === "sent").length
   const converted = rows.filter((c) => c.converted_at).length
 
-  type GroupSummary = { count: number; first: string; last: string }
+  type GroupSummary = { count: number; first: string; last: string; url: string | null }
   const groupSummary = rows.reduce((acc: Record<string, GroupSummary>, c) => {
     if (!c.source_group) return acc
-    const g = acc[c.source_group] ?? { count: 0, first: c.contacted_at, last: c.contacted_at }
+    const g = acc[c.source_group] ?? { count: 0, first: c.contacted_at, last: c.contacted_at, url: null }
     g.count += 1
     if (c.contacted_at < g.first) g.first = c.contacted_at
     if (c.contacted_at > g.last) g.last = c.contacted_at
+    if (!g.url && c.source_group_url) g.url = c.source_group_url
     acc[c.source_group] = g
     return acc
   }, {})
@@ -68,18 +69,17 @@ export default async function AdminOutreachPage() {
           <div className="divide-y divide-gray-50">
             {groups.map(([group, s]) => (
               <div key={group} className="px-6 py-3 flex items-center gap-4">
-                <div className="flex-1 min-w-0">
-                  {/^https?:\/\//.test(group) ? (
+                <div className="flex-1 min-w-0 flex items-center gap-2">
+                  <span className="text-sm text-gray-700 font-medium truncate">{group}</span>
+                  {s.url && (
                     <a
-                      href={group}
+                      href={s.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-sm text-[#1E88E5] hover:underline font-medium truncate block"
+                      className="shrink-0 text-xs text-[#1E88E5] hover:underline"
                     >
-                      {group}
+                      Open group ↗
                     </a>
-                  ) : (
-                    <span className="text-sm text-gray-700 font-medium truncate block">{group}</span>
                   )}
                 </div>
                 <div className="shrink-0 text-xs text-gray-400">
