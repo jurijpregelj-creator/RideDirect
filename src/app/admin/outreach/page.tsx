@@ -39,9 +39,9 @@ export default async function AdminOutreachPage({
   function priorityBadge(priority: number | string | null) {
     const p = Number(priority)
     if (!p) return null
-    const label = p.toFixed(1).replace(/\.0$/, "")
-    if (p >= 2.5) return { label, color: "bg-red-50 text-red-600" }
-    if (p >= 1.5) return { label, color: "bg-amber-50 text-amber-600" }
+    const label = String(p)
+    if (p >= 4) return { label, color: "bg-red-50 text-red-600" }
+    if (p >= 3) return { label, color: "bg-amber-50 text-amber-600" }
     return { label, color: "bg-gray-100 text-gray-500" }
   }
   const total = rows.length
