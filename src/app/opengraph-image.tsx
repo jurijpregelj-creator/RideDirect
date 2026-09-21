@@ -31,6 +31,7 @@ export default function OGImage() {
             <div
               key={item}
               style={{
+                display: "flex",
                 background: "rgba(255,255,255,0.12)",
                 border: "1px solid rgba(255,255,255,0.2)",
                 borderRadius: 8,
@@ -39,7 +40,7 @@ export default function OGImage() {
                 fontSize: 16,
               }}
             >
-              ✓ {item}
+              {item}
             </div>
           ))}
         </div>
