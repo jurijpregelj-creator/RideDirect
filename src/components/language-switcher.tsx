@@ -16,7 +16,7 @@ const LOCALES: { code: ListingLocale; flag: string; label: string; ariaLabel: st
   { code: "pt", flag: "🇵🇹", label: "PT", ariaLabel: "Mudar para português" },
 ]
 
-const LOCALIZABLE_BASE_PATTERNS = [/^\/$/, /^\/marketplace$/, /^\/listings\/[^/]+$/, /^\/sell$/, /^\/about$/, /^\/contact$/]
+const LOCALIZABLE_BASE_PATTERNS = [/^\/$/, /^\/marketplace$/, /^\/listings\/[^/]+$/, /^\/sell$/, /^\/about$/, /^\/contact$/, /^\/list-here$/]
 
 function stripLocalePrefix(pathname: string): string {
   return pathname.replace(/^\/(de|it|fr|es|nl|pl|pt)(?=\/|$)/, "") || "/"
