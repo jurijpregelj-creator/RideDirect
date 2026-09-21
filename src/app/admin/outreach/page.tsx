@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { ConvertButton } from "./convert-button"
+import { GroupStatusButton } from "./group-status-button"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Outreach | Admin" }
@@ -7,12 +8,14 @@ export const metadata: Metadata = { title: "Outreach | Admin" }
 export default async function AdminOutreachPage() {
   const supabase = createAdminClient()
 
-  const { data: contacts } = await supabase
-    .from("outreach_contacts")
-    .select("*")
-    .order("created_at", { ascending: false })
+  const [{ data: contacts }, { data: targetGroups }] = await Promise.all([
+    supabase.from("outreach_contacts").select("*").order("created_at", { ascending: false }),
+    supabase.from("outreach_target_groups").select("*").order("added_at", { ascending: true }),
+  ])
 
   const rows = contacts ?? []
+  const pendingGroups = (targetGroups ?? []).filter((g) => g.status === "pending")
+  const doneGroups = (targetGroups ?? []).filter((g) => g.status === "done")
   const total = rows.length
   const sent = rows.filter((c) => c.status === "sent").length
   const converted = rows.filter((c) => c.converted_at).length
@@ -58,6 +61,54 @@ export default async function AdminOutreachPage() {
           <div className="text-xs text-gray-400 mt-1">Converted (listed)</div>
         </div>
       </div>
+
+      {/* Groups to-do list */}
+      {(targetGroups?.length ?? 0) > 0 && (
+        <div className="mb-6 bg-white rounded-2xl border border-gray-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-50">
+            <h2 className="font-semibold text-[#0D2A5E]">Facebook groups to-do</h2>
+            <p className="text-xs text-gray-400 mt-0.5">
+              {pendingGroups.length} left to work through, {doneGroups.length} done.
+            </p>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {[...pendingGroups, ...doneGroups].map((g) => (
+              <div key={g.id} className="px-6 py-3 flex items-center gap-4">
+                <div className="flex-1 min-w-0 flex items-center gap-2">
+                  <span
+                    className={`text-sm font-medium truncate ${
+                      g.status === "done" ? "text-gray-400 line-through" : "text-gray-700"
+                    }`}
+                  >
+                    {g.name}
+                  </span>
+                  {g.url && (
+                    <a
+                      href={g.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="shrink-0 text-xs text-[#1E88E5] hover:underline"
+                    >
+                      Open group ↗
+                    </a>
+                  )}
+                </div>
+                {g.member_count != null && (
+                  <div className="shrink-0 text-xs text-gray-400">
+                    {g.member_count.toLocaleString()} members
+                  </div>
+                )}
+                <div className="shrink-0 text-xs text-gray-400">
+                  {g.status === "done" && g.worked_at
+                    ? `worked ${fmtDate(g.worked_at)}`
+                    : `added ${fmtDate(g.added_at)}`}
+                </div>
+                <GroupStatusButton groupId={g.id} done={g.status === "done"} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Groups already covered */}
       {groups.length > 0 && (
