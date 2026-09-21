@@ -5,7 +5,11 @@ import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Outreach | Admin" }
 
-export default async function AdminOutreachPage() {
+export default async function AdminOutreachPage({
+  searchParams,
+}: {
+  searchParams: { lang?: string }
+}) {
   const supabase = createAdminClient()
 
   const [{ data: contacts }, { data: targetGroups }] = await Promise.all([
@@ -14,10 +18,23 @@ export default async function AdminOutreachPage() {
   ])
 
   const rows = contacts ?? []
-  const pendingGroups = (targetGroups ?? [])
+  const activeLang = searchParams.lang ?? "all"
+  const langCounts = (targetGroups ?? []).reduce((acc: Record<string, number>, g) => {
+    const key = g.language ?? "?"
+    acc[key] = (acc[key] || 0) + 1
+    return acc
+  }, {})
+  const langOptions = Object.keys(langCounts).sort()
+
+  const allTargetGroups =
+    activeLang === "all"
+      ? targetGroups ?? []
+      : (targetGroups ?? []).filter((g) => (g.language ?? "?") === activeLang)
+
+  const pendingGroups = allTargetGroups
     .filter((g) => g.status === "pending")
     .sort((a, b) => (Number(b.priority) || 0) - (Number(a.priority) || 0))
-  const doneGroups = (targetGroups ?? []).filter((g) => g.status === "done")
+  const doneGroups = allTargetGroups.filter((g) => g.status === "done")
 
   function priorityBadge(priority: number | string | null) {
     const p = Number(priority)
@@ -81,6 +98,31 @@ export default async function AdminOutreachPage() {
             <p className="text-xs text-gray-400 mt-0.5">
               {pendingGroups.length} left to work through, {doneGroups.length} done.
             </p>
+            <div className="flex flex-wrap gap-1.5 mt-3">
+              <a
+                href="/admin/outreach"
+                className={`text-[11px] font-semibold uppercase px-2 py-1 rounded-full border ${
+                  activeLang === "all"
+                    ? "bg-[#0D2A5E] text-white border-[#0D2A5E]"
+                    : "bg-white text-gray-500 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                All ({targetGroups?.length ?? 0})
+              </a>
+              {langOptions.map((lang) => (
+                <a
+                  key={lang}
+                  href={`/admin/outreach?lang=${lang}`}
+                  className={`text-[11px] font-semibold uppercase px-2 py-1 rounded-full border ${
+                    activeLang === lang
+                      ? "bg-[#0D2A5E] text-white border-[#0D2A5E]"
+                      : "bg-white text-gray-500 border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  {lang} ({langCounts[lang]})
+                </a>
+              ))}
+            </div>
           </div>
           <div className="divide-y divide-gray-50">
             {[...pendingGroups, ...doneGroups].map((g) => (
@@ -94,6 +136,9 @@ export default async function AdminOutreachPage() {
                 ) : (
                   <span className="shrink-0 w-[54px]" />
                 )}
+                <span className="shrink-0 text-[10px] font-bold uppercase bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded w-8 text-center">
+                  {g.language || "?"}
+                </span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span
