@@ -31,10 +31,16 @@ export default async function AdminOutreachPage({
       ? targetGroups ?? []
       : (targetGroups ?? []).filter((g) => (g.language ?? "?") === activeLang)
 
-  const pendingGroups = allTargetGroups
-    .filter((g) => g.status === "pending")
-    .sort((a, b) => (Number(b.priority) || 0) - (Number(a.priority) || 0))
-  const doneGroups = allTargetGroups.filter((g) => g.status === "done")
+  // Groups get worked repeatedly over time, not once-and-done: never-worked
+  // groups (highest priority first) sit at the top, groups worked longest
+  // ago come next, and whatever was just worked sinks to the very bottom —
+  // so the queue always surfaces what's due next.
+  const rotationQueue = [...allTargetGroups].sort((a, b) => {
+    if (!a.last_worked_at && !b.last_worked_at) return (Number(b.priority) || 0) - (Number(a.priority) || 0)
+    if (!a.last_worked_at) return -1
+    if (!b.last_worked_at) return 1
+    return a.last_worked_at.localeCompare(b.last_worked_at)
+  })
 
   function priorityBadge(priority: number | string | null) {
     const p = Number(priority)
@@ -94,9 +100,9 @@ export default async function AdminOutreachPage({
       {(targetGroups?.length ?? 0) > 0 && (
         <div className="mb-6 bg-white rounded-2xl border border-gray-100 overflow-hidden">
           <div className="px-6 py-4 border-b border-gray-50">
-            <h2 className="font-semibold text-[#0D2A5E]">Facebook groups to-do</h2>
+            <h2 className="font-semibold text-[#0D2A5E]">Facebook groups rotation</h2>
             <p className="text-xs text-gray-400 mt-0.5">
-              {pendingGroups.length} left to work through, {doneGroups.length} done.
+              Groups you work through again and again — never-worked ones float to the top, whatever you just did sinks to the bottom.
             </p>
             <div className="flex flex-wrap gap-1.5 mt-3">
               <a
@@ -125,62 +131,58 @@ export default async function AdminOutreachPage({
             </div>
           </div>
           <div className="divide-y divide-gray-50">
-            {[...pendingGroups, ...doneGroups].map((g) => (
-              <div key={g.id} className="px-6 py-3 flex items-center gap-4">
-                {priorityBadge(g.priority) ? (
-                  <span
-                    className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${priorityBadge(g.priority)!.color}`}
-                  >
-                    P{priorityBadge(g.priority)!.label}
-                  </span>
-                ) : (
-                  <span className="shrink-0 w-[54px]" />
-                )}
-                <span className="shrink-0 text-[10px] font-bold uppercase bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded w-8 text-center">
-                  {g.language || "?"}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+            {rotationQueue.map((g) => {
+              const workedToday =
+                !!g.last_worked_at && new Date(g.last_worked_at).toDateString() === new Date().toDateString()
+              return (
+                <div key={g.id} className="px-6 py-3 flex items-center gap-4">
+                  {priorityBadge(g.priority) ? (
                     <span
-                      className={`text-sm font-medium truncate ${
-                        g.status === "done" ? "text-gray-400 line-through" : "text-gray-700"
-                      }`}
+                      className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${priorityBadge(g.priority)!.color}`}
                     >
-                      {g.name}
+                      P{priorityBadge(g.priority)!.label}
                     </span>
-                    {g.category && (
-                      <span className="shrink-0 text-[10px] font-semibold uppercase bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">
-                        {g.category}
-                      </span>
-                    )}
-                    {g.url && (
-                      <a
-                        href={g.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="shrink-0 text-xs text-[#1E88E5] hover:underline"
-                      >
-                        Open group ↗
-                      </a>
-                    )}
-                  </div>
-                  {g.notes && (
-                    <div className="text-xs text-amber-600 mt-0.5">⚠ {g.notes}</div>
+                  ) : (
+                    <span className="shrink-0 w-[54px]" />
                   )}
-                </div>
-                {g.member_count != null && (
-                  <div className="shrink-0 text-xs text-gray-400">
-                    {g.member_count.toLocaleString()} members
+                  <span className="shrink-0 text-[10px] font-bold uppercase bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded w-8 text-center">
+                    {g.language || "?"}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700 truncate">{g.name}</span>
+                      {g.category && (
+                        <span className="shrink-0 text-[10px] font-semibold uppercase bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">
+                          {g.category}
+                        </span>
+                      )}
+                      {g.url && (
+                        <a
+                          href={g.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="shrink-0 text-xs text-[#1E88E5] hover:underline"
+                        >
+                          Open group ↗
+                        </a>
+                      )}
+                    </div>
+                    {g.notes && (
+                      <div className="text-xs text-amber-600 mt-0.5">⚠ {g.notes}</div>
+                    )}
                   </div>
-                )}
-                <div className="shrink-0 text-xs text-gray-400">
-                  {g.status === "done" && g.worked_at
-                    ? `worked ${fmtDate(g.worked_at)}`
-                    : `added ${fmtDate(g.added_at)}`}
+                  {g.member_count != null && (
+                    <div className="shrink-0 text-xs text-gray-400">
+                      {g.member_count.toLocaleString()} members
+                    </div>
+                  )}
+                  <div className="shrink-0 text-xs text-gray-400">
+                    {g.last_worked_at ? `last worked ${fmtDate(g.last_worked_at)}` : "never worked"}
+                  </div>
+                  <GroupStatusButton groupId={g.id} workedToday={workedToday} />
                 </div>
-                <GroupStatusButton groupId={g.id} done={g.status === "done"} />
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       )}

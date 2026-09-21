@@ -27,20 +27,23 @@ export async function deleteOutreachContact(contactId: string) {
   revalidatePath("/admin/outreach")
 }
 
-export async function markGroupDone(groupId: string) {
+// Groups get worked again and again over time, not just once — this just
+// stamps "worked today" and drops it to the bottom of the queue until it's
+// due again. It never locks the group into a permanent "done" state.
+export async function markGroupWorkedToday(groupId: string) {
   const supabase = createAdminClient()
   await supabase
     .from("outreach_target_groups")
-    .update({ status: "done", worked_at: new Date().toISOString().slice(0, 10) })
+    .update({ last_worked_at: new Date().toISOString() })
     .eq("id", groupId)
   revalidatePath("/admin/outreach")
 }
 
-export async function markGroupPending(groupId: string) {
+export async function clearGroupWorked(groupId: string) {
   const supabase = createAdminClient()
   await supabase
     .from("outreach_target_groups")
-    .update({ status: "pending", worked_at: null })
+    .update({ last_worked_at: null })
     .eq("id", groupId)
   revalidatePath("/admin/outreach")
 }

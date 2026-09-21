@@ -2,19 +2,19 @@
 
 import { useState, useTransition } from "react"
 import { Check, Undo2 } from "lucide-react"
-import { markGroupDone, markGroupPending } from "./actions"
+import { markGroupWorkedToday, clearGroupWorked } from "./actions"
 
-export function GroupStatusButton({ groupId, done }: { groupId: string; done: boolean }) {
+export function GroupStatusButton({ groupId, workedToday }: { groupId: string; workedToday: boolean }) {
   const [isPending, startTransition] = useTransition()
-  const [optimistic, setOptimistic] = useState(done)
+  const [optimistic, setOptimistic] = useState(workedToday)
 
   function handleClick() {
     setOptimistic(!optimistic)
     startTransition(async () => {
       if (optimistic) {
-        await markGroupPending(groupId)
+        await clearGroupWorked(groupId)
       } else {
-        await markGroupDone(groupId)
+        await markGroupWorkedToday(groupId)
       }
     })
   }
@@ -30,7 +30,7 @@ export function GroupStatusButton({ groupId, done }: { groupId: string; done: bo
       }`}
     >
       {optimistic ? <Undo2 size={12} /> : <Check size={12} />}
-      {optimistic ? "Worked" : "Mark worked"}
+      {optimistic ? "Worked today" : "Mark worked today"}
     </button>
   )
 }
