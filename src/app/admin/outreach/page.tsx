@@ -94,28 +94,33 @@ export default async function AdminOutreachPage() {
                 ) : (
                   <span className="shrink-0 w-[54px]" />
                 )}
-                <div className="flex-1 min-w-0 flex items-center gap-2">
-                  <span
-                    className={`text-sm font-medium truncate ${
-                      g.status === "done" ? "text-gray-400 line-through" : "text-gray-700"
-                    }`}
-                  >
-                    {g.name}
-                  </span>
-                  {g.category && (
-                    <span className="shrink-0 text-[10px] font-semibold uppercase bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">
-                      {g.category}
-                    </span>
-                  )}
-                  {g.url && (
-                    <a
-                      href={g.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="shrink-0 text-xs text-[#1E88E5] hover:underline"
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`text-sm font-medium truncate ${
+                        g.status === "done" ? "text-gray-400 line-through" : "text-gray-700"
+                      }`}
                     >
-                      Open group ↗
-                    </a>
+                      {g.name}
+                    </span>
+                    {g.category && (
+                      <span className="shrink-0 text-[10px] font-semibold uppercase bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded">
+                        {g.category}
+                      </span>
+                    )}
+                    {g.url && (
+                      <a
+                        href={g.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="shrink-0 text-xs text-[#1E88E5] hover:underline"
+                      >
+                        Open group ↗
+                      </a>
+                    )}
+                  </div>
+                  {g.notes && (
+                    <div className="text-xs text-amber-600 mt-0.5">⚠ {g.notes}</div>
                   )}
                 </div>
                 {g.member_count != null && (
