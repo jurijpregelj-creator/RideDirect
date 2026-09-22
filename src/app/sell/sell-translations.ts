@@ -39,7 +39,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "How to List Your Ride",
     steps: [
-      { title: "Create your account", description: "Sign up for a free seller account. Verification takes less than 24 hours." },
+      { title: "Create your account", description: "Sign up for a free seller account. Takes less than 2 minutes." },
       { title: "Create your listing", description: "Add photos, description, CE documentation, condition, price, and all relevant details." },
       { title: "Get approved", description: "Our team reviews each listing to ensure quality. Approval typically happens within 1 business day." },
       { title: "Receive inquiries", description: "Qualified buyers contact you directly. You negotiate and close the deal on your own terms." },
@@ -64,7 +64,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "So listen Sie Ihr Fahrgeschäft",
     steps: [
-      { title: "Konto erstellen", description: "Registrieren Sie sich für ein kostenloses Verkäuferkonto. Die Verifizierung dauert weniger als 24 Stunden." },
+      { title: "Konto erstellen", description: "Registrieren Sie sich für ein kostenloses Verkäuferkonto. Dauert weniger als 2 Minuten." },
       { title: "Inserat erstellen", description: "Fügen Sie Fotos, Beschreibung, CE-Dokumentation, Zustand, Preis und alle relevanten Details hinzu." },
       { title: "Genehmigung erhalten", description: "Unser Team prüft jedes Inserat auf Qualität. Die Genehmigung erfolgt in der Regel innerhalb eines Werktages." },
       { title: "Anfragen erhalten", description: "Qualifizierte Käufer kontaktieren Sie direkt. Sie verhandeln und schließen das Geschäft zu Ihren eigenen Bedingungen ab." },
@@ -89,7 +89,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "Come Pubblicare la Tua Attrazione",
     steps: [
-      { title: "Crea il tuo account", description: "Registrati per un account venditore gratuito. La verifica richiede meno di 24 ore." },
+      { title: "Crea il tuo account", description: "Registrati per un account venditore gratuito. Richiede meno di 2 minuti." },
       { title: "Crea il tuo annuncio", description: "Aggiungi foto, descrizione, documentazione CE, condizione, prezzo e tutti i dettagli rilevanti." },
       { title: "Ottieni l'approvazione", description: "Il nostro team esamina ogni annuncio per garantirne la qualità. L'approvazione avviene generalmente entro 1 giorno lavorativo." },
       { title: "Ricevi richieste", description: "Gli acquirenti qualificati ti contattano direttamente. Negozi e chiudi l'affare alle tue condizioni." },
@@ -114,7 +114,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "Comment Publier Votre Attraction",
     steps: [
-      { title: "Créez votre compte", description: "Inscrivez-vous pour un compte vendeur gratuit. La vérification prend moins de 24 heures." },
+      { title: "Créez votre compte", description: "Inscrivez-vous pour un compte vendeur gratuit. Cela prend moins de 2 minutes." },
       { title: "Créez votre annonce", description: "Ajoutez des photos, une description, la documentation CE, l'état, le prix et tous les détails pertinents." },
       { title: "Obtenez l'approbation", description: "Notre équipe examine chaque annonce pour en garantir la qualité. L'approbation se fait généralement sous 1 jour ouvré." },
       { title: "Recevez des demandes", description: "Des acheteurs qualifiés vous contactent directement. Vous négociez et concluez l'affaire selon vos propres conditions." },
@@ -139,7 +139,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "Cómo Publicar Tu Atracción",
     steps: [
-      { title: "Crea tu cuenta", description: "Regístrate para obtener una cuenta de vendedor gratuita. La verificación tarda menos de 24 horas." },
+      { title: "Crea tu cuenta", description: "Regístrate para obtener una cuenta de vendedor gratuita. Tarda menos de 2 minutos." },
       { title: "Crea tu anuncio", description: "Añade fotos, descripción, documentación CE, estado, precio y todos los detalles relevantes." },
       { title: "Obtén la aprobación", description: "Nuestro equipo revisa cada anuncio para garantizar su calidad. La aprobación suele producirse en 1 día laborable." },
       { title: "Recibe consultas", description: "Los compradores cualificados te contactan directamente. Negocias y cierras el trato en tus propios términos." },
@@ -164,7 +164,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "Zo Plaatst u Uw Attractie",
     steps: [
-      { title: "Maak uw account aan", description: "Meld u aan voor een gratis verkopersaccount. Verificatie duurt minder dan 24 uur." },
+      { title: "Maak uw account aan", description: "Meld u aan voor een gratis verkopersaccount. Duurt minder dan 2 minuten." },
       { title: "Maak uw advertentie aan", description: "Voeg foto's, beschrijving, CE-documentatie, staat, prijs en alle relevante details toe." },
       { title: "Krijg goedkeuring", description: "Ons team beoordeelt elke advertentie op kwaliteit. Goedkeuring vindt doorgaans binnen 1 werkdag plaats." },
       { title: "Ontvang aanvragen", description: "Gekwalificeerde kopers nemen rechtstreeks contact met u op. U onderhandelt en sluit de deal op uw eigen voorwaarden." },
@@ -189,7 +189,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "Jak Wystawić Swoją Atrakcję",
     steps: [
-      { title: "Utwórz swoje konto", description: "Zarejestruj się, aby uzyskać bezpłatne konto sprzedawcy. Weryfikacja trwa mniej niż 24 godziny." },
+      { title: "Utwórz swoje konto", description: "Zarejestruj się, aby uzyskać bezpłatne konto sprzedawcy. Zajmuje mniej niż 2 minuty." },
       { title: "Utwórz swoje ogłoszenie", description: "Dodaj zdjęcia, opis, dokumentację CE, stan, cenę i wszystkie istotne szczegóły." },
       { title: "Uzyskaj zatwierdzenie", description: "Nasz zespół sprawdza każde ogłoszenie pod kątem jakości. Zatwierdzenie zwykle następuje w ciągu 1 dnia roboczego." },
       { title: "Otrzymuj zapytania", description: "Wykwalifikowani kupujący kontaktują się z Tobą bezpośrednio. Negocjujesz i zamykasz transakcję na własnych warunkach." },
@@ -214,7 +214,7 @@ export const SELL_T: Record<ListingLocale, SellStrings> = {
     ],
     howTitle: "Como Publicar a Sua Atração",
     steps: [
-      { title: "Crie a sua conta", description: "Registe-se para uma conta de vendedor gratuita. A verificação demora menos de 24 horas." },
+      { title: "Crie a sua conta", description: "Registe-se para uma conta de vendedor gratuita. Demora menos de 2 minutos." },
       { title: "Crie o seu anúncio", description: "Adicione fotos, descrição, documentação CE, condição, preço e todos os detalhes relevantes." },
       { title: "Obtenha aprovação", description: "A nossa equipa revê cada anúncio para garantir a qualidade. A aprovação ocorre normalmente dentro de 1 dia útil." },
       { title: "Receba pedidos", description: "Compradores qualificados contactam-no diretamente. Negoceia e fecha o negócio nos seus próprios termos." },
