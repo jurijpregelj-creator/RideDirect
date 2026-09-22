@@ -100,11 +100,11 @@ export function Header({ urlLocale }: HeaderProps = {}) {
 
   return (
     <>
-    <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0B1730]/97 backdrop-blur">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href={urlLocale ? buildPageUrl("", urlLocale) : "/"} className="flex items-center group">
-          <img src="/logo.svg" alt="RideDirect.eu" style={{height: '60px', width: 'auto'}} />
+          <img src="/logo.svg" alt="RideDirect.eu" style={{height: '52px', width: 'auto'}} />
         </Link>
 
         {/* Desktop Nav */}
@@ -118,8 +118,8 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                 aria-current={isActive ? "page" : undefined}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                   isActive
-                    ? "text-[#1E88E5] bg-blue-50"
-                    : "text-gray-600 hover:text-[#1E88E5] hover:bg-blue-50"
+                    ? "text-[#F5821F] bg-white/5"
+                    : "text-white/72 hover:text-[#F5821F] hover:bg-white/5"
                 }`}
               >
                 {link.label}
@@ -134,7 +134,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
           {user ? (
             <>
               {/* Notification bell */}
-              <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500 hover:text-[#1E88E5] transition-colors">
+              <Link href="/dashboard/messages" className="relative p-1.5 text-white/70 hover:text-[#F5821F] transition-colors">
                 <MessageCircle size={20} />
                 {unread > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -144,7 +144,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
               </Link>
               <Link
                 href="/dashboard"
-                className="w-8 h-8 rounded-full bg-[#1E88E5] text-white text-xs font-bold flex items-center justify-center hover:bg-[#1565C0] transition-colors overflow-hidden"
+                className="w-8 h-8 rounded-full bg-[#F5821F] text-[#0B1730] text-xs font-bold flex items-center justify-center hover:bg-[#e07419] transition-colors overflow-hidden"
                 title={t("myDashboard")}
               >
                 {avatarUrl ? (
@@ -154,14 +154,14 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                 )}
               </Link>
               <Link href="/dashboard/create">
-                <Button variant="brand" size="sm">
+                <Button variant="brand-orange" size="sm" className="rounded-[3px] font-bold uppercase tracking-wide">
                   <Plus size={16} />
                   {t("postARide")}
                 </Button>
               </Link>
               <button
                 onClick={handleSignOut}
-                className="text-sm text-gray-500 hover:text-gray-800 transition-colors"
+                className="text-sm text-white/60 hover:text-white transition-colors"
               >
                 {t("signOut")}
               </button>
@@ -169,12 +169,12 @@ export function Header({ urlLocale }: HeaderProps = {}) {
           ) : (
             <>
               <Link href="/auth/login">
-                <Button variant="ghost" size="sm" className="text-gray-600">
+                <Button variant="ghost" size="sm" className="text-white/72 hover:text-white hover:bg-white/5">
                   {t("logIn")}
                 </Button>
               </Link>
               <Link href="/auth/signup">
-                <Button variant="brand" size="sm">
+                <Button variant="brand-orange" size="sm" className="rounded-[3px] font-bold uppercase tracking-wide">
                   {t("signUpFree")}
                 </Button>
               </Link>
@@ -185,7 +185,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
         {/* Mobile menu toggle */}
         <div className="md:hidden flex items-center gap-2">
           {user && (
-            <Link href="/dashboard/messages" className="relative p-1.5 text-gray-500">
+            <Link href="/dashboard/messages" className="relative p-1.5 text-white/70">
               <MessageCircle size={20} />
               {unread > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -195,7 +195,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
             </Link>
           )}
           <button
-            className="p-2 rounded-md text-gray-600 hover:bg-gray-100"
+            className="p-2 rounded-md text-white/72 hover:bg-white/5"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -208,7 +208,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
 
       {/* Mobile Nav — fixed below header, outside <header> to avoid backdrop-filter clipping */}
       {mobileOpen && (
-        <div className="fixed inset-x-0 top-16 z-40 border-t border-b bg-white shadow-lg px-4 py-4 space-y-1">
+        <div className="fixed inset-x-0 top-16 z-40 border-t border-b border-white/10 bg-[#0B1730] shadow-lg px-4 py-4 space-y-1">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href || pathname.startsWith(link.href + "/")
             return (
@@ -217,7 +217,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={`block px-3 py-2.5 text-sm font-medium rounded-md transition-colors ${
-                  isActive ? "text-[#1E88E5] bg-blue-50" : "text-gray-700 hover:text-[#1E88E5] hover:bg-blue-50"
+                  isActive ? "text-[#F5821F] bg-white/5" : "text-white/80 hover:text-[#F5821F] hover:bg-white/5"
                 }`}
                 onClick={() => setMobileOpen(false)}
               >
@@ -225,29 +225,29 @@ export function Header({ urlLocale }: HeaderProps = {}) {
               </Link>
             )
           })}
-          <div className="pt-3 flex flex-col gap-2 border-t mt-3">
+          <div className="pt-3 flex flex-col gap-2 border-t border-white/10 mt-3">
             <LanguageSwitcher urlLocale={urlLocale} />
             {user ? (
               <>
                 <Link href="/dashboard/create" onClick={() => setMobileOpen(false)}>
-                  <Button variant="brand" size="sm" className="w-full">
+                  <Button variant="brand-orange" size="sm" className="w-full rounded-[3px] font-bold uppercase tracking-wide">
                     <Plus size={16} />
                     {t("postARide")}
                   </Button>
                 </Link>
-                <Button variant="outline" size="sm" className="w-full" onClick={handleSignOut}>
+                <Button variant="outline" size="sm" className="w-full border-white/25 text-white hover:bg-white/10" onClick={handleSignOut}>
                   {t("signOut")}
                 </Button>
               </>
             ) : (
               <>
                 <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full">
+                  <Button variant="outline" size="sm" className="w-full border-white/25 text-white hover:bg-white/10">
                     {t("logIn")}
                   </Button>
                 </Link>
                 <Link href="/auth/signup" onClick={() => setMobileOpen(false)}>
-                  <Button variant="brand" size="sm" className="w-full">
+                  <Button variant="brand-orange" size="sm" className="w-full rounded-[3px] font-bold uppercase tracking-wide">
                     {t("signUpFree")}
                   </Button>
                 </Link>

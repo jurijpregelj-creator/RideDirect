@@ -17,8 +17,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "sans-serif"],
-        heading: ["var(--font-poppins)", "Poppins", "sans-serif"],
+        sans: ["var(--font-inter)", "Barlow", "sans-serif"],
+        heading: ["var(--font-poppins)", "Barlow Condensed", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -56,8 +56,11 @@ const config = {
         },
         brand: {
           blue: "#1E88E5",
-          orange: "#FF6D00",
+          orange: "#F5821F",
+          amber: "#F2A03D",
           dark: "#0D2A5E",
+          navy: "#0B1730",
+          deepnavy: "#071023",
         },
       },
       borderRadius: {

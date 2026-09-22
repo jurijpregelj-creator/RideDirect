@@ -1,10 +1,11 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, ShieldCheck, Globe2, TrendingUp } from "lucide-react"
+import { ShieldCheck, Globe2, TrendingUp } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import type { ListingLocale } from "@/lib/translate-listing"
 import { SITE_T } from "@/components/home/site-content-translations"
 import { buildPageUrl } from "@/lib/site-locale-urls"
+import { HeroScene } from "@/components/home/hero-scene"
 
 export async function Hero({ locale }: { locale?: ListingLocale } = {}) {
   const t = locale
@@ -14,56 +15,46 @@ export async function Hero({ locale }: { locale?: ListingLocale } = {}) {
   const sellHref = locale ? buildPageUrl("/sell", locale) : "/sell"
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#0D2A5E] via-[#1a2d5a] to-[#1E88E5]">
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-white/20 blur-3xl" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#FF6D00]/30 blur-3xl" />
-      </div>
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#071023] via-[#0B1730] to-[#0D2A5E] text-white">
+      <HeroScene />
 
-      <div className="relative container mx-auto px-4 py-24 lg:py-32">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/20 rounded-full px-4 py-1.5 text-sm text-blue-100 mb-8">
-            <Globe2 size={14} />
-            <span>{t("badge")}</span>
+      <div className="relative container mx-auto px-4 py-20 lg:py-28">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#F2A03D]/45 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-[#F2A03D]">
+            <Globe2 size={13} />
+            {t("badge")}
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-6">
-            {t("title1")}{" "}
-            <span className="text-[#FF6D00]">{t("title2")}</span>{" "}
-            {t("title3")}
+          <h1 className="font-heading mt-5 text-[clamp(40px,6vw,72px)] font-bold leading-[1.03] text-[#F5EEDD] [text-wrap:balance]">
+            {t("title1")} <span className="text-[#F5821F]">{t("title2")}</span> {t("title3")}
           </h1>
 
-          <p className="text-lg sm:text-xl text-blue-100 mb-10 leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-4 max-w-xl text-[clamp(16px,1.4vw,19px)] leading-relaxed text-white/78 [text-wrap:pretty]">
             {t("subtitle")}
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild variant="brand-orange" size="xl" className="w-full sm:w-auto shadow-lg shadow-orange-500/25">
-              <Link href={marketplaceHref}>
-                {t("viewListings")}
-                <ArrowRight size={18} />
-              </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild variant="brand-orange" size="xl" className="rounded-md font-bold uppercase tracking-wide">
+              <Link href={marketplaceHref}>{t("viewListings")}</Link>
             </Button>
-            <Button asChild size="xl" className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur">
-              <Link href={sellHref}>
-                {t("sellWithUs")}
-              </Link>
+            <Button asChild size="xl" className="rounded-md border border-white/35 bg-transparent font-bold uppercase tracking-wide text-white hover:bg-white/10">
+              <Link href={sellHref}>{t("sellWithUs")}</Link>
             </Button>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-14 pt-10 border-t border-white/10">
-            <div className="flex items-center gap-2 text-blue-200 text-sm">
-              <ShieldCheck size={16} className="text-[#FF6D00]" />
+          <div className="mt-12 flex flex-wrap items-center gap-5 border-t border-white/12 pt-6 text-sm text-white/60">
+            <div className="flex items-center gap-2">
+              <ShieldCheck size={16} className="text-[#F2A03D]" />
               <span>{t("trust1")}</span>
             </div>
-            <div className="hidden sm:block w-px h-4 bg-white/20" />
-            <div className="flex items-center gap-2 text-blue-200 text-sm">
-              <Globe2 size={16} className="text-[#FF6D00]" />
+            <div className="hidden h-4 w-px bg-white/20 sm:block" />
+            <div className="flex items-center gap-2">
+              <Globe2 size={16} className="text-[#F2A03D]" />
               <span>{t("trust2")}</span>
             </div>
-            <div className="hidden sm:block w-px h-4 bg-white/20" />
-            <div className="flex items-center gap-2 text-blue-200 text-sm">
-              <TrendingUp size={16} className="text-[#FF6D00]" />
+            <div className="hidden h-4 w-px bg-white/20 sm:block" />
+            <div className="flex items-center gap-2">
+              <TrendingUp size={16} className="text-[#F2A03D]" />
               <span>{t("trust3")}</span>
             </div>
           </div>

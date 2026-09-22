@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Suspense } from "react"
-import { Inter, Poppins } from "next/font/google"
+import { Barlow, Barlow_Condensed } from "next/font/google"
 import { NextIntlClientProvider } from "next-intl"
 import { getMessages } from "next-intl/server"
 import { headers } from "next/headers"
@@ -14,10 +14,10 @@ import { CookieBanner } from "@/components/layout/cookie-banner"
 import { BugReportWidget } from "@/components/layout/bug-report-widget"
 import type { ListingLocale } from "@/lib/translate-listing"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const poppins = Poppins({
+const barlow = Barlow({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-inter" })
+const poppins = Barlow_Condensed({
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["600", "700"],
   variable: "--font-poppins",
 })
 
@@ -80,7 +80,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const urlLocale = headers().get("x-url-locale") as ListingLocale | null
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+      <body className={`${barlow.variable} ${poppins.variable} font-sans`}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}

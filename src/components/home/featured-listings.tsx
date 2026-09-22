@@ -49,9 +49,9 @@ export async function FeaturedListings({ locale }: { locale?: ListingLocale } = 
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-10">
           <div>
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#0D2A5E] mb-2">
+            <h2 className="font-heading text-[clamp(28px,3.4vw,42px)] font-bold text-[#0B1730] mb-2">
               {t.title}
             </h2>
             <p className="text-gray-500">
@@ -59,7 +59,7 @@ export async function FeaturedListings({ locale }: { locale?: ListingLocale } = 
             </p>
           </div>
           <Link href={locale ? buildPageUrl("/marketplace", locale) : "/marketplace"}>
-            <Button variant="outline" className="shrink-0">
+            <Button variant="outline" className="shrink-0 border-[#0D2A5E] text-[#0D2A5E] hover:bg-[#0D2A5E] hover:text-white">
               {t.viewAll}
               <ArrowRight size={16} />
             </Button>
@@ -81,7 +81,7 @@ export async function FeaturedListings({ locale }: { locale?: ListingLocale } = 
               <Link
                 key={listing.id}
                 href={locale ? buildListingUrl(listing.id, locale) : `/listings/${listing.id}`}
-                className="group block bg-white border border-gray-100 rounded-xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
+                className="group block bg-white border border-[#E4E7EE] rounded-md overflow-hidden hover:border-[#F2A03D] hover:shadow-[0_10px_24px_rgba(11,23,48,0.09)] hover:-translate-y-1 transition-all duration-200"
               >
                 {/* Image */}
                 <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
@@ -111,9 +111,9 @@ export async function FeaturedListings({ locale }: { locale?: ListingLocale } = 
                 {/* Content */}
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="blue" className="text-xs">{categoryLabel}</Badge>
+                    <Badge variant="blue" className="text-xs bg-[#0B1730] text-white hover:bg-[#0B1730]">{categoryLabel}</Badge>
                   </div>
-                  <h3 className="font-semibold text-[#0D2A5E] text-sm leading-tight mb-3 group-hover:text-[#1E88E5] transition-colors line-clamp-2">
+                  <h3 className="font-heading text-[#0B1730] text-lg font-bold leading-tight mb-3 group-hover:text-[#F5821F] transition-colors line-clamp-2">
                     {title}
                   </h3>
                   <div className="flex items-center gap-2 text-xs text-gray-400 mb-3">
@@ -127,7 +127,7 @@ export async function FeaturedListings({ locale }: { locale?: ListingLocale } = 
                       </>
                     )}
                   </div>
-                  <div className="text-lg font-bold text-[#1E88E5]">
+                  <div className="font-heading text-xl font-bold text-[#0D2A5E]">
                     {formatPrice(listing.price, listing.currency)}
                   </div>
                   <div className="text-xs text-gray-400">
