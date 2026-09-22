@@ -75,7 +75,7 @@ export function LanguageSwitcher({ urlLocale }: LanguageSwitcherProps = {}) {
           disabled={isPending}
           aria-label={l.ariaLabel}
           aria-pressed={current === l.code}
-          className={`text-lg px-1 py-0.5 rounded transition-opacity ${
+          className={`text-lg px-1 py-0.5 rounded text-white transition-opacity ${
             current === l.code
               ? "opacity-100 ring-2 ring-[#F5821F] ring-offset-1 ring-offset-[#0B1730]"
               : "opacity-40 hover:opacity-80"
