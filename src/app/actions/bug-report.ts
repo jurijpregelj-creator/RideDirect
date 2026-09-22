@@ -6,6 +6,7 @@ export async function sendBugReport(formData: {
   message: string
   email?: string
   pageUrl: string
+  screenshotUrl?: string
 }) {
   if (!formData.message.trim()) return { success: false }
 
@@ -14,6 +15,7 @@ export async function sendBugReport(formData: {
     message: formData.message,
     email: formData.email || null,
     page_url: formData.pageUrl,
+    screenshot_url: formData.screenshotUrl || null,
   })
 
   if (error) {

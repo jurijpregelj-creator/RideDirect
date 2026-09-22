@@ -51,6 +51,21 @@ export default async function AdminBugReportsPage() {
                   )}
                 </div>
 
+                {report.screenshot_url && (
+                  <a
+                    href={report.screenshot_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0"
+                  >
+                    <img
+                      src={report.screenshot_url}
+                      alt="Screenshot"
+                      className="w-16 h-16 rounded-lg object-cover border border-gray-100 hover:opacity-80 transition-opacity"
+                    />
+                  </a>
+                )}
+
                 <div className="shrink-0 min-w-[180px]">
                   {report.email ? (
                     <a
