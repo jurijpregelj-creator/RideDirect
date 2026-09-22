@@ -54,7 +54,7 @@ export default function InseratErstellenPage() {
               {t.sub}
             </p>
 
-            <div className="bg-[#1E88E5]/8 border border-[#1E88E5]/20 rounded-2xl p-4 mb-8">
+            <div className="bg-[#1E88E5]/[.08] border border-[#1E88E5]/20 rounded-2xl p-4 mb-8">
               <p className="text-[#0D2A5E] font-semibold text-sm">{t.earlyBird}</p>
               <p className="text-gray-500 text-xs mt-1">
                 Sei einer der ersten Verkäufer auf Europas Marktplatz für Fahrgeschäfte.

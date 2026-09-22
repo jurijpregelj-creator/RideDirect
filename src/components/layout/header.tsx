@@ -100,7 +100,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
 
   return (
     <>
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0B1730]/97 backdrop-blur">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0B1730]/[.97] backdrop-blur">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
         {/* Logo */}
         <Link href={urlLocale ? buildPageUrl("", urlLocale) : "/"} className="flex items-center group">
@@ -119,7 +119,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                   isActive
                     ? "text-[#F5821F] bg-white/5"
-                    : "text-white/72 hover:text-[#F5821F] hover:bg-white/5"
+                    : "text-white/[.72] hover:text-[#F5821F] hover:bg-white/5"
                 }`}
               >
                 {link.label}
@@ -169,7 +169,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
           ) : (
             <>
               <Link href="/auth/login">
-                <Button variant="ghost" size="sm" className="text-white/72 hover:text-white hover:bg-white/5">
+                <Button variant="ghost" size="sm" className="text-white/[.72] hover:text-white hover:bg-white/5">
                   {t("logIn")}
                 </Button>
               </Link>
@@ -195,7 +195,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
             </Link>
           )}
           <button
-            className="p-2 rounded-md text-white/72 hover:bg-white/5"
+            className="p-2 rounded-md text-white/[.72] hover:bg-white/5"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
