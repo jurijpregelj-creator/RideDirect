@@ -39,6 +39,18 @@ export function Header({ urlLocale }: HeaderProps = {}) {
     setMobileOpen(false)
   }, [pathname])
 
+  // Lock body scroll while the mobile menu is open -- otherwise iOS's elastic
+  // overscroll bounce drags the sticky header along with it while the fixed
+  // menu panel stays pinned, visually tearing the two apart.
+  useEffect(() => {
+    if (!mobileOpen) return
+    const original = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = original
+    }
+  }, [mobileOpen])
+
   useEffect(() => {
     const supabase = createClient()
     let userId: string | null = null
