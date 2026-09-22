@@ -23,6 +23,7 @@ import type { ListingLocale } from "@/lib/translate-listing"
 import { getListingTranslation } from "@/lib/translate-listing"
 import { LISTING_PAGE_T, categorySlugFromName } from "@/components/listing/listing-page-translations"
 import { buildPageUrl } from "@/lib/site-locale-urls"
+import { SITE_T } from "@/components/home/site-content-translations"
 
 async function getListing(id: string): Promise<Listing | null> {
   const supabase = createClient()
@@ -83,6 +84,41 @@ export async function ListingPageContent({ id, locale }: { id: string; locale: L
   }
 
   const localizedUrl = `https://ridedirect.eu/${locale}/listings/${listing.id}`
+
+  const HOME_LABEL: Record<ListingLocale, string> = {
+    en: "Home", de: "Startseite", it: "Home", fr: "Accueil",
+    es: "Inicio", nl: "Home", pl: "Strona główna", pt: "Início",
+  }
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: HOME_LABEL[locale], item: buildPageUrl("/", locale) },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: SITE_T[locale].nav.browse,
+        item: buildPageUrl("/marketplace", locale),
+      },
+      ...(categorySlug
+        ? [
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: categoryLabel,
+              item: `${buildPageUrl("/marketplace", locale)}?category=${categorySlug}`,
+            },
+          ]
+        : []),
+      {
+        "@type": "ListItem",
+        position: categorySlug ? 4 : 3,
+        name: title,
+        item: localizedUrl,
+      },
+    ],
+  }
+
   const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -100,6 +136,7 @@ export async function ListingPageContent({ id, locale }: { id: string; locale: L
         listing.condition === "new" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
       availability: "https://schema.org/InStock",
       areaServed: listing.country,
+      ...(listing.expires_at ? { priceValidUntil: listing.expires_at.slice(0, 10) } : {}),
     },
   }
 
@@ -108,6 +145,10 @@ export async function ListingPageContent({ id, locale }: { id: string; locale: L
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
