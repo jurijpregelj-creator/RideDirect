@@ -129,7 +129,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden md:flex items-center gap-2">
           <LanguageSwitcher urlLocale={urlLocale} />
           {user ? (
             <>
@@ -144,7 +144,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
               </Link>
               <Link
                 href="/dashboard"
-                className="w-8 h-8 rounded-full bg-[#F5821F] text-[#0B1730] text-xs font-bold flex items-center justify-center hover:bg-[#e07419] transition-colors overflow-hidden"
+                className="w-8 h-8 rounded-full bg-[#F5821F] text-[#0B1730] text-xs font-bold flex items-center justify-center hover:bg-[#e07419] transition-colors overflow-hidden shrink-0"
                 title={t("myDashboard")}
               >
                 {avatarUrl ? (
@@ -154,14 +154,14 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                 )}
               </Link>
               <Link href="/dashboard/create">
-                <Button variant="brand-orange" size="sm" className="rounded-[3px] font-bold uppercase tracking-wide">
+                <Button variant="brand-orange" size="sm" className="rounded-[3px] font-bold whitespace-nowrap">
                   <Plus size={16} />
                   {t("postARide")}
                 </Button>
               </Link>
               <button
                 onClick={handleSignOut}
-                className="text-sm text-white/60 hover:text-white transition-colors"
+                className="text-sm text-white/60 hover:text-white transition-colors shrink-0 whitespace-nowrap"
               >
                 {t("signOut")}
               </button>
@@ -174,7 +174,7 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                 </Button>
               </Link>
               <Link href="/auth/signup">
-                <Button variant="brand-orange" size="sm" className="rounded-[3px] font-bold uppercase tracking-wide">
+                <Button variant="brand-orange" size="sm" className="rounded-[3px] font-bold whitespace-nowrap">
                   {t("signUpFree")}
                 </Button>
               </Link>
