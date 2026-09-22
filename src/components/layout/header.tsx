@@ -235,14 +235,14 @@ export function Header({ urlLocale }: HeaderProps = {}) {
                     {t("postARide")}
                   </Button>
                 </Link>
-                <Button variant="outline" size="sm" className="w-full border-white/25 text-white hover:bg-white/10" onClick={handleSignOut}>
+                <Button variant="outline" size="sm" className="w-full bg-transparent border-white/25 text-white hover:bg-white/10" onClick={handleSignOut}>
                   {t("signOut")}
                 </Button>
               </>
             ) : (
               <>
                 <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full border-white/25 text-white hover:bg-white/10">
+                  <Button variant="outline" size="sm" className="w-full bg-transparent border-white/25 text-white hover:bg-white/10">
                     {t("logIn")}
                   </Button>
                 </Link>
