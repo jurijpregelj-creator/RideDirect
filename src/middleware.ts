@@ -1,5 +1,4 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { createServerClient } from "@supabase/ssr"
 import { updateSession } from "@/lib/supabase/middleware"
 
 // Kept as a plain literal (not imported from src/lib/translate-listing.ts)
@@ -19,7 +18,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // 1. Handle Supabase session
-  const supabaseResponse = await updateSession(request)
+  const { response: supabaseResponse, user, timedOut } = await updateSession(request)
 
   // 2. Protect /admin routes (but not /admin-key/<secret>, the bootstrap route
   // that ISSUES the admin_pass cookie — startsWith("/admin") would otherwise
@@ -29,18 +28,10 @@ export async function middleware(request: NextRequest) {
     // Backdoor cookie bypasses Supabase entirely
     if (request.cookies.get("admin_pass")?.value === "1") {
       // cookie present — allow through, layout will render
-    } else {
-      const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-          cookies: {
-            getAll() { return request.cookies.getAll() },
-            setAll() {},
-          },
-        }
-      )
-      const { data: { user } } = await supabase.auth.getUser()
+    } else if (!timedOut) {
+      // Reuses the user from updateSession (a second getUser call here used to
+      // double the Supabase round-trips on every admin page). On a timeout we
+      // let the request through: the admin layout does its own auth check.
       if (!user) {
         return NextResponse.redirect(new URL("/auth/login?next=/admin", request.url))
       }
