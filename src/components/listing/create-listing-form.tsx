@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Loader2, Upload, X, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -25,6 +25,11 @@ import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
 
 const CURRENCIES = ["EUR", "GBP", "PLN", "CHF", "SEK", "DKK", "NOK"]
 
+// Mobile browsers (iPhone especially) can reload the tab when the seller
+// switches to the camera/photos app or another app; without a draft that
+// silently wipes everything they typed.
+const DRAFT_TEXT_FIELDS = ["title", "description", "price", "manufacturer", "year"] as const
+
 interface CreateListingFormProps {
   userId: string
   locale?: ListingLocale
@@ -33,6 +38,8 @@ interface CreateListingFormProps {
 export function CreateListingForm({ userId, locale = "en" }: CreateListingFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
+  const draftKey = `listing_draft_${userId}`
   const t = LISTING_FORM_T[locale]
   const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[locale].conditions[value] }))
 
@@ -48,6 +55,37 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
   const [country, setCountry] = useState("")
   const [condition, setCondition] = useState("")
   const [currency, setCurrency] = useState("EUR")
+  const [draftRestored, setDraftRestored] = useState(false)
+
+  useEffect(() => {
+    try {
+      const draft = JSON.parse(localStorage.getItem(draftKey) || "null")
+      if (draft && formRef.current) {
+        for (const name of DRAFT_TEXT_FIELDS) {
+          const el = formRef.current.elements.namedItem(name) as HTMLInputElement | null
+          if (el && typeof draft[name] === "string") el.value = draft[name]
+        }
+        if (draft.category) setCategory(draft.category)
+        if (draft.country) setCountry(draft.country)
+        if (draft.condition) setCondition(draft.condition)
+        if (draft.currency) setCurrency(draft.currency)
+      }
+    } catch {}
+    setDraftRestored(true)
+  }, [draftKey])
+
+  function saveDraft() {
+    if (!draftRestored || !formRef.current) return
+    const draft: Record<string, string> = { category, country, condition, currency }
+    for (const name of DRAFT_TEXT_FIELDS) {
+      const el = formRef.current.elements.namedItem(name) as HTMLInputElement | null
+      draft[name] = el?.value ?? ""
+    }
+    try { localStorage.setItem(draftKey, JSON.stringify(draft)) } catch {}
+  }
+
+  // Selects don't fire the form's onChange, so save when they change too
+  useEffect(saveDraft, [draftRestored, category, country, condition, currency])
 
   async function handleImageSelect(e: React.ChangeEvent<HTMLInputElement>) {
     const rawFiles = Array.from(e.target.files || [])
@@ -153,6 +191,8 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
       // never goes live with zero photos.
       onListingSubmitted(listing.id).catch(() => {})
 
+      try { localStorage.removeItem(draftKey) } catch {}
+
       router.push(`/dashboard/create/success?id=${listing.id}`)
     } catch (err: any) {
       setError(err.message || t.errorGeneric)
@@ -161,7 +201,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form ref={formRef} onSubmit={handleSubmit} onChange={saveDraft} className="space-y-8">
       {error && (
         <div ref={scrollIntoViewRef} className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-lg">
           {error}
@@ -199,7 +239,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <Label>{t.categoryLabel}</Label>
-            <Select onValueChange={setCategory} required>
+            <Select value={category} onValueChange={setCategory} required>
               <SelectTrigger className="mt-1.5">
                 <SelectValue placeholder={t.categoryPlaceholder} />
               </SelectTrigger>
@@ -216,7 +256,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
 
           <div>
             <Label>{t.countryLabel}</Label>
-            <Select onValueChange={setCountry} required>
+            <Select value={country} onValueChange={setCountry} required>
               <SelectTrigger className="mt-1.5">
                 <SelectValue placeholder={t.countryPlaceholder} />
               </SelectTrigger>
@@ -250,7 +290,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
           </div>
           <div>
             <Label>{t.currencyLabel}</Label>
-            <Select defaultValue="EUR" onValueChange={setCurrency}>
+            <Select value={currency} onValueChange={setCurrency}>
               <SelectTrigger className="mt-1.5">
                 <SelectValue />
               </SelectTrigger>
@@ -270,7 +310,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
 
         <div>
           <Label>{t.conditionLabel}</Label>
-          <Select onValueChange={setCondition} required>
+          <Select value={condition} onValueChange={setCondition} required>
             <SelectTrigger className="mt-1.5">
               <SelectValue placeholder={t.conditionPlaceholder} />
             </SelectTrigger>
