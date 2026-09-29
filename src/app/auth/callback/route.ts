@@ -6,7 +6,8 @@ const ADMIN_EMAILS = ["jurijpregelj@gmail.com"]
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
-  const next = searchParams.get("next") ?? "/dashboard"
+  const explicitNext = searchParams.get("next")
+  let next = explicitNext ?? "/dashboard"
 
   if (!code) {
     return NextResponse.redirect(`${origin}/auth/login?error=auth_failed`)
@@ -57,6 +58,18 @@ export async function GET(request: NextRequest) {
   // Admin check: email from JWT — no DB query needed, always reliable
   const isAdmin = ADMIN_EMAILS.includes(data.user.email ?? "")
   console.log("[callback] email:", data.user.email, "isAdmin:", isAdmin)
+  // Sellers arriving from outreach (/list-here -> signup -> Google/Facebook or
+  // email confirm) used to land on an empty dashboard and had to find
+  // "Post a Ride" themselves; some signed up and never listed. Send anyone
+  // without a listing straight to the create form instead.
+  if (!explicitNext && !isAdmin) {
+    const { count } = await supabase
+      .from("listings")
+      .select("id", { count: "exact", head: true })
+      .eq("seller_id", data.user.id)
+    if (count === 0) next = "/dashboard/create"
+  }
+
   console.log("[callback] next param:", next)
 
   // Don't override next= for password reset or funnel submission flows
