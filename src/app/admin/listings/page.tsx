@@ -53,8 +53,8 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
   const tabs = ["all", "pending", "approved", "rejected", "expired"]
 
   return (
-    <div className="p-8">
-      <div className="mb-6 flex items-center justify-between">
+    <div className="p-4 md:p-8">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-bold text-[#0D2A5E]">Listings</h1>
           <p className="text-sm text-gray-400 mt-1">{listings?.length ?? 0} listings found</p>
@@ -63,12 +63,12 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
       </div>
 
       {/* Status tabs */}
-      <div className="flex gap-1 mb-6 bg-gray-100 rounded-lg p-1 w-fit">
+      <div className="flex gap-1 mb-6 bg-gray-100 rounded-lg p-1 w-fit max-w-full overflow-x-auto">
         {tabs.map((tab) => (
           <Link
             key={tab}
             href={`/admin/listings${tab !== "all" ? `?status=${tab}` : ""}`}
-            className={`px-4 py-1.5 rounded-md text-sm font-medium capitalize transition-colors ${
+            className={`px-3 md:px-4 py-1.5 rounded-md text-sm font-medium capitalize whitespace-nowrap transition-colors ${
               statusFilter === tab
                 ? "bg-white text-[#0D2A5E] shadow-sm"
                 : "text-gray-500 hover:text-gray-700"
@@ -84,7 +84,39 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
         {!listings?.length ? (
           <div className="py-16 text-center text-gray-400">No listings found.</div>
         ) : (
-          <table className="w-full text-sm">
+          <>
+          {/* Mobile: cards */}
+          <div className="md:hidden divide-y divide-gray-100">
+            {listings.map((listing: any) => {
+              const seller = profileMap[listing.seller_id]
+              return (
+                <div key={listing.id} className="p-4 space-y-2">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <Link href={"/listings/" + listing.id} target="_blank" className="font-medium text-[#0D2A5E] hover:text-[#1E88E5] block break-words transition-colors">{listing.title}</Link>
+                      <div className="text-xs text-gray-400">{listing.category} · {listing.country}</div>
+                    </div>
+                    <span className={`shrink-0 inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[listing.status] || "bg-gray-100"}`}>
+                      {STATUS_LABELS[listing.status] || listing.status}
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-700">
+                    <span className="font-medium">{listing.price.toLocaleString()} {listing.currency}</span>
+                    {listing.expires_at && (
+                      <span className="text-xs text-gray-400"> · expires {new Date(listing.expires_at).toLocaleDateString("en-GB")}</span>
+                    )}
+                  </div>
+                  <div className="text-xs text-gray-500 break-all">
+                    {seller?.full_name || "—"} · {seller?.email || listing.seller_id.slice(0, 8)}
+                  </div>
+                  <ListingActions listingId={listing.id} sellerId={listing.seller_id} status={listing.status} />
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Desktop: table */}
+          <table className="hidden md:table w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
                 <th className="text-left px-4 py-3 font-medium text-gray-500">Listing</th>
@@ -129,6 +161,7 @@ export default async function AdminListingsPage({ searchParams }: PageProps) {
               })}
             </tbody>
           </table>
+          </>
         )}
       </div>
     </div>

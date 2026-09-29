@@ -36,7 +36,7 @@ export function ListingActions({ listingId, sellerId, status }: ListingActionsPr
           <button
             onClick={() => run(() => approveListing(listingId))}
             disabled={isPending}
-            className="px-2.5 py-1 text-xs font-medium bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 transition-colors"
+            className="px-3 py-1.5 md:px-2.5 md:py-1 text-xs font-medium bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 transition-colors"
           >
             Approve
           </button>
@@ -45,7 +45,7 @@ export function ListingActions({ listingId, sellerId, status }: ListingActionsPr
           <button
             onClick={() => run(() => extendListing(listingId))}
             disabled={isPending}
-            className="px-2.5 py-1 text-xs font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            className="px-3 py-1.5 md:px-2.5 md:py-1 text-xs font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
           >
             Extend
           </button>
@@ -54,7 +54,7 @@ export function ListingActions({ listingId, sellerId, status }: ListingActionsPr
           <button
             onClick={() => { if (confirm("Reject this listing?")) run(() => rejectListing(listingId)) }}
             disabled={isPending}
-            className="px-2.5 py-1 text-xs font-medium bg-amber-500 text-white rounded-md hover:bg-amber-600 disabled:opacity-50 transition-colors"
+            className="px-3 py-1.5 md:px-2.5 md:py-1 text-xs font-medium bg-amber-500 text-white rounded-md hover:bg-amber-600 disabled:opacity-50 transition-colors"
           >
             Reject
           </button>
@@ -62,19 +62,19 @@ export function ListingActions({ listingId, sellerId, status }: ListingActionsPr
         <button
           onClick={() => { if (confirm("Permanently delete this listing?")) run(() => deleteListing(listingId)) }}
           disabled={isPending}
-          className="px-2.5 py-1 text-xs font-medium bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 transition-colors"
+          className="px-3 py-1.5 md:px-2.5 md:py-1 text-xs font-medium bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 transition-colors"
         >
           Delete
         </button>
         <Link
           href={`/admin/listings/${listingId}/edit`}
-          className="px-2.5 py-1 text-xs font-medium bg-gray-700 text-white rounded-md hover:bg-gray-800 transition-colors"
+          className="px-3 py-1.5 md:px-2.5 md:py-1 text-xs font-medium bg-gray-700 text-white rounded-md hover:bg-gray-800 transition-colors"
         >
           Edit
         </Link>
         <button
           onClick={() => setShowMessage(!showMessage)}
-          className="px-2.5 py-1 text-xs font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+          className="px-3 py-1.5 md:px-2.5 md:py-1 text-xs font-medium bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
         >
           {showMessage ? "Cancel" : "Message"}
         </button>
