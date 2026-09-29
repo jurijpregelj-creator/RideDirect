@@ -1,12 +1,15 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { usePathname } from "next/navigation"
 import { Bug, Paperclip, X } from "lucide-react"
 import { sendBugReport } from "@/app/actions/bug-report"
 import { createClient } from "@/lib/supabase/client"
 import { BUG_REPORT_T } from "@/lib/bug-report-translations"
 import type { ListingLocale } from "@/lib/locales"
+import { getClientErrors, installClientErrorLog } from "@/lib/client-error-log"
+
+installClientErrorLog()
 
 interface BugReportWidgetProps {
   urlLocale?: ListingLocale
@@ -20,17 +23,40 @@ export function BugReportWidget({ urlLocale }: BugReportWidgetProps) {
   const [screenshot, setScreenshot] = useState<File | null>(null)
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const [bannerVisible, setBannerVisible] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const t = BUG_REPORT_T[urlLocale ?? "en"]
+  // Other parts of the app (error pages, failed actions) can open the widget
+  // with a prefilled description via openBugReport().
+  useEffect(() => {
+    function onOpen(e: Event) {
+      const prefill = (e as CustomEvent<{ prefill?: string }>).detail?.prefill
+      if (prefill) setMessage((m) => m || prefill)
+      setSent(false)
+      setOpen(true)
+    }
+    window.addEventListener("open-bug-report", onOpen)
+    return () => window.removeEventListener("open-bug-report", onOpen)
+  }, [])
 
-  // Internal tools, not for the public/seller audience this is aimed at.
-  if (pathname?.startsWith("/admin")) return null
+  // Sit above the cookie banner instead of hiding behind it.
+  useEffect(() => {
+    const check = () => {
+      try { setBannerVisible(!localStorage.getItem("cookie_consent")) } catch { setBannerVisible(false) }
+    }
+    check()
+    window.addEventListener("cookie-consent-change", check)
+    return () => window.removeEventListener("cookie-consent-change", check)
+  }, [])
+
+  const t = BUG_REPORT_T[urlLocale ?? "en"]
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!message.trim() || sending) return
     setSending(true)
+    setFailed(false)
 
     let screenshotUrl: string | undefined
     if (screenshot) {
@@ -49,8 +75,15 @@ export function BugReportWidget({ urlLocale }: BugReportWidgetProps) {
     }
 
     const pageUrl = typeof window !== "undefined" ? window.location.href : pathname || ""
-    const result = await sendBugReport({ message, email: email || undefined, pageUrl, screenshotUrl })
+    const context = {
+      errors: getClientErrors(),
+      userAgent: navigator.userAgent,
+      viewport: `${window.innerWidth}x${window.innerHeight}`,
+      language: navigator.language,
+    }
+    const result = await sendBugReport({ message, email: email || undefined, pageUrl, screenshotUrl, context }).catch(() => ({ success: false }))
     setSending(false)
+    if (!result.success) setFailed(true)
     if (result.success) {
       setSent(true)
       setMessage("")
@@ -64,9 +97,9 @@ export function BugReportWidget({ urlLocale }: BugReportWidgetProps) {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-40">
+    <div className={`fixed right-4 sm:right-6 z-[60] ${bannerVisible ? "bottom-48 sm:bottom-32" : "bottom-4 sm:bottom-6"}`}>
       {open && (
-        <div className="absolute bottom-16 right-0 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 p-5">
+        <div className="absolute bottom-16 right-0 w-[calc(100vw-2rem)] max-w-[20rem] max-h-[calc(100vh-8rem)] overflow-y-auto bg-white rounded-2xl shadow-2xl border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-semibold text-[#0D2A5E] text-sm">{t.heading}</h3>
             <button onClick={() => setOpen(false)} className="text-gray-400 hover:text-gray-600">
@@ -125,6 +158,7 @@ export function BugReportWidget({ urlLocale }: BugReportWidgetProps) {
                 onChange={(e) => setScreenshot(e.target.files?.[0] || null)}
               />
 
+              {failed && <p className="text-xs text-red-600">{t.sendFailed}</p>}
               <button
                 type="submit"
                 disabled={sending}

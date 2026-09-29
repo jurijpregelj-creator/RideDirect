@@ -49,6 +49,24 @@ export default async function AdminBugReportsPage() {
                       {report.page_url}
                     </a>
                   )}
+                  {report.context && (
+                    <details className="mt-2 text-xs text-gray-500">
+                      <summary className="cursor-pointer select-none">
+                        {report.context.errors?.length
+                          ? <span className="text-red-600 font-medium">{report.context.errors.length} JS error(s) captured</span>
+                          : "No JS errors captured"}
+                        {report.context.viewport && <> · {report.context.viewport}</>}
+                      </summary>
+                      <div className="mt-1 space-y-1">
+                        {report.context.errors?.map((err: { at: string; message: string; source?: string }, i: number) => (
+                          <div key={i} className="font-mono bg-red-50 text-red-700 rounded px-2 py-1 break-all">
+                            {new Date(err.at).toLocaleTimeString("en-GB")} {err.source ? `[${err.source}] ` : ""}{err.message}
+                          </div>
+                        ))}
+                        {report.context.userAgent && <div className="break-all text-gray-400">{report.context.userAgent}</div>}
+                      </div>
+                    </details>
+                  )}
                 </div>
 
                 {report.screenshot_url && (
@@ -76,6 +94,9 @@ export default async function AdminBugReportsPage() {
                     </a>
                   ) : (
                     <span className="text-xs text-gray-300 italic">no email</span>
+                  )}
+                  {report.user_email && report.user_email !== report.email && (
+                    <div className="text-xs text-gray-400 mt-0.5">signed in: {report.user_email}</div>
                   )}
                 </div>
 
