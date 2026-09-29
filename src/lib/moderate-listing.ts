@@ -29,7 +29,7 @@ Check FIRST, before anything else: is this actually functional amusement/fairgro
 
 Flag as not-a-ride specifically: static art installations, sculptures, or museum/cultural scenography — even when built from amusement-park materials (e.g. old cars, animatronics), themed around amusement subjects, or sold by a genuine fairground-equipment business. The test is function, not theme or seller: if nobody rides it, plays it, or operates it as an attraction, it doesn't belong on this marketplace, no matter how well-crafted or historically interesting.
 
-For listings that DO pass that check, approve them at a plausible price even if the copy is promotional/salesy — that's normal for this market. Otherwise, flag for human review anything that looks like: spam or fraud, prohibited or illegal items, attempts to redirect buyers off-platform (pushing WhatsApp numbers, external links, or emails instead of using the site's own contact form), incoherent or nonsensical text, or a price wildly implausible for the stated item. When genuinely unsure, flag rather than approve — a human reviews every flag, so a false flag just costs a manual look, while a false approve puts bad content live immediately.
+For listings that DO pass that check, approve them even if the copy is promotional/salesy — that's normal for this market. Judge content only: price is intentionally not provided and must never be a reason to flag (placeholder prices like 1 EUR are allowed). Otherwise, flag for human review anything that looks like: spam or fraud, prohibited or illegal items, attempts to redirect buyers off-platform (pushing WhatsApp numbers, external links, or emails instead of using the site's own contact form), or incoherent or nonsensical text. When genuinely unsure, flag rather than approve — a human reviews every flag, so a false flag just costs a manual look, while a false approve puts bad content live immediately.
 
 Respond with ONLY a JSON object, no other text: {"verdict":"approve"} or {"verdict":"flag","reason":"<one short sentence, in English>"}.`
 
@@ -52,8 +52,7 @@ export async function classifyListing(listing: ListingForModeration): Promise<Mo
             description: listing.description,
             category: listing.category,
             country: listing.country,
-            price: listing.price,
-            currency: listing.currency,
+            // Price deliberately omitted — moderation judges content only.
             manufacturer: listing.manufacturer || null,
             condition: listing.condition || null,
           }),
