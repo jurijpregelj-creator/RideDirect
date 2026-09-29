@@ -1,6 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { ConvertButton } from "./convert-button"
 import { GroupStatusButton } from "./group-status-button"
+import { ResponseButtons } from "./response-buttons"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = { title: "Outreach | Admin" }
@@ -53,6 +54,8 @@ export default async function AdminOutreachPage({
   const total = rows.length
   const sent = rows.filter((c) => c.status === "sent").length
   const converted = rows.filter((c) => c.converted_at).length
+  const positive = rows.filter((c) => c.response === "positive").length
+  const negative = rows.filter((c) => c.response === "negative").length
 
   type GroupSummary = { count: number; first: string; last: string; url: string | null }
   const groupSummary = rows.reduce((acc: Record<string, GroupSummary>, c) => {
@@ -81,7 +84,7 @@ export default async function AdminOutreachPage({
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-5 gap-4 mb-6">
         <div className="bg-white rounded-xl border border-gray-100 p-4 text-center">
           <div className="text-3xl font-bold text-[#0D2A5E]">{total}</div>
           <div className="text-xs text-gray-400 mt-1">Contacted</div>
@@ -93,6 +96,14 @@ export default async function AdminOutreachPage({
         <div className="bg-white rounded-xl border border-gray-100 p-4 text-center">
           <div className="text-3xl font-bold text-green-600">{converted}</div>
           <div className="text-xs text-gray-400 mt-1">Converted (listed)</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-100 p-4 text-center">
+          <div className="text-3xl font-bold text-green-600">{positive}</div>
+          <div className="text-xs text-gray-400 mt-1">Positive replies</div>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-100 p-4 text-center">
+          <div className="text-3xl font-bold text-red-500">{negative}</div>
+          <div className="text-xs text-gray-400 mt-1">Negative replies</div>
         </div>
       </div>
 
@@ -236,10 +247,27 @@ export default async function AdminOutreachPage({
         ) : (
           <div className="divide-y divide-gray-50">
             {rows.map((c) => (
-              <div key={c.id} className="px-6 py-4 flex items-start gap-4">
+              <div
+                key={c.id}
+                className={`px-6 py-4 flex items-start gap-4 ${
+                  c.response === "negative" ? "bg-red-50/40 opacity-60" : ""
+                }`}
+              >
                 {/* Main info */}
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-[#0D2A5E] truncate">{c.seller_name}</div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-medium text-[#0D2A5E] truncate">{c.seller_name}</span>
+                    {c.response === "positive" && (
+                      <span className="shrink-0 text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-green-100 text-green-700">
+                        👍 positive
+                      </span>
+                    )}
+                    {c.response === "negative" && (
+                      <span className="shrink-0 text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-red-100 text-red-600">
+                        👎 negative — do not recontact
+                      </span>
+                    )}
+                  </div>
                   <div className="text-xs text-gray-400 mt-0.5 truncate">
                     {c.item || "—"}
                     {c.notes ? ` · ${c.notes}` : ""}
@@ -299,6 +327,8 @@ export default async function AdminOutreachPage({
                     {c.language || "?"}
                   </span>
                 </div>
+
+                <ResponseButtons contactId={c.id} response={c.response ?? null} />
 
                 <ConvertButton contactId={c.id} converted={!!c.converted_at} />
               </div>
