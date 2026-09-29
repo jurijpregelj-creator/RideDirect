@@ -7,6 +7,10 @@ const ContentSecurityPolicy = [
   // Next.js requires unsafe-inline for hydration; unsafe-eval needed by some third-party libs
   "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
   "style-src 'self' 'unsafe-inline'",
+  // heic2any converts iPhone HEIC photos in a Worker created from a blob: URL.
+  // Without this, worker-src falls back to script-src, the Worker is blocked,
+  // and heic2any never settles — the photo upload just spins.
+  "worker-src 'self' blob:",
   // Images: supabase storage, unsplash, google/facebook OAuth avatars, data URIs, blob URLs
   "img-src 'self' data: blob: https://*.supabase.co https://images.unsplash.com https://*.googleusercontent.com https://*.fbcdn.net https://graph.facebook.com",
   "font-src 'self' data:",
