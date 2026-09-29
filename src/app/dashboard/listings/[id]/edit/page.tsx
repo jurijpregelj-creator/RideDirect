@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
-import { normalizeImageFiles } from "@/lib/image-upload"
+import { normalizeImageFiles, imageFormatError } from "@/lib/image-upload"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -42,6 +42,7 @@ export default function EditListingPage() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [converting, setConverting] = useState(false)
+  const [photoError, setPhotoError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
 
@@ -105,11 +106,12 @@ export default function EditListingPage() {
     const total = existingImages.length - deletedImageIds.length + newFiles.length + rawFiles.length
     if (total > 8) { setError(t.maxImagesTotal); return }
     setConverting(true)
-    const files = await normalizeImageFiles(rawFiles)
+    const { files, rejected } = await normalizeImageFiles(rawFiles)
     const previews = files.map((f) => URL.createObjectURL(f))
     setNewFiles((prev) => [...prev, ...files])
     setNewPreviews((prev) => [...prev, ...previews])
     setError(null)
+    setPhotoError(imageFormatError(t.errorImageFormat, rejected))
     setConverting(false)
   }
 
@@ -357,6 +359,7 @@ export default function EditListingPage() {
               )}
             </div>
             <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleNewImages} />
+            {photoError && <p className="mt-2 text-sm text-red-600">{photoError}</p>}
           </div>
 
           <div className="flex gap-3">

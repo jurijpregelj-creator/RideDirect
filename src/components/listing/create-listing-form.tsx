@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
 import { onListingSubmitted } from "@/app/dashboard/create/actions"
-import { normalizeImageFiles } from "@/lib/image-upload"
+import { normalizeImageFiles, imageFormatError } from "@/lib/image-upload"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -37,6 +37,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
 
   const [loading, setLoading] = useState(false)
   const [converting, setConverting] = useState(false)
+  const [photoError, setPhotoError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
@@ -56,11 +57,12 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
       return
     }
     setConverting(true)
-    const files = await normalizeImageFiles(rawFiles)
+    const { files, rejected } = await normalizeImageFiles(rawFiles)
     const newPreviews = files.map((f) => URL.createObjectURL(f))
     setImageFiles((prev) => [...prev, ...files])
     setImagePreviews((prev) => [...prev, ...newPreviews])
     setError(null)
+    setPhotoError(imageFormatError(t.errorImageFormat, rejected))
     setConverting(false)
   }
 
@@ -372,6 +374,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
           className="hidden"
           onChange={handleImageSelect}
         />
+        {photoError && <p className="mt-2 text-sm text-red-600">{photoError}</p>}
       </div>
 
       {/* Submit */}

@@ -55,6 +55,8 @@ interface ListingFormStrings {
   emailHint: string
   noAccountNote: string
   errorMaxPhotos: string
+  /** Shown when a photo is in a format we can't use; {files} = comma-separated file names */
+  errorImageFormat: string
 }
 
 // Same rationale as the other *-translations.ts files this session: a
@@ -95,6 +97,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "So we can notify you when your listing goes live.",
     noAccountNote: "No account needed to submit. Your listing is saved before registration.",
     errorMaxPhotos: "Maximum 8 photos.",
+    errorImageFormat: "Could not upload: {files}. Please convert to JPG or PNG and try again.",
   },
   de: {
     sectionBasicInfo: "Grundinformationen", sectionPricing: "Preis", sectionRideDetails: "Details zum Fahrgeschäft", sectionPhotos: "Fotos",
@@ -128,6 +131,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Damit wir Sie benachrichtigen können, wenn Ihr Inserat live geht.",
     noAccountNote: "Kein Konto zum Einreichen erforderlich. Ihr Inserat wird vor der Registrierung gespeichert.",
     errorMaxPhotos: "Maximal 8 Fotos.",
+    errorImageFormat: "Konnte nicht hochgeladen werden: {files}. Bitte in JPG oder PNG umwandeln und erneut versuchen.",
   },
   it: {
     sectionBasicInfo: "Informazioni di base", sectionPricing: "Prezzo", sectionRideDetails: "Dettagli dell'attrazione", sectionPhotos: "Foto",
@@ -161,6 +165,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Per avvisarti quando il tuo annuncio sarà online.",
     noAccountNote: "Non serve un account per inviare. Il tuo annuncio viene salvato prima della registrazione.",
     errorMaxPhotos: "Massimo 8 foto.",
+    errorImageFormat: "Impossibile caricare: {files}. Convertile in JPG o PNG e riprova.",
   },
   fr: {
     sectionBasicInfo: "Informations de base", sectionPricing: "Tarification", sectionRideDetails: "Détails de l'attraction", sectionPhotos: "Photos",
@@ -194,6 +199,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Pour vous prévenir dès que votre annonce est en ligne.",
     noAccountNote: "Aucun compte requis pour soumettre. Votre annonce est enregistrée avant l'inscription.",
     errorMaxPhotos: "Maximum 8 photos.",
+    errorImageFormat: "Impossible de télécharger : {files}. Convertissez-les en JPG ou PNG et réessayez.",
   },
   es: {
     sectionBasicInfo: "Información básica", sectionPricing: "Precio", sectionRideDetails: "Detalles de la atracción", sectionPhotos: "Fotos",
@@ -227,6 +233,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Para avisarte cuando tu anuncio esté publicado.",
     noAccountNote: "No se necesita cuenta para enviar. Tu anuncio se guarda antes del registro.",
     errorMaxPhotos: "Máximo 8 fotos.",
+    errorImageFormat: "No se pudo subir: {files}. Conviértelas a JPG o PNG e inténtalo de nuevo.",
   },
   nl: {
     sectionBasicInfo: "Basisinformatie", sectionPricing: "Prijs", sectionRideDetails: "Details attractie", sectionPhotos: "Foto's",
@@ -260,6 +267,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Zodat we u kunnen laten weten wanneer uw advertentie live gaat.",
     noAccountNote: "Geen account nodig om in te dienen. Uw advertentie wordt opgeslagen vóór registratie.",
     errorMaxPhotos: "Maximaal 8 foto's.",
+    errorImageFormat: "Kon niet worden geüpload: {files}. Zet ze om naar JPG of PNG en probeer het opnieuw.",
   },
   pl: {
     sectionBasicInfo: "Podstawowe informacje", sectionPricing: "Cena", sectionRideDetails: "Szczegóły atrakcji", sectionPhotos: "Zdjęcia",
@@ -293,6 +301,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Abyśmy mogli powiadomić Cię, gdy Twoje ogłoszenie będzie aktywne.",
     noAccountNote: "Konto nie jest wymagane do wysłania. Twoje ogłoszenie jest zapisywane przed rejestracją.",
     errorMaxPhotos: "Maksymalnie 8 zdjęć.",
+    errorImageFormat: "Nie udało się przesłać: {files}. Przekonwertuj na JPG lub PNG i spróbuj ponownie.",
   },
   pt: {
     sectionBasicInfo: "Informações básicas", sectionPricing: "Preço", sectionRideDetails: "Detalhes da atração", sectionPhotos: "Fotos",
@@ -326,6 +335,7 @@ export const LISTING_FORM_T: Record<ListingLocale, ListingFormStrings> = {
     emailHint: "Para o avisarmos quando o seu anúncio estiver publicado.",
     noAccountNote: "Não é necessária conta para submeter. O seu anúncio é guardado antes do registo.",
     errorMaxPhotos: "Máximo de 8 fotos.",
+    errorImageFormat: "Não foi possível carregar: {files}. Converta para JPG ou PNG e tente novamente.",
   },
 }
 

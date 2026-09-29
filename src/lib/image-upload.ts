@@ -4,9 +4,14 @@
 // most buyers. Convert client-side to JPEG before it ever reaches state.
 
 // heic2any can hang forever on some HEIC variants (and on a stuck chunk load),
-// which left the upload box spinning with no way out. Cap each conversion and
-// fall back to the original file.
+// which left the upload box spinning with no way out. Cap each conversion.
 const HEIC_TIMEOUT_MS = 30_000
+
+// Formats every major browser can display. Anything else (a HEIC we failed to
+// convert, TIFF, RAW, PDF...) would upload but show up broken for buyers, so
+// it's rejected and the seller is asked to convert it themselves.
+const DISPLAYABLE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"]
+const DISPLAYABLE_EXT = /\.(jpe?g|png|webp|gif|avif)$/i
 
 function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -18,13 +23,17 @@ function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
   })
 }
 
-export async function normalizeImageFile(file: File): Promise<File> {
+/** Returns a browser-displayable file, or null if the format can't be used. */
+export async function normalizeImageFile(file: File): Promise<File | null> {
   const isHeic =
     file.type === "image/heic" ||
     file.type === "image/heif" ||
     /\.hei[cf]$/i.test(file.name)
 
-  if (!isHeic) return file
+  if (!isHeic) {
+    const displayable = file.type ? DISPLAYABLE_TYPES.includes(file.type) : DISPLAYABLE_EXT.test(file.name)
+    return displayable ? file : null
+  }
 
   try {
     const result = await withTimeout(
@@ -37,11 +46,21 @@ export async function normalizeImageFile(file: File): Promise<File> {
     const newName = file.name.replace(/\.hei[cf]$/i, ".jpg")
     return new File([converted], newName, { type: "image/jpeg" })
   } catch (err) {
-    console.error("[HEIC] Conversion failed, using original file:", err)
-    return file
+    console.error("[HEIC] Conversion failed, rejecting file:", err)
+    return null
   }
 }
 
-export async function normalizeImageFiles(files: File[]): Promise<File[]> {
-  return Promise.all(files.map(normalizeImageFile))
+/** Splits picked files into usable ones and the names of rejected ones. */
+export async function normalizeImageFiles(files: File[]): Promise<{ files: File[]; rejected: string[] }> {
+  const results = await Promise.all(files.map(normalizeImageFile))
+  return {
+    files: results.filter((f): f is File => f !== null),
+    rejected: files.filter((_, i) => results[i] === null).map((f) => f.name),
+  }
+}
+
+/** Fills the {files} placeholder of the localized errorImageFormat message. */
+export function imageFormatError(template: string, rejected: string[]): string | null {
+  return rejected.length ? template.replace("{files}", rejected.join(", ")) : null
 }

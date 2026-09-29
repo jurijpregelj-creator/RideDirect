@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import { saveLead, updateLeadImages } from "@/app/funnel/actions"
-import { normalizeImageFiles } from "@/lib/image-upload"
+import { normalizeImageFiles, imageFormatError } from "@/lib/image-upload"
 import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
 import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
@@ -30,6 +30,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   const CONDITIONS = CONDITION_VALUES.map((value) => ({ value, label: LISTING_PAGE_T[lang].conditions[value] }))
   const [loading, setLoading] = useState(false)
   const [converting, setConverting] = useState(false)
+  const [photoError, setPhotoError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const [category, setCategory] = useState("")
@@ -48,10 +49,11 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
       return
     }
     setConverting(true)
-    const files = await normalizeImageFiles(rawFiles)
+    const { files, rejected } = await normalizeImageFiles(rawFiles)
     setImageFiles(prev => [...prev, ...files])
     setImagePreviews(prev => [...prev, ...files.map(f => URL.createObjectURL(f))])
     setError(null)
+    setPhotoError(imageFormatError(ft.errorImageFormat, rejected))
     setConverting(false)
   }
 
@@ -261,6 +263,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
           </button>
         )}
         <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden" onChange={handleImageSelect} />
+        {photoError && <p className="mt-2 text-sm text-red-600">{photoError}</p>}
       </div>
 
       <Button type="submit" variant="brand" size="lg" className="w-full text-base h-14 rounded-2xl" disabled={loading}>
