@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select"
 import { createClient } from "@/lib/supabase/client"
 import { normalizeImageFiles, imageFormatError } from "@/lib/image-upload"
+import { scrollIntoViewRef } from "@/lib/scroll-into-view-ref"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -220,7 +221,7 @@ export default function EditListingPage() {
         <h1 className="text-2xl font-bold text-[#0D2A5E] mb-1">{t.editTitle}</h1>
         <p className="text-sm text-gray-400 mb-8">{t.editSubtitle}</p>
 
-        {error && <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl mb-6">{error}</div>}
+        {error && <div ref={scrollIntoViewRef} className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-xl mb-6">{error}</div>}
         {success && <div className="bg-green-50 border border-green-100 text-green-600 text-sm px-4 py-3 rounded-xl mb-6">{t.savedRedirect}</div>}
 
         <form onSubmit={handleSubmit} className="space-y-6">

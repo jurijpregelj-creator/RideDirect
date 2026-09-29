@@ -12,6 +12,7 @@ import {
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import { saveLead, updateLeadImages } from "@/app/funnel/actions"
 import { normalizeImageFiles, imageFormatError } from "@/lib/image-upload"
+import { scrollIntoViewRef } from "@/lib/scroll-into-view-ref"
 import type { FUNNEL_T, FunnelLang } from "./funnel-translations"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
 import { LISTING_PAGE_T } from "@/components/listing/listing-page-translations"
@@ -139,7 +140,7 @@ export function FunnelForm({ t, lang, onSuccess }: FunnelFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
+        <div ref={scrollIntoViewRef} className="bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-xl">
           {error}
         </div>
       )}

@@ -17,6 +17,7 @@ import {
 import { createClient } from "@/lib/supabase/client"
 import { onListingSubmitted } from "@/app/dashboard/create/actions"
 import { normalizeImageFiles, imageFormatError } from "@/lib/image-upload"
+import { scrollIntoViewRef } from "@/lib/scroll-into-view-ref"
 import { CATEGORIES, EUROPEAN_COUNTRIES } from "@/data/mock"
 import type { ListingLocale } from "@/lib/locales"
 import { LISTING_FORM_T, COUNTRY_NAMES, CONDITION_VALUES } from "@/components/listing/listing-form-translations"
@@ -162,7 +163,7 @@ export function CreateListingForm({ userId, locale = "en" }: CreateListingFormPr
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {error && (
-        <div className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-lg">
+        <div ref={scrollIntoViewRef} className="bg-red-50 border border-red-100 text-red-600 text-sm px-4 py-3 rounded-lg">
           {error}
         </div>
       )}
