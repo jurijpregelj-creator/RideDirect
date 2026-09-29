@@ -100,6 +100,8 @@ export default function EditListingPage() {
 
   async function handleNewImages(e: React.ChangeEvent<HTMLInputElement>) {
     const rawFiles = Array.from(e.target.files || [])
+    // Clear so picking the same file(s) again still fires onChange
+    e.target.value = ""
     const total = existingImages.length - deletedImageIds.length + newFiles.length + rawFiles.length
     if (total > 8) { setError(t.maxImagesTotal); return }
     setConverting(true)
